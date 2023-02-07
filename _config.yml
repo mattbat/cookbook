@@ -4,21 +4,12 @@
 title: Cookbook
 
 # Short description of your site
-description: A collection of my favorite recipes 📖
+description: A collection of favorite recipes from the Batchelders and Marshalls
 
 collections:
   recipes:
     output: true
     permalink: /:collection/:title/
-
-# The small animated book at the top of the page
-# Comment this out completely to hide the whole book
-# Line-breaks have to be added manually via <br>
-animated_book:
-  # Book cover / title
-  title: 'My <br> Cookbook'
-  # Inside the book
-  scribble: 'Take a <br> look'
 
 
 # --- Local development options ---
@@ -72,7 +63,7 @@ footer-link-col: "#404040"
 # Change all these values or delete the ones you don't want.
 # Important: you must keep the "name" parameter, everything else you can remove
 author:
-  name: Jan Simson
+  name: Matt Batchelder
 
 # Select your active Social Network Links.
 # Uncomment the links you want to show in the footer and add your information to each link.
@@ -82,8 +73,8 @@ social-network-links:
   rss: true
 #  email: "someone@example.com"
 #  facebook: deanattali
-  github: jansim
-  twitter: _jansimson
+  github: mattbat
+#  twitter: _jansimson
 #  reddit: yourname
 #  linkedin: daattali
 #  xing: yourname
@@ -105,7 +96,7 @@ social-network-links:
 
 # How to display the link to the website in the footer
 # Remove this if you don't want a link in the footer
-url-pretty: "jansim.github.io/cookbook/"  # eg. "deanattali.com/beautiful-jekyll"
+url-pretty: "mattbat.github.io/cookbook/"  # eg. "deanattali.com/beautiful-jekyll"
 
 # --- Web Statistics Section --- #
 
@@ -168,7 +159,7 @@ date_format: "%B %-d, %Y"
 # --- Don't need to touch anything below here (but you can if you want) --- #
 
 # Output options (more information on Jekyll's site)
-timezone: "America/Vancouver"
+timezone: "America/Chicago"
 markdown: kramdown
 highlighter: rouge
 permalink: /:year-:month-:day-:title/
