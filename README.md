@@ -1,4 +1,4 @@
-# 📖 Cookbook 
+# 📖 Cookbook
 
 This repository hosts my personal cookbook, a collection of my favorite recipes from various on- and offline sources.
 
