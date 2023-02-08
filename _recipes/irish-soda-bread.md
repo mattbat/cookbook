@@ -1,4 +1,5 @@
 ---
+author: Matt Batchelder
 sourceUrl: https://simply-delicious-food.com/cheese-and-herb-irish-soda-bread/
 spoonacularSourceUrl: 
 imageSource:
