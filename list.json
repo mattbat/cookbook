@@ -10,6 +10,7 @@ layout: null
     {
 
       "title"    : "{{ recipe.title | strip_html | escape }}",
+      "author"   : "{{ recipe.author }}",
       "url"      : "{{ site.baseurl }}{{ recipe.url }}",
       "tags"     : "{{ recipe.tags | join: ', ' }}",
       "date"     : "{{ recipe.date }}",
