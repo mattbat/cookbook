@@ -481,6 +481,11 @@ footer .theme-by {
   background: red;
 }
 
+.recipe-author {
+  font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-weight: 800;
+}
+
 .recipe-date {
   display: block;
   margin: 3em auto;
@@ -604,7 +609,7 @@ footer .theme-by {
 }
 .intro-header .page-heading h1 {
   margin-top: 0;
-  font-size: 50px;
+  font-size: 50px;x
 }
 .intro-header .post-heading h1 {
   margin-top: 0;
