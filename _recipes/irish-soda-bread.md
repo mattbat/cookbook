@@ -7,6 +7,7 @@ date: 2023-02-07
 prep_time: 10
 cooking_time: 45
 servings: 8
+category: bread
 tags: [bread]
 ---
 # Cheese and Herb Irish Soda Bread
