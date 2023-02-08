@@ -10,7 +10,7 @@ tags: [bread]
 ---
 # Cheese and Herb Irish Soda Bread
 
-![Image of Cheese and Herb Irish Soda Bread](../img/cheese-and-herb-irish-soda-bread.jpg)
+![Image of Cheese and Herb Irish Soda Bread](../img/cheese-and-herb-irish-soda-bread.jpeg)
 
 ## Ingredients
 - 4 cups flour
