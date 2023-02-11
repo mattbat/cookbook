@@ -32,3 +32,4 @@ tags: [main, meat, smoker, bbq]
 5. Grill chops to add color and finish cooking to internal temperature of 130-140F.
 
 ## Notes
+This recipe uses a “reverse sear” technique.  This helps with temperature control so the pork chops don’t get over cooked and it also gives an opportunity to impart some smoke flavor.
