@@ -21,7 +21,7 @@ tags: [main, meat, smoker, bbq]
 - Garlic Powder
 
 ## Steps
-1. Dry brine - season pork chops liberally with kosher salt and place on a wire rack over a sheet tray in the refrigerator.  Let them fry brine for at least 2 hours, but 8 to 12 hours is preferred.
+1. Dry brine - season pork chops liberally with kosher salt and place on a wire rack over a sheet tray in the refrigerator.  Let them dry brine for at least 2 hours, but 8 to 12 hours is preferred.
 
 2. After dry brining, season with coarse pepper and garlic powder on all sides.
 
