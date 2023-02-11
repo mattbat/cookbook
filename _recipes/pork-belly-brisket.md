@@ -25,7 +25,7 @@ tags: [main, meat, smoker, bbq]
 
 3. Season all sides liberally with BBQ rub.  Allow the seasoning to adhere for 15 minutes 
 
-4. Place the pork belly fat side up in the smoker.  Smoke until probe tender. The internal temperature should be around 200ºF to 210ºF.
+4. Place the pork belly fat side up in the smoker.  Smoke until probe tender (about 4 to 5 hours) The internal temperature should be around 200ºF to 210ºF.
 
 5. Remove from smoker and rest for at least 15 minutes.  
 
