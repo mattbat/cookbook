@@ -1,6 +1,6 @@
 ---
 author: Matt Batchelder
-sourceUrl: 
+sourceUrl: https://www.seriouseats.com/perfect-pan-seared-pork-chop-recipe
 spoonacularSourceUrl: 
 imageSource:
 date: 2023-02-11
@@ -15,7 +15,7 @@ tags: [main, meat, smoker, bbq]
 ![Image of Pork Chops](../img/pork-chops.jpeg)
 
 ## Ingredients
-- Thick Cut Pork Chops
+- Thick Cut, Bone-In Pork Chops
 - Coarse Black Pepper
 - Kosher Salt
 - Garlic Powder
