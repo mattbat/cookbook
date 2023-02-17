@@ -11,7 +11,7 @@ use-site-title: true
 
 <h2 class="text-center"> Top Recipes </h2>
 
-{% assign recipes = site.recipes | where_exp:"recipe", "recipe.tags contains 'best-of'" | sort: 'date' | reverse %}
+{% assign recipes = site.recipes | where_exp:"recipe" | sample: 10 | sort: 'date' | reverse %}
 {% include recipes-list.html %}
 
 {% if paginator.total_pages > 1 %}
