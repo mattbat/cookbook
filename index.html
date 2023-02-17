@@ -9,9 +9,9 @@ use-site-title: true
 <div id="home-search-results-container" class="recipes-list"></div>
 
 
-<h2 class="text-center"> Explore These Recipes </h2>
+<h2 class="text-center"> Featured Recipes </h2>
 
-{% assign recipes = site.recipes | sample: 2 | sort: 'date' | reverse %}
+{% assign recipes = site.recipes | where_exp:"recipe", "recipe.tags contains 'featured'" | sort: 'date' | reverse %}
 {% include recipes-list.html %}
 
 {% if paginator.total_pages > 1 %}
