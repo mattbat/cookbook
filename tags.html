@@ -2,7 +2,7 @@
 layout: page
 title: 'Tags'
 ---
-{% assign tags_list =  site.recipes | map: 'tags' | uniq % | sort}
+{% assign tags_list =  site.recipes | map: 'tags' | uniq | sort_natural %}
 
 Go to:
 <span class="blog-tags">
