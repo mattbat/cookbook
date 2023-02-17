@@ -31,19 +31,14 @@ navbar-links:
   "Appetizers" : "tags/#appetizer"
   "Soups" : "tags/#soup"
   "Salads" : "tags/#salad"
-  "Sauces" : "tags/#sauce"
   "Bread" : "tags/#bread"
   "Sides" : "tags/#side"
-  "Vegetables" : "tags/#vegetable"
-  "Grains" : "tags/#grain"
-  "Pastas" : "tags/#pasta"
   "Seafood" : "tags/#seafood"
   "Meat" : "tags/#meat"
   "Poultry" : "tags/#poultry"
   "Main Courses": "tags/#main"
   "Breakfast" : "tags/#breakfast"
   "Desserts" : "tags/#dessert"
-  "Beverages" : "tags/#beverage"
 
 # Image to show in the navigation bar - image must be a square (width = height)
 # Remove this parameter if you don't want an image in the navbar
