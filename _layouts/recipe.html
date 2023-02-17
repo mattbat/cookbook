@@ -31,7 +31,7 @@ layout: base
           <div class="blog-tags">
             {% if site.link-tags %}
             {% for tag in page.tags %}
-              <a class="tag-{{- tag -}}" href="{{ '/tags' | relative_url }}#{{- tag -}}">{{- tag -}}</a>
+              <a class="tag-{{- tag -}}" href="{{ '/tags/' | relative_url }}#{{- tag -}}">{{- tag -}}</a>
             {% endfor %}
             {% else %}
               {{ page.tags | join: ", " }}
