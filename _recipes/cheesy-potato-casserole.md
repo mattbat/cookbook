@@ -24,15 +24,12 @@ tags: [side, crockpot]
 - 2 cups shredded cheddar cheese
 - 1 1/2 - 2 cups herb seasoned stuffing mix
 - season salt (to taste)
+
 ## Steps
 1. Lightly butter the inside of your crockpot.
-
 2. Combine soup, sour cream, onion, 1/4 c butter and seasonings in crock pot.
-
 3. Add potatoes and cheese, mix well.
-
 4. Cover mixture with dry stuffing mix and drizzle with the remaining 3 T of butter.
-
 5. Cook on low for 4-6 hours or on high for 2 hours. Do NOT stir while cooking.
 
 ## Notes
