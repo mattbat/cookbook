@@ -25,6 +25,7 @@ tags: [side, crockpot]
 - 1 1/2 - 2 cups herb seasoned stuffing mix
 - season salt (to taste)
 
+
 ## Steps
 1. Lightly butter the inside of your crockpot.
 2. Combine soup, sour cream, onion, 1/4 c butter and seasonings in crock pot.
