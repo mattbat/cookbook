@@ -6,7 +6,7 @@ imageSource:
 date: 2023-02-17
 prep_time: 20
 cooking_time: 480
-servings: 1
+servings: 10
 category: side
 tags: [side, mexican, crockpot]
 ---
