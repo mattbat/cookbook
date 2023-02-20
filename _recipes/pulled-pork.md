@@ -20,7 +20,7 @@ tags: [main, meat, smoker, bbq]
 - yellow mustard
 
 ## Steps
-1. Prepare your smoker at a temp of 275 degrees. I like pecan wood.
+1. Prepare your smoker at a temp of 275ºF degrees. I like pecan wood.
 
 2. Trim excess fat from the pork shoulder.  Cut a shallow cross hatch pattern through the fat cap.
 

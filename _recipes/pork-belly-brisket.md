@@ -19,7 +19,7 @@ tags: [main, meat, smoker, bbq]
 - BBQ rub
 
 ## Steps
-1. Prepare your smoker at a temp of 275 degrees. I like pecan wood, but post oak, mesquite, or hickory would also be good. We are looking for a heavy smoke wood on this cook since we are cooking this like a brisket.
+1. Prepare your smoker at a temp of 275ºF degrees. I like pecan wood, but post oak, mesquite, or hickory would also be good. We are looking for a heavy smoke wood on this cook since we are cooking this like a brisket.
 
 2. Cut the belly into 4 sections. Trim them as evenly as possible removing any ridges that are too tall or too thin.
 

@@ -23,7 +23,7 @@ tags: [main, meat, smoker, bbq]
 - Hot Sauce/Jalepenos (optional)
 
 ## Steps
-1. Prepare your smoker at a temp of 275 degrees. I like pecan wood, but post oak, mesquite, or hickory would also be good.
+1. Prepare your smoker at a temp of 275ºF degrees. I like pecan wood, but post oak, mesquite, or hickory would also be good.
 
 2. Cut the belly into 1" x 1" cubes.
 
