@@ -32,7 +32,7 @@ tags: [main, meat, smoker, bbq]
 
 6. Return pan to smoker and cook until the pork shoulder reaches an internal temperature of 205ºF and is probe tender.
 
-7. Allow the pork to rest and then shred.  Add additional seasoning to pulled pork as desired.
+7. Allow the pork to rest and then shred.  Add additional seasoning to pulled pork as desired.  Reserve the juices from the pan and add a little at a time to help moisten the pork.  Save the remaining juices in a jar and add to the pork when reheating leftovers.
 
 ## Notes
 - The time required can vary from shoulder to shoulder.  Estimate at least 1 hour per pound of meat.  Start early enough to give a couple of hours of margin before the desired eating time.
