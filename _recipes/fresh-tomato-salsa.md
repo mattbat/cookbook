@@ -1,11 +1,14 @@
 ---
+author: Carly Batchelder
 sourceUrl: http://zumfressen.blogspot.com/2007/10/fresh-tomato-salsa-americas-test.html
 spoonacularSourceUrl: 
 imageSource:
 date: 2022-02-27
+prep_time: 30
 cooking_time: 30
 servings: 12
-tags: [side, dip, mexican]
+category: dip
+tags: [side, dip, salsa, mexican]
 ---
 # Fresh Tomato Salsa (America's Test Kitchen)
 
