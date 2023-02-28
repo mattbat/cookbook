@@ -10,9 +10,9 @@ servings: 12
 category: side
 tags: [side, dip, crockpot]
 ---
-# Sausage Balls
+# Slow Cooker Spinach Artichoke Dip
 
-![Image of Sausage Balls](../img/slow-cooker-spinach-artichoke-dip.jpeg)
+![Image of Slow Cooker Spinach Artichoke Dip](../img/slow-cooker-spinach-artichoke-dip.jpeg)
 
 ## Ingredients
 - 1 (10-ounce) bag fresh baby spinach, roughly chopped
