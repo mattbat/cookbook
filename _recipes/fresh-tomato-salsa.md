@@ -2,10 +2,10 @@
 sourceUrl: http://zumfressen.blogspot.com/2007/10/fresh-tomato-salsa-americas-test.html
 spoonacularSourceUrl: 
 imageSource:
-date: 2020-01-01
-cooking_time: 60
-servings: 1
-tags: [side, mexican]
+date: 2022-02-27
+cooking_time: 30
+servings: 12
+tags: [side, dip, mexican]
 ---
 # Fresh Tomato Salsa (America's Test Kitchen)
 
