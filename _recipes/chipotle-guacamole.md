@@ -8,7 +8,7 @@ prep_time: 10
 cooking_time: 0
 servings: 12
 category: side
-tags: [side, dip]
+tags: [side, dip, mexican]
 ---
 # Chipotle Guacamole
 
