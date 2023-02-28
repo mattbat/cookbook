@@ -8,7 +8,7 @@ prep_time: 10
 cooking_time: 12
 servings: 12
 category: side
-tags: [side, pork]
+tags: [side, meat, pork]
 ---
 # Sausage Balls
 
