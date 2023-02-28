@@ -1,15 +1,18 @@
 ---
+author:
 sourceUrl:
 spoonacularSourceUrl: 
 imageSource:
 date: 2020-01-01
+prep_time: 10
 cooking_time: 60
 servings: 1
+category:
 tags: []
 ---
 # Template Recipe
 
-![Image of Chia Pudding](../img/Chia Pudding.jpg)
+![Image of Template(../img/Template.jpeg)
 
 ## Ingredients
 - 2 tablespoon Ingredient
