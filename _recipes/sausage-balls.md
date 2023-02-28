@@ -21,7 +21,7 @@ tags: [side, pork]
 
 
 ## Steps
-1. Mix ingredients together. (you will probably have some Bisquik and cheese left over) and roll into balls and put on a cookie sheet.
+1. Mix ingredients together. (you will probably have some Bisquick and cheese left over) and roll into balls and put on a cookie sheet.
 2. Bake in oven 10-12 minutes at 425ºF. A little longer if frozen or you want them crispier.
 
 ## Notes
