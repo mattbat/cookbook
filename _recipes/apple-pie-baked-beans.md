@@ -1,6 +1,6 @@
 ---
 author: Mike Marshall
-sourceUrl:https://www.thebeardedhiker.com/apple-pie-baked-beans/
+sourceUrl: https://www.thebeardedhiker.com/apple-pie-baked-beans/
 spoonacularSourceUrl: 
 imageSource:
 date: 2023-03-05
