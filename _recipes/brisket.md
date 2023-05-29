@@ -20,8 +20,9 @@ tags: [main, meat, smoker, bbq]
 - Kosher Salt
 
 ## Videos
-Trim: https://www.youtube.com/watch?v=MTc5VAgZKLE&t=1s
-Cook: https://www.youtube.com/watch?v=Mgy7ou8bFRQ
+Trim: <https://www.youtube.com/watch?v=MTc5VAgZKLE&t=1s>
+
+Cook: <https://www.youtube.com/watch?v=Mgy7ou8bFRQ>
 
 ## Steps
 1. Trim Brisket. (Watch video for details)  Remove hard fat and loose pieces.  Square sides and remove rough meat.  Round corners and remove thin corners.  Shave fat side down to 1/4".  Reserve meat trim for grinding into burgers/sausage.  Reserve fat to render into tallow.
