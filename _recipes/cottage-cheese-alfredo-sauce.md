@@ -7,8 +7,8 @@ date: 2023-07-07
 prep_time: 10
 cooking_time: 15
 servings: 4
-category: sauce
-tags: [sauce, pasta, italian]
+category: side
+tags: [side, sauce, pasta, italian]
 ---
 # Cottage Cheese Alfredo Sauce
 
@@ -28,9 +28,9 @@ tags: [sauce, pasta, italian]
 - 1/2 lb cooked pasta of choice
 
 ## Steps
-1. Put all ingredients, except basil and parsley, into a food processor or blender and blend until smooth.
+1. Put all ingredients, except parsley, into a food processor or blender and blend until smooth.
 
-2. Pour the mixture into a small saucepan and add basil and oregano.  Cook over medium-low heat until heated through and smooth.  Add more basil, oregano, salt, and pepper, to taste.
+2. Pour the mixture into a small saucepan.  Cook over medium-low heat until heated through and smooth.  Add more basil, oregano, salt, and pepper, to taste.
 
 3. Cook for 5 minutes, stirring occasionally.  Add the cooked pasta right before serving and let soak in the sauce for a couple of minutes.  
 
