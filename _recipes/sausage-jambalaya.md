@@ -10,7 +10,7 @@ servings: 6
 category: main
 tags: [main, sausage, rice]
 ---
-# Sausaage Jambalaya
+# Sausage Jambalaya
 
 ![Image of Sausage Jambalaya](../img/sausage-jambalaya.jpeg)
 
