@@ -16,7 +16,7 @@ tags: [main, meat, smoker, bbq]
 
 ## Ingredients
 - 1 rack baby back ribs (loin ribs)
-- BBQ seasoniong rub of choice
+- BBQ seasoning rub of choice
 - 1 T yellow mustard
 - BBQ Sauce
 - 1 T honey
@@ -33,7 +33,7 @@ tags: [main, meat, smoker, bbq]
 
 4. Prepare your smoker at a temp of 275ºF degrees. I like pecan wood, but cherry, apple, or hickory would also be good. We are looking for a heavy smoke wood on this cook. 
 
-5. Place the ribs meat side up in the smoker.  Smoke until ribs turn mahagony color (approx. 2.5 hours).  Spritz with apple cider vinegar if necessary if ribs are getting dried out.
+5. Place the ribs meat side up in the smoker.  Smoke until ribs turn mahogany color (approx. 2.5 hours).  Spritz with apple cider vinegar if necessary if ribs are getting dried out.
 
 6. Wrap ribs in 2 sheets of aluminum foil with butter, brown sugar, and honey.
 

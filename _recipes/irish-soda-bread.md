@@ -21,7 +21,7 @@ tags: [featured, bread]
 - 2 cups buttermilk
 - 1 egg
 - 1 cup grated cheddar cheese
-- 1/2 cup fresh herbs, chopped (or equivalent of dried) _(I like Trader Joes Italian Style Soffritto - crispy onions, sun-dried tomatoes, sea salt, garlic, red pepeprs, parsley, rosemary, sage)_
+- 1/2 cup fresh herbs, chopped (or equivalent of dried) _(I like Trader Joes Italian Style Soffritto - crispy onions, sun-dried tomatoes, sea salt, garlic, red peppers, parsley, rosemary, sage)_
 
 
 ## Steps

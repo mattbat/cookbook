@@ -44,11 +44,11 @@ tags: [soup, main, chicken, sausage]
 ## Steps
 1. Cut the chicken into pieces and place in a dutch oven.  Add the onion, celery, wine, and seasonings.  Fill with water until just covering the chicken.  Bring to a boil and then simmer until the chicken is fully cooked (30-40 minutes depending on the size of the chicken).  Remove chicken and let cool.  Remove chicken skin and discard.  Pull chicken meat.  Filter stock through paper towels and reserve.
 
-2. Roux.  Mix oil and flour together in a 4-cup measureing cup.  Microwave uncovered on HIGH for 6 minutes.  Stir.  Roux will be a ilght brown and will need to cook in increments of 30 seconds to reach a dark brown color (30 seconds to 2 minutes more).  Be careful not to burn the roux, but try and make it as dark as possible.
+2. Roux.  Mix oil and flour together in a 4-cup measuring cup.  Microwave uncovered on HIGH for 6 minutes.  Stir.  Roux will be a light brown and will need to cook in increments of 30 seconds to reach a dark brown color (30 seconds to 2 minutes more).  Be careful not to burn the roux, but try and make it as dark as possible.
 
-3. Add onion, celery, and bell pepper to roux in the measureing cup.  Add slowly because the roux is very hot and will pop and splatter.  Stir.  Microwave on HIGH for 3 minutes.
+3. Add onion, celery, and bell pepper to roux in the measuring cup.  Add slowly because the roux is very hot and will pop and splatter.  Stir.  Microwave on HIGH for 3 minutes.
 
-4. Add garlic, parsley, and green onion to roux.  Stir.  Microwave on HIGH for 2 minutes.  You should haev about 3-3/4 cups of roux now.  If any oil has risen to the top, pour this off.
+4. Add garlic, parsley, and green onion to roux.  Stir.  Microwave on HIGH for 2 minutes.  You should have about 3-3/4 cups of roux now.  If any oil has risen to the top, pour this off.
 
 5. Slowly add enough hot tap water to bring roux to the 4-cup mark.  Stir.
 
