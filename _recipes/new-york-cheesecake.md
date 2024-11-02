@@ -12,7 +12,7 @@ tags: [dessert]
 ---
 # New York Cheesecake
 
-![Image of New York Cheesecake(../img/new-york-cheesecake.jpeg)
+![Image of New York Cheesecake](../img/new-york-cheesecake.jpeg)
 
 ## Ingredients
 ### CRUST
