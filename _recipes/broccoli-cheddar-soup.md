@@ -10,7 +10,7 @@ servings: 6.5 cups
 category: Soup
 tags: [main, soup, instant pot, vegetarian]
 ---
-# Instant Pot Broccoli Cheddar Soup
+# Broccoli Cheddar Soup
 
 ![Image of Broccoli Cheddar Soup](../img/broccoli-cheddar-soup.jpeg)
 
