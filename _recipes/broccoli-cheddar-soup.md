@@ -12,7 +12,7 @@ tags: [main, soup, instant pot, vegetarian]
 ---
 # Instant Pot Broccoli Cheddar Soup
 
-![Image of Instant Pot Broccoli Cheddar Soup](../img/instant-pot-broccoli-cheddar-soup.jpeg)
+![Image of Broccoli Cheddar Soup](../img/broccoli-cheddar-soup.jpeg)
 
 ## Ingredients
 - 1 Tbsp butter
