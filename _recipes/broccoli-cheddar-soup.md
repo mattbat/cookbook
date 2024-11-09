@@ -7,7 +7,7 @@ date: 2020-01-01
 prep_time: 20
 cooking_time: 6
 servings: 6.5 cups
-category: Soup
+category: soup
 tags: [main, soup, instant pot, vegetarian]
 ---
 # Broccoli Cheddar Soup

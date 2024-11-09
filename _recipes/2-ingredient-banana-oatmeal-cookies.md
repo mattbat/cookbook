@@ -7,8 +7,8 @@ date: 2024-11-09
 prep_time: 10
 cooking_time: 15
 servings: 8
-category: Dessert
-tags: [Dessert, cookies, banana]
+category: dessert
+tags: [dessert, cookies, banana]
 ---
 # 2 Ingredient Banana Oatmeal Cookies
 

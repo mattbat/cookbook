@@ -7,8 +7,8 @@ date: 2024-11-02
 prep_time: 10
 cooking_time: 30
 servings: 8
-category: Main
-tags: [casserole, Italian]
+category: main
+tags: [casserole, italian]
 ---
 # Ravioli Casserole
 

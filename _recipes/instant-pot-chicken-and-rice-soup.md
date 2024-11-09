@@ -8,7 +8,7 @@ prep_time: 10
 cooking_time: 40
 servings: 7
 category: soup
-tags: [soup, main, chicken]
+tags: [soup, main, chicken, poultry, instant pot]
 ---
 # Instant Pot Chicken and Rice Soup
 

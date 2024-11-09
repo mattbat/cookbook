@@ -7,7 +7,7 @@ date: 2024-11-02
 prep_time: 15
 cooking_time: 0
 servings: 4
-category: Main
+category: main
 tags: [main, chicken, Greek, salad]
 ---
 # Tzatziki Chicken Salad

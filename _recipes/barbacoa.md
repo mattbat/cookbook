@@ -7,7 +7,7 @@ date: 2024-11-02
 prep_time: 10
 cooking_time: 720
 servings: 8
-category: Main
+category: main
 tags: [main, mexican, beef, slow cooker]
 ---
 # Barbacoa

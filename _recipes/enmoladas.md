@@ -7,7 +7,7 @@ date: 2024-11-02
 prep_time: 20
 cooking_time: 180
 servings: 4
-category: Main
+category: main
 tags: [main, chicken, enchiladas, mexican, crockpot]
 ---
 # Enmoladas (Chicken Enchiladas de Mole)

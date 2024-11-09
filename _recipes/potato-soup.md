@@ -7,7 +7,7 @@ date: 2024-11-02
 prep_time: 15
 cooking_time: 30
 servings: 8
-category: Soup
+category: soup
 tags: [main, soup]
 ---
 # Potato Soup

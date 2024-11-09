@@ -7,7 +7,7 @@ date: 2024-11-02
 prep_time: 30
 cooking_time: 180
 servings: 1
-category: Dessert
+category: dessert
 tags: [dessert]
 ---
 # New York Cheesecake

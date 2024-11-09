@@ -7,8 +7,8 @@ date: 2024-11-02
 prep_time: 15
 cooking_time: 10
 servings: 20
-category: Dessert
-tags: [Brazilian, chocolate]
+category: dessert
+tags: [dessert, brazilian, chocolate]
 ---
 # Brigadeiro
 

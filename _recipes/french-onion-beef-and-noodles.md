@@ -7,8 +7,8 @@ date: 2024-11-09
 prep_time: 10
 cooking_time: 30
 servings: 6
-category: Main
-tags: [main, beef, noodles]
+category: main
+tags: [main, beef, pasta]
 ---
 # French Onion Beef and Noodles (Pioneer Woman)
 

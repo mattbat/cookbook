@@ -7,7 +7,7 @@ date: 2024-11-09
 prep_time: 10
 cooking_time: 45
 servings: 12
-category: Dessert
+category: dessert
 tags: [dessert, cake, pumpkin]
 ---
 # Pumpkin Dump Cake

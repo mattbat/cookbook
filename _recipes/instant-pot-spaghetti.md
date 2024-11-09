@@ -7,8 +7,8 @@ date: 2024-11-09
 prep_time: 10
 cooking_time: 15
 servings: 4
-category: Main
-tags: [main, pasta, beef]
+category: main
+tags: [main, pasta, beef, italian]
 ---
 # Instant Pot Spaghetti
 
