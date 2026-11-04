@@ -1,21 +1,34 @@
 {
   "name": "cookbook",
   "version": "0.0.1",
-  "description": "My Personal Cookbook",
-  "main": "CLI/main.js",
-  "scripts": {
-    "import": "CLI/commands/import.js",
-    "new": "CLI/commands/new.js",
-    "serve": "bundle exec jekyll serve",
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "Jan Simson",
+  "private": true,
+  "description": "Batchelder family cookbook",
+  "author": "Matt Batchelder",
   "license": "MIT",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "start": "eleventy --serve --port=8080",
+    "build": "eleventy",
+    "test": "npm run test:unit && npm run build && npm run test:build && npm run test:e2e",
+    "test:unit": "node --test \"tests/unit/*.test.mjs\" \"tests/content/*.test.mjs\"",
+    "test:build": "node --test \"tests/build/*.test.mjs\"",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui",
+    "import": "node CLI/commands/import.js",
+    "new": "node CLI/commands/new.js"
+  },
   "dependencies": {
     "ejs": "^2.7.1",
     "node-fetch": "^2.6.0"
   },
   "devDependencies": {
+    "@11ty/eleventy": "^3.1.8",
+    "@playwright/test": "^1.64.1",
+    "gray-matter": "^4.0.3",
+    "markdown-it": "^15.0.3",
+    "markdown-it-anchor": "^10.0.0",
     "sanitize-filename": "^1.6.3"
   }
 }

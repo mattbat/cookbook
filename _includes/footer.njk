@@ -1,0 +1,35 @@
+<footer>
+  <div class="container beautiful-jekyll-footer">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <ul class="list-inline text-center footer-links">
+          <li>
+            <a href="{{ '/feed.xml' | url }}" title="RSS">
+              <span class="fa-stack fa-lg" aria-hidden="true">
+                <i class="fa fa-circle fa-stack-2x"></i>
+                <i class="fa fa-rss fa-stack-1x fa-inverse"></i>
+              </span>
+              <span class="sr-only">RSS</span>
+            </a>
+          </li>
+          <li>
+            <a href="https://github.com/{{ site.github }}" title="GitHub">
+              <span class="fa-stack fa-lg" aria-hidden="true">
+                <i class="fa fa-circle fa-stack-2x"></i>
+                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+              </span>
+              <span class="sr-only">GitHub</span>
+            </a>
+          </li>
+        </ul>
+        <p class="copyright text-muted">
+          {{ site.author }}
+          &nbsp;&bull;&nbsp;
+          {{ build.year }}
+          &nbsp;&bull;&nbsp;
+          <a href="{{ '/' | url }}">{{ site.urlPretty }}</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>

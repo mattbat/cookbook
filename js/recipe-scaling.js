@@ -123,23 +123,8 @@ function ingredientToHTML (ingredient, scaleFactor) {
   }
 }
 
-var initialIngredients = getIngredients(document.querySelectorAll('.recipe ul > li'))
-
-var input = document.querySelector('input[name="recipe_scaling"]')
-if (input) {
-  var initialScale = parse_number(input.value)
-  input.addEventListener('change', function () {
-    renderIngredientsAtScale(parse_number(input.value))
-  })
-}
-
 var value_steps = [.1, .25, .33, .5, .67, .75, .8, 1, 2]
-function changeValue (direction) {
-  if (direction !== 'up' && direction !== 'down') {
-    console.error('Unsupported direction in changeValue')
-    return
-  }
-  var value = parse_number(input.value)
+function nextServings (value, direction) {
   if (value >= 2) {
     // We can do full number steps
     if (direction === 'up') {
@@ -165,15 +150,36 @@ function changeValue (direction) {
     value = value_steps[i]
   }
 
-  input.value = render_number(value)
-  input.dispatchEvent(new Event('change'));
+  return value
 }
 
-var decreaseButton = document.querySelector('.decrease')
-if (decreaseButton) {
-  decreaseButton.addEventListener('click', () => changeValue('down'))
+if (typeof document !== 'undefined') {
+  var initialIngredients = getIngredients(document.querySelectorAll('.recipe ul > li'))
+
+  var input = document.querySelector('input[name="recipe_scaling"]')
+  if (input) {
+    var initialScale = parse_number(input.value)
+    input.addEventListener('change', function () {
+      renderIngredientsAtScale(parse_number(input.value))
+    })
+  }
+
+  var changeValue = function (direction) {
+    input.value = render_number(nextServings(parse_number(input.value), direction))
+    input.dispatchEvent(new Event('change'));
+  }
+
+  var decreaseButton = document.querySelector('.decrease')
+  if (decreaseButton) {
+    decreaseButton.addEventListener('click', () => changeValue('down'))
+  }
+  var increaseButton = document.querySelector('.increase')
+  if (increaseButton) {
+    increaseButton.addEventListener('click', () => changeValue('up'))
+  }
 }
-var increaseButton = document.querySelector('.increase')
-if (increaseButton) {
-  increaseButton.addEventListener('click', () => changeValue('up'))
+
+// Lets the unit tests load this file in Node
+if (typeof module !== 'undefined') {
+  module.exports = { parse_number, render_number, nextServings, getIngredients, ingredientToHTML }
 }

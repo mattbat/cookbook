@@ -1,0 +1,55 @@
+---
+layout: base.njk
+---
+<header class="header-section">
+  <div class="intro-header no-img"></div>
+</header>
+
+<div class="container">
+  <div class="row">
+    <div class="col-xs-12">
+
+      <div class="recipe-heading">
+        <h1>{{ title }}</h1>
+        {% if subtitle %}<h2 class="recipe-subheading">{{ subtitle }}</h2>{% endif %}
+      </div>
+
+      <div class="recipe-author">By: {{ author }}</div>
+
+      <div class="recipe-preamble">
+        {% if tags and tags.length %}
+        <div class="blog-tags">
+          {%- for tag in tags %}
+          <a class="tag-{{ tag | tagId }}" href="{{ '/tags/' | url }}#{{ tag | tagId }}">{{ tag }}</a>
+          {%- endfor %}
+        </div>
+        {% endif %}
+
+        {% if sourceUrl or source %}
+        <div class="recipe-source">
+          Source:
+          {% if sourceUrl | isUrl %}
+          <a href="{{ sourceUrl }}" target="_blank" rel="noopener"><span class="source">{{ source or (sourceUrl | sourceName) }}</span></a>
+          {% else %}
+          <span class="source">{{ source or sourceUrl }}</span>
+          {% endif %}
+        </div>
+        {% endif %}
+      </div>
+
+      <div class="recipe-scaling">
+        <input type="text" name="recipe_scaling" size="2" value="{{ servings or 1 }}">
+        {{ servingsUnit or "serving(s)" }}.
+
+        <button title="Decrease number of servings" class="decrease">-</button>
+        <button title="Increase number of servings" class="increase">+</button>
+      </div>
+
+      <article role="main" class="blog-post recipe">
+        {{ content | safe }}
+      </article>
+
+      <span class="post-meta recipe-date">Added on {{ page.date | readableDate }}</span>
+    </div>
+  </div>
+</div>

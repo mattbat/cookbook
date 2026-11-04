@@ -41,7 +41,9 @@ async function recipeToMarkdown(recipe) {
 }
 
 async function saveRecipeMarkdown(renderedRecipe, safeTitle) {
-  const filepath = `${OUTPUT_DIR}/${safeTitle}.md`
+  // "Grandma's Pot Roast" -> "grandmas-pot-roast.md" (the recipe's web address comes from this)
+  const filename = safeTitle.toLowerCase().replace(/'/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '')
+  const filepath = `${OUTPUT_DIR}/${filename}.md`
 
   await fs.promises.writeFile(filepath, renderedRecipe)
 

@@ -13,3 +13,8 @@ ehthumbs.db
 node_modules/
 tmp/
 CLI/CREDENTIALS.json
+
+# tests
+test-results/
+playwright-report/
+blob-report/

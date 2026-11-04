@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+  {% include "head.njk" %}
+
+  <body data-base="{{ '/' | url }}">
+    {% include "nav.njk" %}
+
+    {{ content | safe }}
+
+    {% include "footer.njk" %}
+
+    <script src="{{ '/js/jquery-1.11.2.min.js' | url }}"></script>
+    <script src="{{ '/js/bootstrap.min.js' | url }}"></script>
+    <script src="{{ '/js/main.js' | url }}"></script>
+    <script src="{{ '/js/recipe-scaling.js' | url }}"></script>
+    <script src="{{ '/js/simple-jekyll-search.min.js' | url }}"></script>
+    <script src="{{ '/js/search.js' | url }}"></script>
+  </body>
+</html>

@@ -1,0 +1,490 @@
+{
+  "capturedAt": "2026-11-04",
+  "source": "https://mattbat.com/cookbook/",
+  "pages": [
+    "/cookbook/",
+    "/cookbook/list/",
+    "/cookbook/tags/",
+    "/cookbook/list.json",
+    "/cookbook/404.html",
+    "/cookbook/sitemap.xml",
+    "/cookbook/feed.xml"
+  ],
+  "recipes": [
+    {
+      "url": "/cookbook/recipes/2-ingredient-banana-oatmeal-cookies/",
+      "title": "2 Ingredient Banana Oatmeal Cookies",
+      "tags": [
+        "dessert",
+        "cookies",
+        "banana"
+      ]
+    },
+    {
+      "url": "/cookbook/recipes/apple-pie-baked-beans/",
+      "title": "Apple Pie Baked Beans",
+      "tags": [
+        "side",
+        "beans",
+        "bbq",
+        "smoker"
+      ]
+    },
+    {
+      "url": "/cookbook/recipes/aunt-bettys-refrigerator-pickles/",
+      "title": "Aunt Betty’s Refrigerator Pickles",
+      "tags": [
+        "side",
+        "vegetable"
+      ]
+    },
+    {
+      "url": "/cookbook/recipes/baby-back-ribs/",
+      "title": "Baby Back Ribs",
+      "tags": [
+        "main",
+        "meat",
+        "smoker",
+        "bbq"
+      ]
+    },
+    {
+      "url": "/cookbook/recipes/barbacoa/",
+      "title": "Barbacoa",
+      "tags": [
+        "main",
+        "mexican",
+        "beef",
+        "slow cooker"
+      ]
+    },
+    {
+      "url": "/cookbook/recipes/better-for-you-banana-bread/",
+      "title": "Better-For-You Banana Bread",
+      "tags": [
+        "bread",
+        "breakfast"
+      ]
+    },
+    {
+      "url": "/cookbook/recipes/black-forest-cake/",
+      "title": "Black Forest Cake",
+      "tags": [
+        "dessert",
+        "cake"
+      ]
+    },
+    {
+      "url": "/cookbook/recipes/brigadeiro/",
+      "title": "Brigadeiro",
+      "tags": [
+        "dessert",
+        "brazilian",
+        "chocolate"
+      ]
+    },
+    {
+      "url": "/cookbook/recipes/brisket/",
+      "title": "Brisket",
+      "tags": [
+        "main",
+        "meat",
+        "smoker",
+        "bbq"
+      ]
+    },
+    {
+      "url": "/cookbook/recipes/broccoli-cheddar-soup/",
+      "title": "Broccoli Cheddar Soup",
+      "tags": [
+        "main",
+        "soup",
+        "instant pot",
+        "vegetarian"
+      ]
+    },
+    {
+      "url": "/cookbook/recipes/charro-beans/",
+      "title": "Charro Beans",
+      "tags": [
+        "side",
+        "mexican",
+        "crockpot"
+      ]
+    },
+    {
+      "url": "/cookbook/recipes/cheesy-potato-casserole/",
+      "title": "Cheesy Potato Casserole",
+      "tags": [
+        "side",
+        "crockpot"
+      ]
+    },
+    {
+      "url": "/cookbook/recipes/chili-con-carne-enchiladas/",
+      "title": "Chili con Carne Enchiladas",
+      "tags": [
+        "main",
+        "mexican",
+        "arnietex"
+      ]
+    },
+    {
+      "url": "/cookbook/recipes/chipotle-guacamole/",
+      "title": "Chipotle Guacamole",
+      "tags": [
+        "side",
+        "dip",
+        "mexican"
+      ]
+    },
+    {
+      "url": "/cookbook/recipes/cornbread/",
+      "title": "Cornbread",
+      "tags": [
+        "bread"
+      ]
+    },
+    {
+      "url": "/cookbook/recipes/cottage-cheese-alfredo-sauce/",
+      "title": "Cottage Cheese Alfredo Sauce",
+      "tags": [
+        "side",
+        "sauce",
+        "pasta",
+        "italian"
+      ]
+    },
+    {
+      "url": "/cookbook/recipes/creamy-fruit-dip/",
+      "title": "Creamy Fruit Dip",
+      "tags": [
+        "dip",
+        "fruit"
+      ]
+    },
+    {
+      "url": "/cookbook/recipes/debdoozies-blue-ribbon-chili/",
+      "title": "Debdoozie’s Blue Ribbon Chili",
+      "tags": [
+        "main",
+        "meat",
+        "beef"
+      ]
+    },
+    {
+      "url": "/cookbook/recipes/enmoladas/",
+      "title": "Enmoladas (Chicken Enchiladas de Mole)",
+      "tags": [
+        "main",
+        "chicken",
+        "enchiladas",
+        "mexican",
+        "crockpot"
+      ]
+    },
+    {
+      "url": "/cookbook/recipes/french-onion-beef-and-noodles/",
+      "title": "French Onion Beef and Noodles (Pioneer Woman)",
+      "tags": [
+        "main",
+        "beef",
+        "pasta"
+      ]
+    },
+    {
+      "url": "/cookbook/recipes/fresh-tomato-salsa/",
+      "title": "Fresh Tomato Salsa (America’s Test Kitchen)",
+      "tags": [
+        "side",
+        "dip",
+        "salsa",
+        "mexican"
+      ]
+    },
+    {
+      "url": "/cookbook/recipes/garlic-cheese-biscuits/",
+      "title": "Garlic Cheese Biscuits",
+      "tags": [
+        "bread",
+        "side"
+      ]
+    },
+    {
+      "url": "/cookbook/recipes/green-bean-casserole/",
+      "title": "Green Bean Casserole",
+      "tags": [
+        "side",
+        "vegetable"
+      ]
+    },
+    {
+      "url": "/cookbook/recipes/grilled-tequila-lime-chicken/",
+      "title": "Grilled Tequila Lime Chicken",
+      "tags": [
+        "main",
+        "poultry",
+        "grill",
+        "bbq"
+      ]
+    },
+    {
+      "url": "/cookbook/recipes/gumbo/",
+      "title": "Gumbo",
+      "tags": [
+        "soup",
+        "main",
+        "chicken",
+        "sausage"
+      ]
+    },
+    {
+      "url": "/cookbook/recipes/instant-pot-chicken-and-rice-soup/",
+      "title": "Instant Pot Chicken and Rice Soup",
+      "tags": [
+        "soup",
+        "main",
+        "chicken",
+        "poultry",
+        "instant pot"
+      ]
+    },
+    {
+      "url": "/cookbook/recipes/instant-pot-spaghetti/",
+      "title": "Instant Pot Spaghetti",
+      "tags": [
+        "main",
+        "pasta",
+        "beef",
+        "italian"
+      ]
+    },
+    {
+      "url": "/cookbook/recipes/irish-soda-bread/",
+      "title": "Cheese and Herb Irish Soda Bread",
+      "tags": [
+        "featured",
+        "bread"
+      ]
+    },
+    {
+      "url": "/cookbook/recipes/lemon-icebox-pie/",
+      "title": "Lemon Icebox Pie",
+      "tags": [
+        "dessert"
+      ]
+    },
+    {
+      "url": "/cookbook/recipes/mac-and-cheese-deluxe/",
+      "title": "Mac and Cheese Deluxe",
+      "tags": [
+        "side",
+        "pasta"
+      ]
+    },
+    {
+      "url": "/cookbook/recipes/memaws-roast/",
+      "title": "Memaw’s Roast",
+      "tags": [
+        "featured",
+        "main",
+        "beef"
+      ]
+    },
+    {
+      "url": "/cookbook/recipes/Moroccan-Chickpea-Soup/",
+      "title": "Moroccan Chickpea Soup",
+      "tags": [
+        "soup",
+        "main"
+      ]
+    },
+    {
+      "url": "/cookbook/recipes/myles's_medium_salsa/",
+      "title": "Myles’s Medium Salsa",
+      "tags": [
+        "side",
+        "dip",
+        "salsa",
+        "mexican"
+      ]
+    },
+    {
+      "url": "/cookbook/recipes/new-york-cheesecake/",
+      "title": "New York Cheesecake",
+      "tags": [
+        "dessert"
+      ]
+    },
+    {
+      "url": "/cookbook/recipes/party-beans/",
+      "title": "Party Beans",
+      "tags": [
+        "side",
+        "mexican",
+        "arnietex"
+      ]
+    },
+    {
+      "url": "/cookbook/recipes/poppy-seed-chicken/",
+      "title": "Poppy Seed Chicken",
+      "tags": [
+        "poultry",
+        "main"
+      ]
+    },
+    {
+      "url": "/cookbook/recipes/pork-belly-brisket/",
+      "title": "Pork Belly Brisket",
+      "tags": [
+        "main",
+        "meat",
+        "smoker",
+        "bbq"
+      ]
+    },
+    {
+      "url": "/cookbook/recipes/pork-belly-burnt-ends/",
+      "title": "Pork Belly Burnt Ends",
+      "tags": [
+        "main",
+        "meat",
+        "smoker",
+        "bbq"
+      ]
+    },
+    {
+      "url": "/cookbook/recipes/pork-chops/",
+      "title": "Pork Chops",
+      "tags": [
+        "main",
+        "meat",
+        "smoker",
+        "bbq"
+      ]
+    },
+    {
+      "url": "/cookbook/recipes/potato-soup/",
+      "title": "Potato Soup",
+      "tags": [
+        "main",
+        "soup"
+      ]
+    },
+    {
+      "url": "/cookbook/recipes/pulled-pork/",
+      "title": "Pulled Pork",
+      "tags": [
+        "main",
+        "meat",
+        "smoker",
+        "bbq"
+      ]
+    },
+    {
+      "url": "/cookbook/recipes/pumpkin-dump-cake/",
+      "title": "Pumpkin Dump Cake",
+      "tags": [
+        "dessert",
+        "cake",
+        "pumpkin"
+      ]
+    },
+    {
+      "url": "/cookbook/recipes/ravioli-casserole/",
+      "title": "Ravioli Casserole",
+      "tags": [
+        "casserole",
+        "italian"
+      ]
+    },
+    {
+      "url": "/cookbook/recipes/sandies/",
+      "title": "Sandies",
+      "tags": [
+        "dessert",
+        "cookie"
+      ]
+    },
+    {
+      "url": "/cookbook/recipes/sauerkraut/",
+      "title": "Sauerkraut",
+      "tags": [
+        "side"
+      ]
+    },
+    {
+      "url": "/cookbook/recipes/sausage-balls/",
+      "title": "Sausage Balls",
+      "tags": [
+        "side",
+        "meat",
+        "pork"
+      ]
+    },
+    {
+      "url": "/cookbook/recipes/sausage-jambalaya/",
+      "title": "Sausage Jambalaya",
+      "tags": [
+        "main",
+        "sausage",
+        "rice"
+      ]
+    },
+    {
+      "url": "/cookbook/recipes/sausage/",
+      "title": "Sausage",
+      "tags": [
+        "main",
+        "meat",
+        "sausage",
+        "smoker",
+        "bbq"
+      ]
+    },
+    {
+      "url": "/cookbook/recipes/slow-cooker-spinach-artichoke-dip/",
+      "title": "Slow Cooker Spinach Artichoke Dip",
+      "tags": [
+        "side",
+        "dip",
+        "crockpot"
+      ]
+    },
+    {
+      "url": "/cookbook/recipes/smoked-turkey-breast/",
+      "title": "Smoked Turkey Breast",
+      "tags": [
+        "main",
+        "poultry",
+        "smoker",
+        "bbq"
+      ]
+    },
+    {
+      "url": "/cookbook/recipes/three-day-coconut-cake/",
+      "title": "Three Day Coconut Cake",
+      "tags": [
+        "dessert"
+      ]
+    },
+    {
+      "url": "/cookbook/recipes/thyme-scented-potato-gratin/",
+      "title": "Thyme Scented Potato Gratin",
+      "tags": [
+        "side",
+        "potatoes"
+      ]
+    },
+    {
+      "url": "/cookbook/recipes/tzatziki-chicken-salad/",
+      "title": "Tzatziki Chicken Salad",
+      "tags": [
+        "main",
+        "chicken",
+        "Greek",
+        "salad"
+      ]
+    }
+  ]
+}

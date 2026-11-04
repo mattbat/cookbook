@@ -1,0 +1,16 @@
+---
+layout: page.njk
+title: Batchelder Recipes
+subtitle: A cookbook of our favorite family recipes
+useSiteTitle: true
+---
+<input id="home-search-input" class="form-control form-control-lg" type="text" placeholder="Type to search all recipes...">
+<div id="home-search-results-container" class="recipes-list"></div>
+
+<h2 class="text-center"> Featured Recipes </h2>
+
+<div class="recipes-list">
+  {%- for recipe in collections.recipes | withTag("featured") | newestFirst %}
+  {% include "recipe-card.njk" %}
+  {%- endfor %}
+</div>
