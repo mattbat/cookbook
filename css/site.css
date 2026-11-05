@@ -480,6 +480,237 @@ main {
 
 .recipe-date { margin-top: 32px; color: var(--muted); font: italic 15px var(--serif); }
 
+/* --- Kitchen tools --- */
+
+.kitchen-tools { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+.tool {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 0 16px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--text);
+  font: 600 15px var(--sans);
+  cursor: pointer;
+}
+.tool:hover { background: var(--accent-soft); }
+.tool[hidden] { display: none; }
+.tool-primary { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+.tool-primary:hover { background: var(--accent); filter: brightness(1.08); }
+.tool[aria-pressed="true"] { background: var(--accent-soft); border-color: var(--accent); color: var(--accent); }
+.tool-small { min-height: 36px; padding: 0 12px; font-size: 14px; }
+/* On phones: a big Cook mode button, with the others sharing the row below */
+@media (max-width: 639px) {
+  .kitchen-tools .tool { flex: 1 1 0; justify-content: center; white-space: nowrap; }
+  .kitchen-tools .tool-primary { flex: 1 1 100%; min-height: 52px; font-size: 17px; }
+}
+
+/* Ingredients you've checked off */
+.recipe-ingredients li[role="checkbox"],
+.cook-ingredients li[role="checkbox"] {
+  position: relative;
+  padding-left: 34px;
+  cursor: pointer;
+}
+.recipe-ingredients li[role="checkbox"]::before,
+.cook-ingredients li[role="checkbox"]::before {
+  content: '';
+  position: absolute;
+  left: 2px;
+  top: 11px;
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--line);
+  border-radius: 6px;
+  background: var(--surface);
+}
+.recipe-ingredients li.checked,
+.cook-ingredients li.checked { color: var(--muted); text-decoration: line-through; text-decoration-color: var(--muted); }
+.recipe-ingredients li.checked .scaled,
+.cook-ingredients li.checked .scaled { color: var(--muted); }
+.recipe-ingredients li.checked::before,
+.cook-ingredients li.checked::before {
+  border-color: var(--accent);
+  background: var(--accent) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m5 12.5 4.5 4.5L19 7.5'/%3E%3C/svg%3E") center / 14px no-repeat;
+}
+.recipe-ingredients li:focus-visible,
+.cook-ingredients li:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 6px; }
+
+.ingredient-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 2px solid var(--line);
+}
+.ingredient-actions .hint { flex: 1 1 100%; margin: 0; color: var(--muted); font: 14px var(--sans); }
+
+/* Times in the steps: tap to start a timer */
+.timer-link {
+  display: inline;
+  padding: 1px 8px 1px 6px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--accent-soft);
+  color: var(--accent);
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.timer-link::before { content: '⏱ '; font-size: .9em; }
+.timer-link:hover { filter: brightness(.96); }
+
+/* The timer tray, above the bottom tabs */
+.timers {
+  position: fixed;
+  z-index: 30;
+  left: 12px;
+  right: 12px;
+  bottom: calc(var(--tabbar) + env(safe-area-inset-bottom) + 10px);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  pointer-events: none;
+}
+.timers[hidden] { display: none; }
+.timer {
+  pointer-events: auto;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 6px 6px 16px;
+  border-radius: 16px;
+  background: var(--text);
+  color: var(--bg);
+  box-shadow: var(--shadow);
+  font-family: var(--sans);
+}
+.timer-text { flex: 1; min-width: 0; display: flex; align-items: baseline; gap: 10px; color: inherit; text-decoration: none; }
+.timer-name { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 14px; }
+.timer-time { font: 700 22px var(--sans); font-variant-numeric: tabular-nums; }
+.timer button {
+  min-width: 44px;
+  min-height: 44px;
+  border: 0;
+  border-radius: 12px;
+  background: transparent;
+  color: inherit;
+  font: 700 18px var(--sans);
+  cursor: pointer;
+}
+.timer button[hidden] { display: none; }
+.timer button:hover { background: rgba(127, 127, 127, .25); }
+.timer.paused .timer-time { opacity: .6; }
+.timer.done { background: var(--accent); color: var(--on-accent); animation: ring 1s ease-in-out infinite; }
+@keyframes ring { 50% { box-shadow: 0 0 0 6px color-mix(in srgb, var(--accent) 35%, transparent), var(--shadow); } }
+@media (prefers-reduced-motion: reduce) { .timer.done { animation: none; } }
+/* Leave room at the end of the page so the tray never covers it */
+body.has-timers { padding-bottom: calc(var(--tabbar) + env(safe-area-inset-bottom) + 80px); }
+
+@media (min-width: 768px) {
+  .timers { left: auto; right: 24px; bottom: 24px; width: 360px; }
+  body.has-timers { padding-bottom: 96px; }
+}
+
+.toast {
+  position: fixed;
+  z-index: 40;
+  left: 50%;
+  top: calc(var(--topbar) + env(safe-area-inset-top) + 12px);
+  transform: translate(-50%, -12px);
+  max-width: calc(100vw - 32px);
+  padding: 10px 18px;
+  border-radius: 999px;
+  background: var(--text);
+  color: var(--bg);
+  font: 600 15px var(--sans);
+  box-shadow: var(--shadow);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .2s, transform .2s;
+}
+.toast.show { opacity: 1; transform: translate(-50%, 0); }
+
+/* --- Cook mode: full screen, one step at a time --- */
+
+.cooking { overflow: hidden; }
+.cook {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  max-width: none;
+  height: 100%;
+  max-height: none;
+  margin: 0;
+  padding: env(safe-area-inset-top) 0 env(safe-area-inset-bottom);
+  border: 0;
+  background: var(--bg);
+  color: var(--text);
+  display: none;
+  flex-direction: column;
+}
+.cook[open] { display: flex; }
+.cook::backdrop { background: var(--bg); }
+.cook-bar { display: flex; align-items: center; gap: 4px; padding: 10px 8px 6px var(--gutter); }
+.cook-heading { flex: 1; min-width: 0; }
+.cook-title { margin: 0; font: 700 16px var(--sans); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.cook-count { margin: 0; color: var(--muted); font: 600 14px var(--sans); }
+.cook-bar button {
+  min-width: 48px;
+  min-height: 48px;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--text);
+  font: 400 32px/1 var(--sans);
+  cursor: pointer;
+}
+.cook-bar button .icon { width: 26px; height: 26px; }
+.cook-bar button[aria-pressed="true"] { background: var(--accent-soft); color: var(--accent); }
+.cook-progress { height: 4px; margin: 0 var(--gutter); border-radius: 2px; background: var(--line); overflow: hidden; }
+.cook-progress span { display: block; height: 100%; background: var(--accent); transition: width .25s ease; }
+.cook-stage {
+  flex: 1;
+  overflow: auto;
+  padding: 24px var(--gutter);
+  font-size: clamp(22px, 5.5vw, 32px);
+  line-height: 1.5;
+  max-width: 900px;
+  width: 100%;
+  margin: 0 auto;
+}
+.cook-section { margin: 0 0 10px; color: var(--accent); font: 700 15px var(--sans); text-transform: uppercase; letter-spacing: .05em; }
+.cook-step p { margin: 0 0 .6em; }
+.cook-step ul, .cook-step ol { font-size: .85em; }
+.cook-ingredients { margin: 0 var(--gutter); max-height: 45vh; overflow: auto; border-top: 1px solid var(--line); }
+.cook-ingredients summary { padding: 12px 0; font: 700 16px var(--sans); cursor: pointer; }
+.cook-ingredients ul { list-style: none; margin: 0 0 10px; padding: 0; }
+.cook-ingredients li { padding: 8px 0 8px 34px; border-bottom: 1px solid var(--line); line-height: 1.4; }
+.cook-ingredients li::before { top: 9px; }
+.cook-ingredients li p { margin: 0; }
+.cook-ingredients .scaled { font-weight: 700; color: var(--accent); }
+.cook-nav { display: flex; gap: 12px; padding: 12px var(--gutter) 16px; }
+.cook-nav button {
+  flex: 1;
+  min-height: 60px;
+  border: 0;
+  border-radius: 16px;
+  font: 700 19px var(--sans);
+  cursor: pointer;
+}
+.cook-prev { background: var(--chip); color: var(--text); }
+.cook-prev:disabled { opacity: .4; cursor: default; }
+.cook-nav .cook-next { flex: 2; background: var(--accent); color: var(--on-accent); }
+/* Timers sit above the Back/Next buttons in cook mode */
+.cook .timers { bottom: calc(env(safe-area-inset-bottom) + 96px); }
+.cook .toast { top: calc(env(safe-area-inset-top) + 72px); }
+
 @media (min-width: 900px) {
   .recipe-header {
     display: grid;
@@ -516,7 +747,11 @@ main {
 /* --- Print: just the recipe --- */
 
 @media print {
-  .topbar, .tabbar, .footer, .recipe-scaling button, .recipe-tags, .skip-link { display: none !important; }
+  .topbar, .tabbar, .footer, .recipe-scaling button, .recipe-tags, .skip-link,
+  .kitchen-tools, .ingredient-actions, .timers, .toast { display: none !important; }
+  .timer-link { background: none; color: inherit; padding: 0; font-weight: inherit; }
+  .timer-link::before { content: none; }
+  .recipe-ingredients li.checked { color: inherit; text-decoration: none; }
   body { padding: 0; background: #fff; color: #000; font-size: 12pt; }
   .recipe-photo img { max-height: 200px; width: auto; }
   .recipe-ingredients { box-shadow: none; border: 1px solid #ccc; }
