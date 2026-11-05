@@ -45,7 +45,9 @@ self.addEventListener('fetch', (event) => {
 
   if (url.origin === self.location.origin) {
     if (!url.pathname.startsWith(BASE) || url.pathname === BASE + 'sw.js') return
-    if (url.pathname.startsWith(BASE + 'img/') || url.pathname.startsWith(BASE + 'icons/')) {
+    // Photos never change, so the saved copy is used first. App icons (icons/) do change when the
+    // logo is redrawn, so they go through networkFirst like the pages.
+    if (url.pathname.startsWith(BASE + 'img/')) {
       event.respondWith(cacheFirst(request, PHOTOS, MAX_PHOTOS))
     } else {
       event.respondWith(networkFirst(request))
