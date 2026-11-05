@@ -31,6 +31,14 @@ mainClass: recipe-page
         <button type="button" title="Increase number of servings" class="increase" aria-label="More servings">+</button>
       </div>
 
+      <div class="kitchen-tools">
+        {%- if 'class="steps"' in sections.method %}
+        <button type="button" class="tool tool-primary cook-start">{% icon "play" %}<span>Cook mode</span></button>
+        {%- endif %}
+        <button type="button" class="tool keep-awake" aria-pressed="false" hidden>{% icon "sun" %}<span>Keep screen on</span></button>
+        <button type="button" class="tool share">{% icon "share" %}<span>Share</span></button>
+      </div>
+
       {%- if tags and tags.length %}
       <p class="recipe-tags">
         {%- for tag in tags %}
@@ -56,7 +64,14 @@ mainClass: recipe-page
 
   <div class="recipe-body">
     {%- if sections.ingredients %}
-    <section class="recipe-ingredients" aria-label="Ingredients">{{ sections.ingredients | safe }}</section>
+    <section class="recipe-ingredients" aria-label="Ingredients">
+      {{ sections.ingredients | safe }}
+      <div class="ingredient-actions">
+        <p class="hint">Tap an ingredient to check it off.</p>
+        <button type="button" class="tool tool-small copy-ingredients">{% icon "copy" %}<span>Copy list</span></button>
+        <button type="button" class="tool tool-small clear-checks" hidden>Uncheck all</button>
+      </div>
+    </section>
     {%- endif %}
     <section class="recipe-method" aria-label="Method">{{ sections.method | safe }}</section>
   </div>

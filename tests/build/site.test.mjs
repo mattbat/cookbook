@@ -153,3 +153,51 @@ describe('shared links (Open Graph)', () => {
     assert.deepEqual(offenders.map((file) => path.relative(site, file)), [])
   })
 })
+
+describe('recipe data for Google and recipe apps (JSON-LD)', () => {
+  const recipePages = htmlFiles(path.join(site, 'recipes'))
+
+  for (const file of recipePages) {
+    const name = path.relative(site, file).split(path.sep).join('/')
+    test(`${name} describes itself as a Recipe`, () => {
+      const html = fs.readFileSync(file, 'utf8')
+      const blocks = [...html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)]
+      assert.equal(blocks.length, 1, 'expected one JSON-LD block')
+      const data = JSON.parse(blocks[0][1])
+      assert.equal(data['@context'], 'https://schema.org')
+      assert.equal(data['@type'], 'Recipe')
+      assert.ok(data.name, 'no name')
+      assert.equal(data.name, decode(html.match(/<h1>([^<]*)<\/h1>/)[1]), 'name differs from the page title')
+      assert.ok(data.url.startsWith('https://mattbat.com' + PREFIX), `url ${data.url}`)
+      assert.ok(Array.isArray(data.image) && data.image.length === 1, 'no image')
+      assert.ok(fs.existsSync(fileFor(new URL(data.image[0]).pathname)), `image ${data.image[0]} is not in _site`)
+      assert.ok(data.recipeIngredient.length > 0, 'no ingredients')
+      assert.ok(data.recipeInstructions.length > 0, 'no steps')
+      assert.equal(data.recipeInstructions.length, (html.match(/<ol class="steps"[\s\S]*?<\/ol>/g) || [])
+        .join('').match(/<li>/g).length - nestedSteps(html), 'step count differs from the page')
+      for (const step of data.recipeInstructions) {
+        assert.equal(step['@type'], 'HowToStep')
+        assert.ok(step.text && !/[<>]/.test(step.text), `step isn't plain text: ${step.text}`)
+      }
+      for (const key of ['prepTime', 'cookTime', 'totalTime']) {
+        if (data[key]) assert.match(data[key], /^PT(\d+H)?(\d+M)?$/, `${key} ${data[key]}`)
+      }
+    })
+  }
+
+  test('Notes lists are not marked as steps', () => {
+    const html = read(PREFIX + 'recipes/gumbo/')
+    const notes = html.slice(html.indexOf('id="notes"'))
+    assert.ok(!notes.includes('class="steps"'))
+    assert.equal((html.match(/<ol class="steps"/g) || []).length, 1)
+  })
+})
+
+// <li>s inside a nested list in a step (rare) aren't separate steps
+function nestedSteps (html) {
+  const lists = html.match(/<ol class="steps"[\s\S]*?<\/ol>/g) || []
+  return lists.reduce((count, list) => {
+    const nested = list.match(/<li>[\s\S]*?<(ul|ol)>[\s\S]*?<\/\1>/g) || []
+    return count + nested.reduce((n, item) => n + (item.match(/<li>/g).length - 1), 0)
+  }, 0)
+}
