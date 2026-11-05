@@ -1,6 +1,6 @@
 const fs = require('node:fs')
 const matter = require('gray-matter')
-const { recipeSlug, recipeTitle, recipeImage, recipeDescription } = require('../lib/recipes')
+const { PATH_PREFIX, recipeSlug, recipeTitle, recipeImage, recipeDescription, recipeJsonLd } = require('../lib/recipes')
 
 const bodies = new Map()
 function body (data) {
@@ -12,7 +12,7 @@ function body (data) {
 module.exports = {
   layout: 'recipe.njk',
   ogType: 'article',
-  scripts: ['/js/recipe-scaling.js'],
+  scripts: ['/js/recipe-scaling.js', '/js/kitchen.js'],
   eleventyComputed: {
     // Keep the addresses the Jekyll site used, so links people already shared still work.
     permalink: (data) => `/recipes/${recipeSlug(data.page.fileSlug)}/`,
@@ -26,6 +26,23 @@ module.exports = {
       author: data.author,
       servings: data.servings,
       subtitle: data.subtitle
-    })
+    }),
+    // schema.org Recipe data for search engines and recipe apps (added to the page head).
+    jsonLd: (data) => {
+      const full = (path) => new URL(PATH_PREFIX.replace(/\/$/, '') + path, data.site.url).href
+      return recipeJsonLd({
+        body: body(data),
+        title: data.title,
+        author: data.author,
+        date: data.page.date,
+        servings: data.servings,
+        prep_time: data.prep_time,
+        cooking_time: data.cooking_time,
+        tags: data.tags,
+        summary: data.summary,
+        url: full(`/recipes/${recipeSlug(data.page.fileSlug)}/`),
+        image: data.photo && full(data.photo.src)
+      })
+    }
   }
 }

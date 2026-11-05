@@ -42,4 +42,7 @@
   <meta name="twitter:image" content="{{ photo.src | fullUrl }}">
   <meta name="twitter:image:alt" content="{{ photo.alt or shareTitle }}">
   {%- endif %}
+  {%- if jsonLd %}
+  <script type="application/ld+json">{{ jsonLd | jsonScript | safe }}</script>
+  {%- endif %}
 </head>

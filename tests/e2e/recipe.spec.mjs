@@ -53,13 +53,16 @@ test('typing a serving size scales fractions', async ({ page }) => {
   await expect(ingredient(page, 'cup oil')).toHaveText(/^1⅓ cup oil/)
 })
 
+// Tap on the step's number: times in a step are timer buttons, which start a timer instead
+const tapStep = (page, n) => steps(page).nth(n).click({ position: { x: 24, y: 24 } })
+
 test('tapping a step highlights it; tapping again clears it', async ({ page }) => {
-  await steps(page).nth(1).click()
+  await tapStep(page, 1)
   await expect(steps(page).nth(1)).toHaveClass(/active-step/)
-  await steps(page).nth(3).click()
+  await tapStep(page, 3)
   await expect(steps(page).nth(3)).toHaveClass(/active-step/)
   await expect(steps(page).nth(1)).not.toHaveClass(/active-step/)
-  await steps(page).nth(3).click()
+  await tapStep(page, 3)
   await expect(page.locator('.active-step')).toHaveCount(0)
 })
 

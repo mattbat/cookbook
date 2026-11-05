@@ -117,7 +117,24 @@ Until this is done, GitHub's old built-in Jekyll build is still what publishes t
 Built with [Eleventy](https://www.11ty.dev), searched with [MiniSearch](https://lucaong.github.io/minisearch/),
 tested with [Playwright](https://playwright.dev) and Node's built-in test runner, and hosted on
 GitHub Pages. No CSS or JavaScript framework: the look is in `css/site.css`, page behaviour in
-`js/` (`app.js` everywhere, `search.js` on the Search tab, `recipe-scaling.js` on recipes).
+`js/`:
+
+| File | Where | What |
+|---|---|---|
+| `app.js` | every page | tap a step to keep your place; shared helpers |
+| `timers.js` | every page | times in the steps ("simmer 30-40 minutes") become timer buttons; running timers follow you between pages |
+| `search.js` | Search tab | search and category filters |
+| `recipe-scaling.js` | recipes | the servings stepper |
+| `kitchen.js` | recipes | ingredient check-offs, Copy list, Share, Keep screen on, Cook mode |
+
+Every recipe page also carries [schema.org Recipe](https://schema.org/Recipe) data (built by
+`recipeJsonLd` in `lib/recipes.js`), so Google and recipe apps can read the ingredients, steps
+and times. Steps are the numbered lists under a `## Steps` heading (`### ` sub-headings inside it
+are fine); Notes lists aren't steps.
+
+Keep screen on, the share sheet and the clipboard need a secure (https) page, so when you test on
+your phone at `http://<your IP>:8080` the Keep screen on button is hidden and Share copies the link
+instead. On the live site they all work.
 
 The site's sections (the bottom tabs on phones, the top links on desktop) and the category list
 are set in `_data/site.json`. A category only appears once at least one recipe has its tag.

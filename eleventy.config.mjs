@@ -15,7 +15,11 @@ const ICONS = {
   clock: '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
   flame: '<path d="M12 3c1 4 5 5.5 5 10a5 5 0 0 1-10 0c0-2.5 1.5-4 2.5-5 .5 2 1.5 3 2.5 3 0-3-1-5 0-8z"/>',
   users: '<circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0"/><path d="M16 4.5a3.5 3.5 0 0 1 0 7M18 14a6.5 6.5 0 0 1 3.5 6"/>',
-  link: '<path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1"/><path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/>'
+  link: '<path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1"/><path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/>',
+  play: '<path d="M7 4.5v15l12-7.5z"/>',
+  sun: '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>',
+  share: '<path d="M12 3v12M7.5 7.5 12 3l4.5 4.5"/><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7"/>',
+  copy: '<rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/>'
 }
 
 // Splits a recipe's HTML at its "## " headings into ingredients (lists of things to gather) and
@@ -29,7 +33,15 @@ function recipeSections (html) {
     const heading = (part.match(/<h2[^>]*>([\s\S]*?)<\/h2>/) || [])[1] || ''
     const isIngredients = /ingredient/i.test(heading) ||
       (!/step|direction|instruction|method|note|video|tool/i.test(heading) && /<ul/.test(part) && !/<ol/.test(part))
-    ;(isIngredients ? ingredients : method).push(part)
+    if (isIngredients) {
+      ingredients.push(part)
+    } else if (/step|direction|instruction|method/i.test(heading)) {
+      // Mark the numbered lists that are the recipe's steps (not Notes), for cook mode and timers
+      const label = heading.replace(/<[^>]+>/g, '').replace(/"/g, '&quot;').trim()
+      method.push(part.replace(/<ol>/g, `<ol class="steps" data-section="${label}">`))
+    } else {
+      method.push(part)
+    }
   }
   return {
     intro: intro.replace(/<p>\s*<img[^>]*>\s*<\/p>/, '').trim(),
@@ -132,6 +144,9 @@ export default function (eleventyConfig) {
     }
     return [...tags.values()].sort((a, b) => a.localeCompare(b))
   })
+
+  // JSON that is safe inside a <script> tag
+  eleventyConfig.addFilter('jsonScript', (value) => JSON.stringify(value).replace(/</g, '\\u003c'))
 
   eleventyConfig.addFilter('squash', (html) => String(html).replace(/\s+/g, ' ').trim())
   eleventyConfig.addFilter('plainText', (html) => String(html).replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim())
