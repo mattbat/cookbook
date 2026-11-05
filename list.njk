@@ -1,24 +1,18 @@
 ---
-layout: page.njk
+layout: base.njk
 title: All Recipes
 useSiteTitle: true
 permalink: /list/
 ---
-<div class="posts-list">
+<h1>All recipes <span class="count">{{ collections.recipes.length }}</span></h1>
+<ul class="index">
   {%- for recipe in collections.recipes | byTitle %}
-  <article class="post-preview post-list-preview">
+  <li>
     <a href="{{ recipe.url | url }}">
-      <h2 class="post-title">{{ recipe.data.title }}</h2>
-      {% if recipe.data.subtitle %}<h3 class="post-subtitle">{{ recipe.data.subtitle }}</h3>{% endif %}
+      {%- if recipe.data.photo %}<img src="{{ recipe.data.photo.src | url }}" alt="">{% endif %}
+      <span class="index-title">{{ recipe.data.title }}</span>
+      <span class="index-tags">{{ recipe.data.tags | join(", ") }}</span>
     </a>
-
-    {%- if recipe.data.tags and recipe.data.tags.length %}
-    <div class="blog-tags">
-      {%- for tag in recipe.data.tags %}
-      <a class="tag-{{ tag | tagId }}" href="{{ '/tags/' | url }}#{{ tag | tagId }}">{{ tag }}</a>
-      {%- endfor %}
-    </div>
-    {%- endif %}
-  </article>
+  </li>
   {%- endfor %}
-</div>
+</ul>

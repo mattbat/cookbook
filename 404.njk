@@ -4,14 +4,8 @@ title: 404 - Page not found
 permalink: /404.html
 eleventyExcludeFromCollections: true
 ---
-<div class="intro-header"></div>
-
-<div role="main" class="container">
-  <div class="text-center">
-    <img style="max-width: 50vw;" src="{{ '/img/site/404.svg' | url }}" alt="">
-    <br>
-    <br>
-    <h1>Error 404</h1>
-    <p>It seems this page is not yet written.</p>
-  </div>
-</div>
+<section class="notfound">
+  <img src="{{ '/img/site/404.svg' | url }}" alt="">
+  <h1>Error 404</h1>
+  <p>That page isn't in the cookbook. Try <a href="{{ '/search/' | url }}">searching</a> or <a href="{{ '/tags/' | url }}">browsing</a>.</p>
+</section>

@@ -1,0 +1,9 @@
+{#- Category shortcuts; a category only shows once a recipe has its tag #}
+<nav class="chips" aria-label="Categories">
+  {%- if chipAll %}<a class="chip" href="{{ '/search/' | url }}" data-tag="">All</a>{% endif %}
+  {%- for category in site.categories %}
+  {%- if collections.recipes | withTag(category.tag) | length %}
+  <a class="chip" href="{{ chipBase or ('/search/' | url) }}{{ chipQuery or '?tag=' }}{{ category.tag | tagId }}" data-tag="{{ category.tag | tagId }}">{{ category.title }}</a>
+  {%- endif %}
+  {%- endfor %}
+</nav>

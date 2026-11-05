@@ -1,24 +1,12 @@
-<article class="recipe-preview">
-  <div class="recipe-entry-container">
-    {%- if recipe.data.photo %}
-    <a href="{{ recipe.url | url }}">
-      <img src="{{ recipe.data.photo.src | url }}" alt="{{ recipe.data.photo.alt }}">
-    </a>
-    {%- endif %}
-  </div>
-
-  <div class="text">
-    <a href="{{ recipe.url | url }}">
-      <h2 class="post-title">{{ recipe.data.title }}</h2>
-      {% if recipe.data.subtitle %}<h3 class="recipe-subtitle">{{ recipe.data.subtitle }}</h3>{% endif %}
-    </a>
-
-    {%- if not hideTags and recipe.data.tags and recipe.data.tags.length %}
-    <div class="blog-tags">
-      {%- for tag in recipe.data.tags %}
-      <a class="tag-{{ tag | tagId }}" href="{{ '/tags/' | url }}#{{ tag | tagId }}">{{ tag }}</a>
-      {%- endfor %}
-    </div>
-    {%- endif %}
-  </div>
-</article>
+{%- set minutes = recipe.data | totalMinutes %}
+<a class="card" href="{{ recipe.url | url }}" data-url="{{ recipe.url | url }}" data-tags="{% for tag in recipe.data.tags %}{{ tag | tagId }} {% endfor %}">
+  <span class="card-photo">
+    {%- if recipe.data.photo %}<img src="{{ recipe.data.photo.src | url }}" alt="">{% endif -%}
+  </span>
+  <span class="card-title">{{ recipe.data.title }}</span>
+  <span class="card-meta">
+    {%- if minutes %}{% icon "clock" %}{{ minutes | duration }}{% endif -%}
+    {%- if minutes and recipe.data.author %} &middot; {% endif -%}
+    {%- if recipe.data.author %}{{ recipe.data.author | replace(r/\s*\(.*\)$/, "") }}{% endif -%}
+  </span>
+</a>

@@ -1,55 +1,65 @@
 ---
 layout: base.njk
+mainClass: recipe-page
 ---
-<header class="header-section">
-  <div class="intro-header no-img"></div>
-</header>
+{%- set sections = content | recipeSections %}
+{%- set total = (prep_time | int) + (cooking_time | int) %}
+<article class="recipe">
+  <header class="recipe-header">
+    {%- if photo %}
+    <figure class="recipe-photo">
+      <img src="{{ photo.src | url }}" alt="{{ photo.alt }}">
+    </figure>
+    {%- endif %}
 
-<div class="container">
-  <div class="row">
-    <div class="col-xs-12">
+    <div class="recipe-intro">
+      <h1>{{ title }}</h1>
+      {% if subtitle %}<p class="lede">{{ subtitle }}</p>{% endif %}
+      {% if author %}<p class="recipe-author">By {{ author }}</p>{% endif %}
 
-      <div class="recipe-heading">
-        <h1>{{ title }}</h1>
-        {% if subtitle %}<h2 class="recipe-subheading">{{ subtitle }}</h2>{% endif %}
-      </div>
-
-      <div class="recipe-author">By: {{ author }}</div>
-
-      <div class="recipe-preamble">
-        {% if tags and tags.length %}
-        <div class="blog-tags">
-          {%- for tag in tags %}
-          <a class="tag-{{ tag | tagId }}" href="{{ '/tags/' | url }}#{{ tag | tagId }}">{{ tag }}</a>
-          {%- endfor %}
-        </div>
-        {% endif %}
-
-        {% if sourceUrl or source %}
-        <div class="recipe-source">
-          Source:
-          {% if sourceUrl | isUrl %}
-          <a href="{{ sourceUrl }}" target="_blank" rel="noopener"><span class="source">{{ source or (sourceUrl | sourceName) }}</span></a>
-          {% else %}
-          <span class="source">{{ source or sourceUrl }}</span>
-          {% endif %}
-        </div>
-        {% endif %}
-      </div>
+      <ul class="facts">
+        {%- if prep_time | int %}<li>{% icon "clock" %}<span>Prep <b>{{ prep_time | duration }}</b></span></li>{% endif %}
+        {%- if cooking_time | int %}<li>{% icon "flame" %}<span>Cook <b>{{ cooking_time | duration }}</b></span></li>{% endif %}
+        {%- if (prep_time | int) and (cooking_time | int) %}<li><span>Total <b>{{ total | duration }}</b></span></li>{% endif %}
+      </ul>
 
       <div class="recipe-scaling">
-        <input type="text" name="recipe_scaling" size="2" value="{{ servings or 1 }}">
-        {{ servingsUnit or "serving(s)" }}.
-
-        <button title="Decrease number of servings" class="decrease">-</button>
-        <button title="Increase number of servings" class="increase">+</button>
+        {% icon "users" %}
+        <label for="servings">{{ servingsUnit or "Servings" }}</label>
+        <button type="button" title="Decrease number of servings" class="decrease" aria-label="Fewer servings">&minus;</button>
+        <input id="servings" type="text" inputmode="decimal" name="recipe_scaling" value="{{ servings or 1 }}">
+        <button type="button" title="Increase number of servings" class="increase" aria-label="More servings">+</button>
       </div>
 
-      <article role="main" class="blog-post recipe">
-        {{ content | safe }}
-      </article>
+      {%- if tags and tags.length %}
+      <p class="recipe-tags">
+        {%- for tag in tags %}
+        <a class="chip tag-{{ tag | tagId }}" href="{{ '/tags/' | url }}#{{ tag | tagId }}">{{ tag }}</a>
+        {%- endfor %}
+      </p>
+      {%- endif %}
 
-      <span class="post-meta recipe-date">Added on {{ page.date | readableDate }}</span>
+      {%- if sourceUrl or source %}
+      <p class="recipe-source">
+        Source:
+        {% if sourceUrl | isUrl %}
+        <a href="{{ sourceUrl }}" target="_blank" rel="noopener">{{ source or (sourceUrl | sourceName) }}</a>
+        {% else %}
+        {{ source or sourceUrl }}
+        {% endif %}
+      </p>
+      {%- endif %}
     </div>
+  </header>
+
+  {%- if sections.intro %}<div class="recipe-text">{{ sections.intro | safe }}</div>{% endif %}
+
+  <div class="recipe-body">
+    {%- if sections.ingredients %}
+    <section class="recipe-ingredients" aria-label="Ingredients">{{ sections.ingredients | safe }}</section>
+    {%- endif %}
+    <section class="recipe-method" aria-label="Method">{{ sections.method | safe }}</section>
   </div>
-</div>
+
+  <p class="recipe-date">Added {{ page.date | readableDate }}</p>
+</article>

@@ -1,24 +1,31 @@
 import { test, expect } from '@playwright/test'
 
-const ingredient = (page, text) => page.locator('.recipe ul > li', { hasText: text })
-const servings = (page) => page.locator('input[name="recipe_scaling"]')
+const ingredient = (page, text) => page.locator('.recipe-ingredients li', { hasText: text })
+const servings = (page) => page.getByLabel('Servings', { exact: true })
+const steps = (page) => page.locator('.recipe-method ol').first().locator('> li')
 
 test.beforeEach(async ({ page }) => {
   await page.goto('recipes/gumbo/')
 })
 
-test('shows the title, author, tags, photo, ingredients and steps', async ({ page }) => {
-  await expect(page.locator('.recipe-heading h1')).toHaveText('Gumbo')
-  await expect(page.locator('.recipe-author')).toHaveText('By: Tracy Batchelder')
-  await expect(page.locator('.recipe-preamble .blog-tags a')).toHaveText(['soup', 'main', 'chicken', 'sausage'])
+test('shows the photo, title, author, times, tags, ingredients and steps', async ({ page }) => {
+  await expect(page.locator('h1')).toHaveText('Gumbo')
+  await expect(page.locator('.recipe-author')).toHaveText('By Tracy Batchelder')
+  await expect(page.locator('.facts')).toContainText('Prep 1 hr 30 min')
+  await expect(page.locator('.facts')).toContainText('Cook 30 min')
+  await expect(page.locator('.facts')).toContainText('Total 2 hr')
+  await expect(page.locator('.recipe-tags a')).toHaveText(['soup', 'main', 'chicken', 'sausage'])
 
-  const photo = page.locator('.recipe img').first()
+  const photo = page.locator('.recipe-photo img')
   await expect(photo).toBeVisible()
   expect(await photo.evaluate((img) => img.complete && img.naturalWidth > 0)).toBe(true)
 
   await expect(page.getByRole('heading', { name: 'Gumbo Ingredients' })).toBeVisible()
-  // The first numbered list is the steps (Notes is numbered too).
-  await expect(page.locator('.recipe > ol').first().locator('> li')).toHaveCount(8)
+  await expect(steps(page)).toHaveCount(8)
+})
+
+test('the photo is shown once, at the top', async ({ page }) => {
+  await expect(page.locator('main img')).toHaveCount(1)
 })
 
 test('starts at the recipe\'s servings', async ({ page }) => {
@@ -27,12 +34,12 @@ test('starts at the recipe\'s servings', async ({ page }) => {
 })
 
 test('+ and - change servings and scale ingredients', async ({ page }) => {
-  await page.getByTitle('Increase number of servings').click()
+  await page.getByRole('button', { name: 'More servings' }).click()
   await expect(servings(page)).toHaveValue('9')
   await expect(ingredient(page, 'cooked chicken')).toHaveText(/^2¼ cups cooked chicken/)
 
-  await page.getByTitle('Decrease number of servings').click()
-  await page.getByTitle('Decrease number of servings').click()
+  await page.getByRole('button', { name: 'Fewer servings' }).click()
+  await page.getByRole('button', { name: 'Fewer servings' }).click()
   await expect(servings(page)).toHaveValue('7')
   await expect(ingredient(page, 'teaspoons salt')).toHaveText(/^1¾ teaspoons salt/)
 })
@@ -46,25 +53,37 @@ test('typing a serving size scales fractions', async ({ page }) => {
   await expect(ingredient(page, 'cup oil')).toHaveText(/^1⅓ cup oil/)
 })
 
-test('tapping a step highlights it', async ({ page }) => {
-  const steps = page.locator('.recipe > ol > li')
-  await steps.nth(1).click()
-  await expect(steps.nth(1)).toHaveClass(/active-step/)
-  await steps.nth(3).click()
-  await expect(steps.nth(3)).toHaveClass(/active-step/)
-  await expect(steps.nth(1)).not.toHaveClass(/active-step/)
+test('tapping a step highlights it; tapping again clears it', async ({ page }) => {
+  await steps(page).nth(1).click()
+  await expect(steps(page).nth(1)).toHaveClass(/active-step/)
+  await steps(page).nth(3).click()
+  await expect(steps(page).nth(3)).toHaveClass(/active-step/)
+  await expect(steps(page).nth(1)).not.toHaveClass(/active-step/)
+  await steps(page).nth(3).click()
+  await expect(page.locator('.active-step')).toHaveCount(0)
 })
 
 test('tag links go to that tag', async ({ page }) => {
-  await page.locator('.recipe-preamble .blog-tags a', { hasText: 'soup' }).click()
+  await page.locator('.recipe-tags a', { hasText: 'soup' }).click()
   await expect(page).toHaveURL(/tags\/#soup$/)
 })
 
-test('scaling leaves links in the ingredient lists alone', async ({ page }) => {
+test('ingredients sit beside the steps on wide screens, above them on phones', async ({ page, isMobile }) => {
+  const ingredients = await page.locator('.recipe-ingredients').boundingBox()
+  const method = await page.locator('.recipe-method').boundingBox()
+  if (isMobile) {
+    expect(method.y).toBeGreaterThan(ingredients.y + ingredients.height - 1)
+  } else {
+    expect(method.x).toBeGreaterThan(ingredients.x + ingredients.width - 1)
+    expect(Math.abs(method.y - ingredients.y)).toBeLessThan(40)
+  }
+})
+
+test('scaling leaves links in the recipe alone', async ({ page }) => {
   await page.goto('recipes/brisket/')
-  const video = page.locator('.recipe ul > li a').first()
+  const video = page.locator('.recipe a[href*="youtube"]').first()
   const href = await video.getAttribute('href')
-  await page.getByTitle('Increase number of servings').click()
-  await expect(video).toHaveAttribute('href', href, { timeout: 2000 })
-  await expect(page.locator('.recipe ul > li', { hasText: 'Trim:' })).toHaveText(/^Trim:/, { timeout: 2000 })
+  await page.getByRole('button', { name: 'More servings' }).click()
+  await expect(video).toHaveAttribute('href', href)
+  await expect(page.locator('.recipe li', { hasText: 'Trim:' })).toHaveText(/^Trim:/)
 })
