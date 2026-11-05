@@ -60,8 +60,7 @@ test('tag links go to that tag', async ({ page }) => {
   await expect(page).toHaveURL(/tags\/#soup$/)
 })
 
-// Known bug, to fix in Phase 1: scaling treats digits inside video links as amounts.
-test.fail('scaling leaves links in the ingredient lists alone', async ({ page }) => {
+test('scaling leaves links in the ingredient lists alone', async ({ page }) => {
   await page.goto('recipes/brisket/')
   const video = page.locator('.recipe ul > li a').first()
   const href = await video.getAttribute('href')

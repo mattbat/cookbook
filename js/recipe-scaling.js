@@ -39,6 +39,14 @@ function replace_vulgar_with_decimal (string) {
 }
 
 function parse_number (number_string) {
+  number_string = number_string.trim()
+
+  // Mixed number like "1 1/2" or "1 ½"
+  var parts = number_string.split(/\s+/)
+  if (parts.length > 1) {
+    return parts.reduce((sum, part) => sum + parse_number(part), 0)
+  }
+
   if (number_string.indexOf('/') > 0) {
     // Fraction with a slash
     var partials = number_string.split('/')
@@ -57,17 +65,15 @@ function render_number (number, precision = 2) {
   // When matching a vulgar fraction this much offset is ok
   var allowed_offset = 1.1 / Math.pow(10, precision)
 
-  if (number < 5) {
-    var frac = round_to(number % 1, precision)
-    if (frac > 0) {
-      for (const fracChar in vulgar_fractions) {
-        if (Math.abs(round_to(vulgar_fractions[fracChar], precision) - frac) <= allowed_offset) {
-          var rest = Math.floor(number)
-          if (rest > 0) {
-            return rest.toString() + fracChar
-          } else {
-            return fracChar
-          }
+  var frac = round_to(number % 1, precision)
+  if (frac > 0) {
+    for (const fracChar in vulgar_fractions) {
+      if (Math.abs(round_to(vulgar_fractions[fracChar], precision) - frac) <= allowed_offset) {
+        var rest = Math.floor(number)
+        if (rest > 0) {
+          return rest.toString() + fracChar
+        } else {
+          return fracChar
         }
       }
     }
@@ -75,6 +81,11 @@ function render_number (number, precision = 2) {
 
   return number.toString()
 }
+
+// Whitespace and opening tags (e.g. the <p> of a loose list) before an item's text
+var leading_markup = /^(?:\s|&nbsp;|<[a-zA-Z][^>]*>)*/
+// An amount at the start of an item's text: "1 1/2", "1 ½", "1/2", "2.5", "1½", "½" or "2"
+var leading_amount = /^(?:\d+\s+(?:\d+\/\d+|[¼-¾⅐-⅞])|\d+\/\d+|\d+\.\d+|\d*[¼-¾⅐-⅞↉]|\d+)/
 
 function getIngredients (entries) {
   var ingredients = []
@@ -86,20 +97,25 @@ function getIngredients (entries) {
       }
     }
 
+    // Only a number at the very start of the item's text is its amount, so
+    // numbers later in the text, in links or in tag attributes are left alone
     var text = el.innerHTML
-    var numbers = text.match(/^\d+\.\d+|\d+\/\d+|\d+|\d+\b|\d*[\u00BC-\u00BE\u2150-\u215E]|\d+(?=\w)/g)
+    var prefix = text.match(leading_markup)[0]
+    var rest = text.slice(prefix.length)
+    var match = rest.match(leading_amount)
     var name, amount
-    if (numbers && numbers.length > 0) {
-      var amountString = numbers[0]
-      name = text.replace(amountString, '')
-      amount = parse_number(amountString)
+    if (match) {
+      name = rest.slice(match[0].length)
+      amount = parse_number(match[0])
     } else {
+      prefix = ''
       name = text
     }
 
     ingredients.push({
       el,
       amount,
+      prefix,
       name
     })
   })
@@ -111,13 +127,17 @@ function renderIngredientsAtScale (scale) {
   var scaleFactor = scale / initialScale
 
   initialIngredients.forEach((ingredient) => {
+    // Items without an amount are never rewritten
+    if (!ingredient.amount) {
+      return
+    }
     ingredient.el.innerHTML = ingredientToHTML(ingredient, scaleFactor)
   })
 }
 
 function ingredientToHTML (ingredient, scaleFactor) {
   if (ingredient.amount) {
-    return `<span class="scaled" title="${render_number(ingredient.amount)} (org) x ${render_number(scaleFactor)} (scaling)">${render_number(ingredient.amount * scaleFactor, 2)}</span>${ingredient.name}`
+    return `${ingredient.prefix || ''}<span class="scaled" title="${render_number(ingredient.amount)} (org) x ${render_number(scaleFactor)} (scaling)">${render_number(ingredient.amount * scaleFactor, 2)}</span>${ingredient.name}`
   } else {
     return ingredient.name
   }

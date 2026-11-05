@@ -3,7 +3,7 @@ import assert from 'node:assert/strict'
 import { createRequire } from 'node:module'
 
 const require = createRequire(import.meta.url)
-const { parse_number, render_number, nextServings, ingredientToHTML } = require('../../js/recipe-scaling.js')
+const { parse_number, render_number, nextServings, getIngredients, ingredientToHTML } = require('../../js/recipe-scaling.js')
 
 test('parses whole numbers, decimals and fractions', () => {
   assert.equal(parse_number('2'), 2)
@@ -26,8 +26,9 @@ test('renders amounts under 5 as unicode fractions', () => {
   assert.equal(render_number(3), '3')
 })
 
-test('renders larger amounts as decimals', () => {
-  assert.equal(render_number(10.5), '10.5')
+test('amounts that match no fraction stay decimals, whole numbers stay whole', () => {
+  assert.equal(render_number(10.45), '10.45')
+  assert.equal(render_number(2.45), '2.45')
   assert.equal(render_number(12), '12')
 })
 
@@ -59,7 +60,71 @@ test('ingredients without an amount are left alone', () => {
   assert.equal(ingredientToHTML({ amount: undefined, name: 'Pinch table salt' }, 2), 'Pinch table salt')
 })
 
-// Known issue: "10.5 cups" should read "10½ cups". Remove `todo` when fixed.
-test('renders large amounts with fractions too', { todo: 'Phase 1' }, () => {
+test('renders large amounts with fractions too', () => {
   assert.equal(render_number(10.5), '10½')
+  assert.equal(render_number(7 * 1.5), '10½')
+  assert.equal(render_number(12.25), '12¼')
+})
+
+test('parses mixed numbers like 1 1/2', () => {
+  assert.equal(parse_number('1 1/2'), 1.5)
+  assert.equal(parse_number('2 ½'), 2.5)
+})
+
+// getIngredients only needs innerHTML and childNodes, so simple fakes will do
+const item = (innerHTML) => ({ innerHTML, childNodes: [] })
+const parse = (innerHTML) => {
+  const [ingredient] = getIngredients([item(innerHTML)])
+  return { amount: ingredient.amount, prefix: ingredient.prefix, name: ingredient.name }
+}
+
+test('a leading whole number is the amount', () => {
+  assert.deepEqual(parse('2 cups cooked chicken'), { amount: 2, prefix: '', name: ' cups cooked chicken' })
+})
+
+test('only the leading number is the amount, later numbers stay', () => {
+  const html = '7 cups chicken stock (if cooking whole chicken, will only need 2-3 cups extra stock)'
+  assert.deepEqual(parse(html), { amount: 7, prefix: '', name: html.slice(1) })
+})
+
+test('a leading fraction is the amount', () => {
+  assert.deepEqual(parse('1/2 teaspoon pepper'), { amount: 0.5, prefix: '', name: ' teaspoon pepper' })
+})
+
+test('a leading unicode fraction is the amount', () => {
+  assert.deepEqual(parse('½ cup (3½ ounces) sugar'), { amount: 0.5, prefix: '', name: ' cup (3½ ounces) sugar' })
+  assert.deepEqual(parse('1½ cups sugar'), { amount: 1.5, prefix: '', name: ' cups sugar' })
+})
+
+test('a leading decimal is the amount', () => {
+  assert.deepEqual(parse('2.5 pounds cream cheese'), { amount: 2.5, prefix: '', name: ' pounds cream cheese' })
+})
+
+test('a leading mixed number is the amount', () => {
+  assert.deepEqual(parse('1 1/2 cups flour'), { amount: 1.5, prefix: '', name: ' cups flour' })
+})
+
+test('an amount inside a <p> (loose list) is found and the <p> kept', () => {
+  const ingredient = parse('\n<p>2 cups flour</p>\n')
+  assert.deepEqual(ingredient, { amount: 2, prefix: '\n<p>', name: ' cups flour</p>\n' })
+  assert.match(ingredientToHTML(ingredient, 2), /^\n<p><span class="scaled"[^>]*>4<\/span> cups flour<\/p>\n$/)
+})
+
+test('an item with a link and no leading amount is left alone', () => {
+  const html = 'Trim: <a href="https://www.youtube.com/watch?v=MTc5VAgZKLE&amp;t=1s">video</a>'
+  assert.deepEqual(parse(html), { amount: undefined, prefix: '', name: html })
+  assert.equal(ingredientToHTML(parse(html), 2), html)
+})
+
+test('a link whose attributes hold digits is never treated as an amount', () => {
+  assert.equal(parse('<a href="x5">x</a>').amount, undefined)
+})
+
+test('an item without an amount is left alone', () => {
+  assert.deepEqual(parse('Pinch table salt'), { amount: undefined, prefix: '', name: 'Pinch table salt' })
+  assert.equal(parse('Coarse Black Pepper').amount, undefined)
+})
+
+test('items holding a nested list are skipped', () => {
+  assert.deepEqual(getIngredients([{ innerHTML: 'Sauce<ul><li>1 cup</li></ul>', childNodes: [{ nodeName: 'UL' }] }]), [])
 })

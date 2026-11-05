@@ -118,3 +118,32 @@ test('every link, photo, script and stylesheet on the site points somewhere real
 
   assert.deepEqual([...new Set(problems)], [])
 })
+
+describe('shared links (Open Graph)', () => {
+  const recipePages = htmlFiles(path.join(site, 'recipes'))
+  const metaContent = (html, property) => {
+    const tag = html.match(new RegExp(`<meta\\s+property="${property}"\\s+content="([^"]*)"`))
+    return tag ? decode(tag[1]) : undefined
+  }
+
+  test('there are recipe pages', () => assert.ok(recipePages.length > 0))
+
+  for (const file of recipePages) {
+    const name = path.relative(site, file).replace(/\\/g, '/')
+    test(`${name} has a photo that exists and a description`, () => {
+      const html = fs.readFileSync(file, 'utf8')
+      const image = metaContent(html, 'og:image')
+      assert.ok(image, 'no og:image')
+      assert.ok(image.startsWith('https://mattbat.com' + PREFIX), `og:image ${image} isn't a full site URL`)
+      assert.ok(fs.existsSync(fileFor(new URL(image).pathname)), `og:image ${image} is not in _site`)
+      const description = metaContent(html, 'og:description')
+      assert.ok(description, 'empty og:description')
+      assert.ok(!/Toggle navigation|By:|serving\(s\)/.test(description), `og:description looks like page chrome: ${description}`)
+    })
+  }
+
+  test('no page refers to the old, missing avatar-icon.svg', () => {
+    const offenders = htmlFiles().filter((file) => fs.readFileSync(file, 'utf8').includes('avatar-icon.svg'))
+    assert.deepEqual(offenders.map((file) => path.relative(site, file)), [])
+  })
+})

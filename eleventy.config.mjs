@@ -1,6 +1,10 @@
+import path from 'node:path'
 import recipes from './lib/recipes.js'
+import images from './lib/images.js'
 
 const { PATH_PREFIX, createMarkdown, stripTitle, absolutizeImages, tagId } = recipes
+
+const { imageSize } = images
 
 const isRecipe = (inputPath) => inputPath.replace(/\\/g, '/').startsWith('./_recipes/')
 
@@ -20,6 +24,23 @@ export default function (eleventyConfig) {
   })
 
   eleventyConfig.addCollection('recipes', (api) => api.getFilteredByGlob('./_recipes/*.md'))
+
+  // Give every local photo its real width/height so the page doesn't jump as photos load
+  // (that jump is what sent category links to the wrong place), and lazy-load all but the first.
+  eleventyConfig.addTransform('photo-sizes', function (html) {
+    if (!(this.page.outputPath || '').endsWith('.html')) return html
+    let first = true
+    return html.replace(/<img\b[^>]*>/g, (tag) => {
+      const src = tag.match(/\ssrc="([^"]+)"/)
+      if (!src || !src[1].startsWith(PATH_PREFIX + 'img/')) return tag
+      let attrs = ''
+      const size = imageSize(path.join('img', decodeURIComponent(src[1].slice(PATH_PREFIX.length + 4)).replace(/&#39;/g, "'")))
+      if (size && !/\swidth=/.test(tag)) attrs += ` width="${size.width}" height="${size.height}"`
+      if (!first && !/\sloading=/.test(tag)) attrs += ' loading="lazy" decoding="async"'
+      first = false
+      return tag.replace(/^<img\b/, '<img' + attrs)
+    })
+  })
 
   eleventyConfig.addPassthroughCopy('css')
   eleventyConfig.addPassthroughCopy('js')

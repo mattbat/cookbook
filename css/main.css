@@ -76,6 +76,8 @@ img::-moz-selection {
 
 img {
   max-width: 100%;
+  /* Photos carry width/height attributes; keep their shape when the width is constrained */
+  height: auto;
 }
 
 .disqus-comments {
@@ -88,9 +90,14 @@ img {
   }
 }
 
-.linked-section {
-  padding-top: 60px;
-  margin-top: -25px;
+/* Keep #section links from landing under the fixed navbar (51px on phones, 91px on desktop) */
+h1[id], h2[id], h3[id], h4[id] {
+  scroll-margin-top: 66px;
+}
+@media only screen and (min-width: 768px) {
+  h1[id], h2[id], h3[id], h4[id] {
+    scroll-margin-top: 106px;
+  }
 }
 
 /* --- Navbar --- */
@@ -1260,7 +1267,16 @@ Table of Contents
 .recipe-scaling input[type=number] {
     -moz-appearance:textfield;
 }
+/* Finger-sized controls; 16px text stops iPhones zooming in on focus */
+.recipe-scaling input {
+  font-size: 18px;
+  min-height: 44px;
+}
 .recipe-scaling button {
+  min-width: 44px;
+  min-height: 44px;
+  font-size: 20px;
+  border-radius: 8px;
   background-color: transparent;
   box-shadow: 0 1px 6px rgba(0,0,0,.2);
   border: none;
@@ -1303,6 +1319,10 @@ Table of Contents
   margin-bottom: 15px;
 }
 
+#home-search-input,
+#search-input {
+  font-size: 16px;
+}
 #home-search-input {
   max-width: 500px;
   margin: 0 auto;
