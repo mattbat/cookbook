@@ -1,0 +1,105 @@
+---
+permalink: /sw.js
+eleventyExcludeFromCollections: true
+---
+// Service worker: keeps a copy of the site on the phone so it opens quickly and works without
+// signal (handy in a kitchen with bad Wi-Fi). Pages are always fetched fresh when there's a
+// connection; the saved copy is used only when the network fails or takes too long.
+const VERSION = '{{ build.version }}'
+const BASE = '{{ "/" | url }}'
+const STATIC = 'cookbook-static-' + VERSION
+const PAGES = 'cookbook-pages'
+const PHOTOS = 'cookbook-photos'
+const FONTS = 'cookbook-fonts'
+const OFFLINE = BASE + 'offline/'
+// On a weak signal, wait this long before using the saved copy
+const NETWORK_TIMEOUT = 4000
+const MAX_PHOTOS = 400
+
+// The app itself, saved when it's installed or updated
+const PRECACHE = [
+  '', 'offline/', 'search/', 'list/', 'tags/', 'list.json', 'manifest.webmanifest',
+  'css/site.css', 'js/app.js', 'js/timers.js', 'js/kitchen.js', 'js/recipe-scaling.js',
+  'js/search.js', 'js/offline.js', 'js/vendor/minisearch.js',
+  'icons/icon-192.png', 'favicon.ico'
+].map((path) => BASE + path)
+
+self.addEventListener('install', (event) => {
+  event.waitUntil(caches.open(STATIC).then((cache) => cache.addAll(PRECACHE)).then(() => self.skipWaiting()))
+})
+
+self.addEventListener('activate', (event) => {
+  event.waitUntil(
+    caches.keys()
+      .then((names) => Promise.all(names
+        .filter((name) => name.startsWith('cookbook-static-') && name !== STATIC)
+        .map((name) => caches.delete(name))))
+      .then(() => self.clients.claim())
+  )
+})
+
+self.addEventListener('fetch', (event) => {
+  const request = event.request
+  if (request.method !== 'GET') return
+  const url = new URL(request.url)
+
+  if (url.origin === self.location.origin) {
+    if (!url.pathname.startsWith(BASE) || url.pathname === BASE + 'sw.js') return
+    if (url.pathname.startsWith(BASE + 'img/') || url.pathname.startsWith(BASE + 'icons/')) {
+      event.respondWith(cacheFirst(request, PHOTOS, MAX_PHOTOS))
+    } else {
+      event.respondWith(networkFirst(request))
+    }
+  } else if (url.hostname === 'fonts.googleapis.com' || url.hostname === 'fonts.gstatic.com') {
+    event.respondWith(cacheFirst(request, FONTS))
+  }
+})
+
+// Fresh from the network when possible (and saved for later); the saved copy otherwise.
+async function networkFirst (request) {
+  const cache = await caches.open(PAGES)
+  const network = fetch(request).then((response) => {
+    if (response.ok) cache.put(request, response.clone())
+    return response
+  })
+  try {
+    return await withTimeout(network, NETWORK_TIMEOUT)
+  } catch (e) {}
+  // A search address (?q=gumbo) uses the saved Search page
+  const saved = await caches.match(request, { ignoreSearch: request.mode === 'navigate' })
+  if (saved) return saved
+  try {
+    return await network
+  } catch (e) {}
+  if (request.mode === 'navigate') {
+    const offline = await caches.match(OFFLINE)
+    if (offline) return offline
+  }
+  return Response.error()
+}
+
+// Photos and fonts don't change: use the saved copy, or fetch and save it.
+async function cacheFirst (request, name, max) {
+  const cache = await caches.open(name)
+  const saved = await cache.match(request)
+  if (saved) return saved
+  const response = await fetch(request)
+  if (response.ok || response.type === 'opaque') {
+    await cache.put(request, response.clone())
+    if (max) trim(cache, max)
+  }
+  return response
+}
+
+// Keep at most `max` photos, dropping the oldest
+async function trim (cache, max) {
+  const keys = await cache.keys()
+  for (const key of keys.slice(0, Math.max(0, keys.length - max))) await cache.delete(key)
+}
+
+function withTimeout (promise, ms) {
+  return new Promise((resolve, reject) => {
+    const timer = setTimeout(() => reject(new Error('timeout')), ms)
+    promise.then((value) => { clearTimeout(timer); resolve(value) }, (error) => { clearTimeout(timer); reject(error) })
+  })
+}

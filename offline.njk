@@ -1,0 +1,13 @@
+---
+layout: base.njk
+title: You're offline
+permalink: /offline/
+eleventyExcludeFromCollections: true
+scripts: ['/js/offline.js']
+---
+<section class="offline">
+  <h1>You’re offline</h1>
+  <p class="lede">This page isn’t saved on this device yet. Recipes you’ve opened before still work without signal:</p>
+  <ul class="index saved-list" data-saved></ul>
+  <p class="offline-none" hidden>No recipes are saved yet. Open the ones you cook most while you have signal, and they’ll be here next time.</p>
+</section>

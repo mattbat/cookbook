@@ -39,7 +39,7 @@ test('photos reserve their space before loading', async ({ page }) => {
 
 test('a category link lands on its heading even on a slow connection', async ({ page }) => {
   // Hold photos back for a second, like a phone on a weak signal.
-  await page.route('**/img/*.jpeg', async (route) => {
+  await page.route('**/img/**', async (route) => {
     await new Promise((resolve) => setTimeout(resolve, 1000))
     await route.continue()
   })

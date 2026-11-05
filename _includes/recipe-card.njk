@@ -1,7 +1,7 @@
 {%- set minutes = recipe.data | totalMinutes %}
 <a class="card" href="{{ recipe.url | url }}" data-url="{{ recipe.url | url }}" data-tags="{% for tag in recipe.data.tags %}{{ tag | tagId }} {% endfor %}">
   <span class="card-photo">
-    {%- if recipe.data.photo %}<img src="{{ recipe.data.photo.src | url }}" alt="">{% endif -%}
+    {%- if recipe.data.photo %}<img src="{{ recipe.data.photo.src | url }}" alt="" sizes="(min-width: 1000px) 260px, (min-width: 640px) 33vw, 50vw">{% endif -%}
   </span>
   <span class="card-title">{{ recipe.data.title }}</span>
   <span class="card-meta">

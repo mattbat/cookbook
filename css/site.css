@@ -127,6 +127,55 @@ p { margin: 0 0 1em; }
   align-items: center;
   justify-content: space-between;
 }
+/* Back button: only in the installed app, which has no browser Back button */
+.back {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  margin-left: -12px;
+  color: var(--text);
+}
+.back .icon { width: 26px; height: 26px; }
+@media (display-mode: standalone) {
+  .back { display: flex; }
+  .topbar-inner { justify-content: flex-start; }
+  .topbar-inner .topnav { margin-left: auto; }
+}
+
+/* Home page card: put the cookbook on your home screen */
+.install {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 4px 0 20px;
+  padding: 12px 8px 12px 12px;
+  border-radius: var(--radius);
+  background: var(--surface);
+  box-shadow: var(--shadow);
+  font-family: var(--sans);
+}
+.install[hidden] { display: none; }
+.install img { border-radius: 11px; flex: none; }
+.install-text { flex: 1; min-width: 0; }
+.install-text p { margin: 0; font-size: 14px; line-height: 1.35; color: var(--muted); }
+.install-text .install-title { font-weight: 700; font-size: 15px; color: var(--text); }
+.install-ios .icon { width: 1.1em; height: 1.1em; vertical-align: -.2em; color: var(--accent); }
+.install-ios[hidden], .install-button[hidden] { display: none; }
+.install-close {
+  flex: none;
+  min-width: 44px;
+  min-height: 44px;
+  border: 0;
+  background: transparent;
+  color: var(--muted);
+  font: 400 26px/1 var(--sans);
+  cursor: pointer;
+}
+
+.offline { padding: 12px 0; }
+
 .brand {
   font-family: var(--sans);
   font-weight: 800;
@@ -143,7 +192,7 @@ p { margin: 0 0 1em; }
   font-weight: 600;
   font-size: 15px;
 }
-.topnav a:hover { background: var(--chip); }
+@media (hover: hover) { .topnav a:hover { background: var(--chip); } }
 .topnav a[aria-current="page"] { background: var(--accent-soft); color: var(--accent); }
 
 .tabbar {
@@ -265,7 +314,7 @@ main {
   text-decoration: none;
   white-space: nowrap;
 }
-.chip:hover { background: var(--accent-soft); }
+@media (hover: hover) { .chip:hover { background: var(--accent-soft); } }
 .chip[aria-pressed="true"] { background: var(--accent); color: var(--on-accent); }
 
 .shelf { margin-top: 28px; }
@@ -304,7 +353,7 @@ main {
   object-fit: cover;
   transition: transform .3s ease;
 }
-.card:hover .card-photo img { transform: scale(1.03); }
+@media (hover: hover) { .card:hover .card-photo img { transform: scale(1.03); } }
 .card-title {
   font: 700 16px/1.25 var(--sans);
 }
@@ -410,7 +459,7 @@ main {
   font: 700 22px/1 var(--sans);
   cursor: pointer;
 }
-.recipe-scaling button:hover { background: var(--accent-soft); color: var(--accent); }
+@media (hover: hover) { .recipe-scaling button:hover { background: var(--accent-soft); color: var(--accent); } }
 
 .recipe-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
 .recipe-tags .chip { min-height: 32px; padding: 0 12px; font-size: 14px; }
@@ -496,10 +545,10 @@ main {
   font: 600 15px var(--sans);
   cursor: pointer;
 }
-.tool:hover { background: var(--accent-soft); }
+@media (hover: hover) { .tool:hover { background: var(--accent-soft); } }
 .tool[hidden] { display: none; }
 .tool-primary { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
-.tool-primary:hover { background: var(--accent); filter: brightness(1.08); }
+@media (hover: hover) { .tool-primary:hover { background: var(--accent); filter: brightness(1.08); } }
 .tool[aria-pressed="true"] { background: var(--accent-soft); border-color: var(--accent); color: var(--accent); }
 .tool-small { min-height: 36px; padding: 0 12px; font-size: 14px; }
 /* On phones: a big Cook mode button, with the others sharing the row below */
@@ -564,7 +613,7 @@ main {
   white-space: nowrap;
 }
 .timer-link::before { content: '⏱ '; font-size: .9em; }
-.timer-link:hover { filter: brightness(.96); }
+@media (hover: hover) { .timer-link:hover { filter: brightness(.96); } }
 
 /* The timer tray, above the bottom tabs */
 .timers {
@@ -605,7 +654,7 @@ main {
   cursor: pointer;
 }
 .timer button[hidden] { display: none; }
-.timer button:hover { background: rgba(127, 127, 127, .25); }
+@media (hover: hover) { .timer button:hover { background: rgba(127, 127, 127, .25); } }
 .timer.paused .timer-time { opacity: .6; }
 .timer.done { background: var(--accent); color: var(--on-accent); animation: ring 1s ease-in-out infinite; }
 @keyframes ring { 50% { box-shadow: 0 0 0 6px color-mix(in srgb, var(--accent) 35%, transparent), var(--shadow); } }

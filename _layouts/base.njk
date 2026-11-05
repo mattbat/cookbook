@@ -7,6 +7,10 @@
 
     <header class="topbar">
       <div class="topbar-inner">
+        {#- Installed on a phone there's no browser Back button, so the app has its own #}
+        {%- if page.url != '/' %}
+        <a class="back" href="{{ '/' | url }}" aria-label="Back">{% icon "back" %}</a>
+        {%- endif %}
         <a class="brand" href="{{ '/' | url }}">{{ site.name }}</a>
         <nav class="topnav" aria-label="Main">
           {%- for tab in site.tabs %}

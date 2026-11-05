@@ -3,10 +3,12 @@ import { test, describe } from 'node:test'
 import assert from 'node:assert/strict'
 import fs from 'node:fs'
 import path from 'node:path'
+import { createRequire } from 'node:module'
 
 const root = path.resolve(import.meta.dirname, '../..')
 const site = path.join(root, '_site')
 const PREFIX = '/cookbook/'
+const { imageSize } = createRequire(import.meta.url)('../../lib/images.js')
 const live = JSON.parse(fs.readFileSync(path.join(root, 'tests/fixtures/live-site.json'), 'utf8'))
 
 assert.ok(fs.existsSync(site), 'no _site folder; run `npm run build` first')
@@ -201,3 +203,97 @@ function nestedSteps (html) {
     return count + nested.reduce((n, item) => n + (item.match(/<li>/g).length - 1), 0)
   }, 0)
 }
+
+describe('smaller photos (srcset)', () => {
+  const pages = htmlFiles()
+  const imgTags = pages.flatMap((file) => [...fs.readFileSync(file, 'utf8').matchAll(/<img\b[^>]*>/g)]
+    .map((match) => ({ file: path.relative(site, file).split(path.sep).join('/'), tag: match[0] })))
+  const recipePhotos = imgTags.filter(({ tag }) => /\ssrc="\/cookbook\/img\/w\//.test(tag))
+
+  test('recipe photos use the smaller copies', () => {
+    assert.ok(recipePhotos.length > 50, `only ${recipePhotos.length} photos use the copies`)
+    const originals = imgTags.filter(({ tag }) => /\ssrc="\/cookbook\/img\/[^w/][^"]*\.(jpe?g|png)"/i.test(tag))
+    assert.deepEqual(originals.map(({ file, tag }) => `${file}: ${tag}`), [], 'pages still loading full-size photos')
+  })
+
+  test('every copy in a srcset exists, with the width it claims', () => {
+    const checked = new Set()
+    for (const { file, tag } of recipePhotos) {
+      const srcset = tag.match(/\ssrcset="([^"]+)"/)
+      assert.ok(srcset, `${file}: no srcset on ${tag}`)
+      assert.ok(/\ssizes="[^"]+"/.test(tag), `${file}: no sizes on ${tag}`)
+      for (const entry of srcset[1].split(', ')) {
+        const [url, width] = entry.split(' ')
+        if (checked.has(url)) continue
+        checked.add(url)
+        const copy = fileFor(url)
+        assert.ok(fs.existsSync(copy), `${url} is missing`)
+        assert.equal(imageSize(copy).width + 'w', width, `${url} isn't ${width} wide`)
+      }
+    }
+  })
+
+  test('the copies are much smaller than the originals', () => {
+    const total = (dir, pattern) => fs.readdirSync(dir).filter((name) => pattern.test(name))
+      .reduce((sum, name) => sum + fs.statSync(path.join(dir, name)).size, 0)
+    const originals = total(path.join(site, 'img'), /\.(jpe?g|png)$/i)
+    const phoneSize = total(path.join(site, 'img', 'w'), /-480\.jpg$/)
+    assert.ok(phoneSize < originals / 10, `phone-size copies are ${phoneSize} bytes vs ${originals} for the originals`)
+  })
+})
+
+describe('installable app (manifest and icons)', () => {
+  const manifest = JSON.parse(read(PREFIX + 'manifest.webmanifest'))
+
+  test('every page links the manifest and home-screen icon', () => {
+    for (const file of htmlFiles()) {
+      const html = fs.readFileSync(file, 'utf8')
+      if (/http-equiv="refresh"/.test(html)) continue
+      assert.ok(html.includes(`<link rel="manifest" href="${PREFIX}manifest.webmanifest">`), `${file} has no manifest link`)
+      assert.ok(html.includes(`<link rel="apple-touch-icon" href="${PREFIX}icons/apple-touch-icon.png">`), `${file} has no apple-touch-icon`)
+    }
+  })
+
+  test('the manifest opens the cookbook full screen', () => {
+    assert.equal(manifest.start_url, PREFIX)
+    assert.equal(manifest.scope, PREFIX)
+    assert.equal(manifest.display, 'standalone')
+    assert.ok(manifest.name && manifest.short_name.length <= 12)
+  })
+
+  test('the manifest icons exist at the sizes it says', () => {
+    assert.ok(manifest.icons.some((icon) => icon.purpose === 'maskable'))
+    for (const icon of [...manifest.icons, { src: PREFIX + 'icons/apple-touch-icon.png', sizes: '180x180' }]) {
+      const file = fileFor(icon.src)
+      assert.ok(fs.existsSync(file), `${icon.src} is missing`)
+      const size = imageSize(file)
+      assert.equal(`${size.width}x${size.height}`, icon.sizes, icon.src)
+    }
+  })
+
+  test('shortcuts go to pages that exist', () => {
+    for (const shortcut of manifest.shortcuts) assert.ok(fs.existsSync(fileFor(shortcut.url)), shortcut.url)
+  })
+})
+
+describe('offline copy (service worker)', () => {
+  const sw = read(PREFIX + 'sw.js')
+
+  test('is valid JavaScript with a version from this build', () => {
+    assert.doesNotThrow(() => new Function(sw))
+    assert.match(sw, /const VERSION = '[a-z0-9]+'/)
+    assert.match(sw, /const BASE = '\/cookbook\/'/)
+  })
+
+  test('everything it saves up front exists', () => {
+    const list = sw.match(/const PRECACHE = \[([\s\S]*?)\]/)[1]
+    const paths = [...list.matchAll(/'([^']*)'/g)].map((match) => PREFIX + match[1])
+    assert.ok(paths.length > 10)
+    for (const url of paths) assert.ok(fs.existsSync(fileFor(url)), `${url} is in PRECACHE but not in the site`)
+  })
+
+  test('there is an offline page, kept out of the sitemap', () => {
+    assert.match(read(PREFIX + 'offline/'), /You’re offline/)
+    assert.ok(!read(PREFIX + 'sitemap.xml').includes('offline'))
+  })
+})

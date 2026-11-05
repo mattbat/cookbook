@@ -9,7 +9,7 @@ permalink: /list/
   {%- for recipe in collections.recipes | byTitle %}
   <li>
     <a href="{{ recipe.url | url }}">
-      {%- if recipe.data.photo %}<img src="{{ recipe.data.photo.src | url }}" alt="">{% endif %}
+      {%- if recipe.data.photo %}<img src="{{ recipe.data.photo.src | url }}" alt="" sizes="72px">{% endif %}
       <span class="index-title">{{ recipe.data.title }}</span>
       <span class="index-tags">{{ recipe.data.tags | join(", ") }}</span>
     </a>
