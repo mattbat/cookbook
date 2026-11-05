@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cookbook Logo Options</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,500;0,600;1,600&family=Open+Sans:wght@400;600&family=Playfair+Display:ital,wght@1,700&display=swap">
+<style>
+/* Layout: a contact sheet. Each option gets one card: big icon, real-size previews, a name to point at. */
+:root {
+  --bg: #f4f2ef;
+  --surface: #ffffff;
+  --text: #26221f;
+  --muted: #6d655e;
+  --line: #e2ddd6;
+  --accent: #b4532c;
+  --wall: #2e3a46;
+  --serif: 'Lora', Georgia, serif;
+  --sans: 'Open Sans', 'Helvetica Neue', Arial, sans-serif;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #171513; --surface: #221f1c; --text: #f1ebe4; --muted: #ab9f94; --line: #36302b; --accent: #e48a62; --wall: #0e1419; color-scheme: dark;
+} }
+:root[data-theme="dark"] {
+  --bg: #171513; --surface: #221f1c; --text: #f1ebe4; --muted: #ab9f94; --line: #36302b; --accent: #e48a62; --wall: #0e1419; color-scheme: dark;
+}
+body { background: var(--bg); color: var(--text); font-family: var(--sans); font-size: 15px; line-height: 1.5; }
+.wrap { max-width: 1120px; margin: 0 auto; padding-block: 40px 64px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+h1 { font-family: var(--serif); font-weight: 600; font-size: 32px; margin: 0 0 6px; text-wrap: balance; }
+h2 { font-family: var(--serif); font-weight: 600; font-size: 21px; margin: 0; text-wrap: balance; }
+.lede { color: var(--muted); max-width: 62ch; margin: 0 0 32px; }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 20px; }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 20px; display: flex; flex-direction: column; gap: 14px; min-width: 0; }
+.card.current { border-color: var(--accent); }
+.hero { display: flex; justify-content: center; padding-block: 8px; }
+.ico { display: block; border-radius: 22.5%; overflow: hidden; flex: none; box-shadow: 0 1px 2px rgba(0,0,0,.08), 0 6px 18px rgba(0,0,0,.10); }
+.ico svg { display: block; width: 100%; height: 100%; }
+.hero .ico { width: 168px; height: 168px; }
+.sizes { display: flex; align-items: flex-end; gap: 14px; justify-content: center; }
+.sizes .ico { box-shadow: none; }
+.tab { display: flex; align-items: center; gap: 6px; background: var(--bg); border: 1px solid var(--line); border-radius: 8px 8px 0 0; padding: 5px 10px; font-size: 12px; color: var(--muted); }
+.tab .ico { border-radius: 3px; }
+.head { display: flex; align-items: baseline; gap: 10px; }
+.letter { font-family: var(--sans); font-weight: 600; font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); }
+.badge { margin-left: auto; font-size: 11px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--accent); border: 1px solid var(--accent); border-radius: 99px; padding: 1px 8px; }
+.card p { margin: 0; color: var(--muted); font-size: 14px; }
+.swatches { display: flex; gap: 6px; }
+.swatches span { width: 18px; height: 18px; border-radius: 50%; border: 1px solid var(--line); }
+.home { margin-top: 48px; }
+.home p { color: var(--muted); margin: 4px 0 16px; }
+.phone { background: var(--wall); background-image: radial-gradient(circle at 20% 10%, rgba(255,255,255,.12), transparent 50%), radial-gradient(circle at 80% 90%, rgba(255,255,255,.08), transparent 55%); border-radius: 24px; padding: 28px 20px; display: grid; grid-template-columns: repeat(auto-fill, minmax(76px, 1fr)); gap: 22px 10px; }
+.app { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 6px; color: #fff; font-size: 11.5px; text-shadow: 0 1px 2px rgba(0,0,0,.5); }
+.app .ico { width: 60px; height: 60px; }
+</style>
+
+<div class="wrap">
+  <h1>Cookbook logo options</h1>
+  <p class="lede">Eleven directions for the app icon, from the current open book (A) to very different looks. Each one is shown large, at home-screen size, and as a browser-tab favicon so you can see what survives when it's tiny. Tell me the letters you like and what to change.</p>
+  <div class="grid" id="grid"></div>
+
+  <section class="home">
+    <h2>Side by side on a home screen</h2>
+    <p>Same size an iPhone shows them.</p>
+    <div class="phone" id="phone"></div>
+  </section>
+</div>
+
+<script>
+const BOOK_L = 'M252 168c-44-30-100-38-148-30v228c48-8 104 0 148 30z';
+const BOOK_R = 'M260 168c44-30 100-38 148-30v228c-48-8-104 0-148 30z';
+const HEART = 'M256 104c-10-16-34-14-34 6 0 16 22 28 34 38 12-10 34-22 34-38 0-20-24-22-34-6z';
+
+const LOGOS = [
+  { id: 'A', name: 'Open Book', current: true, colors: ['#b4532c', '#fbf8f3'],
+    note: 'Today\'s icon: an open cookbook with a heart, cream on terracotta.',
+    svg: () => `<rect width="512" height="512" fill="#b4532c"/>
+      <path fill="#fbf8f3" d="${BOOK_L}"/><path fill="#fbf8f3" d="${BOOK_R}"/>
+      <g stroke="#b4532c" stroke-width="9" stroke-linecap="round" opacity=".45" fill="none">
+        <path d="M140 196c30-3 60 2 84 14M140 236c30-3 60 2 84 14M140 276c30-3 60 2 84 14"/>
+        <path d="M372 196c-30-3-60 2-84 14M372 236c-30-3-60 2-84 14M372 276c-30-3-60 2-84 14"/></g>
+      <path fill="#fbf8f3" d="${HEART}"/>` },
+
+  { id: 'B', name: 'Spoon & Fork', colors: ['#6b8f71', '#e9c08a', '#f4efe1'],
+    note: 'A wooden spoon crossed with a fork on sage green. Simple, kitchen-drawer feel.',
+    svg: () => `<rect width="512" height="512" fill="#6b8f71"/>
+      <g transform="rotate(24 256 270)" fill="#f4efe1">
+        <rect x="214" y="96" width="14" height="78" rx="7"/><rect x="238" y="96" width="14" height="78" rx="7"/>
+        <rect x="260" y="96" width="14" height="78" rx="7"/><rect x="284" y="96" width="14" height="78" rx="7"/>
+        <path d="M214 160h84v14c0 30-20 46-30 52v196a12 12 0 0 1-24 0V226c-10-6-30-22-30-52z"/></g>
+      <g transform="rotate(-24 256 270)" fill="#e9c08a">
+        <ellipse cx="256" cy="160" rx="48" ry="66"/>
+        <path d="M244 214h24v208a12 12 0 0 1-24 0z"/></g>` },
+
+  { id: 'C', name: 'Recipe Card', colors: ['#e0a526', '#fffaf0', '#c8402f', '#7fa3c7'],
+    note: 'A tilted index card like the ones in Grandma\'s recipe box, on mustard.',
+    svg: () => `<rect width="512" height="512" fill="#e0a526"/>
+      <g transform="rotate(-7 256 256)">
+        <rect x="104" y="146" width="304" height="224" rx="16" fill="#9a6a10" opacity=".25" transform="translate(6 10)"/>
+        <rect x="104" y="146" width="304" height="224" rx="16" fill="#fffaf0"/>
+        <path d="M134 184h120" stroke="#3a2f25" stroke-width="16" stroke-linecap="round"/>
+        <path d="M120 216h272" stroke="#c8402f" stroke-width="5"/>
+        <g stroke="#7fa3c7" stroke-width="5"><path d="M120 256h272M120 292h272M120 328h272"/></g>
+        <path d="M352 184c-6-10-22-9-22 4 0 10 14 18 22 24 8-6 22-14 22-24 0-13-16-14-22-4z" fill="#c8402f"/></g>` },
+
+  { id: 'D', name: 'Monogram', colors: ['#1f3a5f', '#f3e9d2', '#c9a45c'],
+    note: 'A bookplate-style "B" for Batchelder in a ring, navy and cream with a gold sprig.',
+    svg: () => `<rect width="512" height="512" fill="#1f3a5f"/>
+      <circle cx="256" cy="256" r="164" fill="none" stroke="#f3e9d2" stroke-width="8"/>
+      <circle cx="256" cy="256" r="146" fill="none" stroke="#f3e9d2" stroke-width="2.5" opacity=".6"/>
+      <text x="256" y="322" text-anchor="middle" font-family="'Playfair Display', Georgia, serif" font-style="italic" font-weight="700" font-size="210" fill="#f3e9d2">B</text>
+      <g fill="#c9a45c"><path d="M256 386v-28" stroke="#c9a45c" stroke-width="5" stroke-linecap="round"/>
+        <ellipse cx="243" cy="372" rx="12" ry="5" transform="rotate(-30 243 372)"/><ellipse cx="269" cy="372" rx="12" ry="5" transform="rotate(30 269 372)"/>
+        <ellipse cx="256" cy="352" rx="5" ry="10"/></g>` },
+
+  { id: 'E', name: 'Steam Pot', colors: ['#d9482b', '#fff4ea'],
+    note: 'A stockpot with steam curling up into a heart. Warm and homey in tomato red.',
+    svg: () => `<rect width="512" height="512" fill="#d9482b"/>
+      <g fill="none" stroke="#fff4ea" stroke-width="13" stroke-linecap="round" opacity=".85">
+        <path d="M190 196c-18-22 18-36 0-62"/><path d="M322 196c-18-22 18-36 0-62"/></g>
+      <path fill="#fff4ea" d="M256 132c-10-16-34-14-34 6 0 16 22 28 34 38 12-10 34-22 34-38 0-20-24-22-34-6z"/>
+      <g fill="#fff4ea">
+        <circle cx="256" cy="214" r="15"/>
+        <rect x="118" y="222" width="276" height="26" rx="13"/>
+        <path d="M138 262h236v84c0 30-22 52-52 52H190c-30 0-52-22-52-52z"/>
+        <rect x="100" y="276" width="52" height="22" rx="11"/><rect x="360" y="276" width="52" height="22" rx="11"/></g>` },
+
+  { id: 'F', name: 'Whisk', colors: ['#f5efe6', '#2b2622', '#c9643b'],
+    note: 'A single line-drawn whisk on light paper. Quiet and modern, reads well on any phone.',
+    svg: () => `<rect width="512" height="512" fill="#f5efe6"/>
+      <g fill="none" stroke="#2b2622" stroke-width="11" stroke-linecap="round">
+        <path d="M256 296C160 236 180 84 256 84s96 152 0 212z"/>
+        <path d="M256 296C206 236 216 84 256 84s50 152 0 212z"/>
+        <path d="M256 84v212"/></g>
+      <rect x="232" y="288" width="48" height="30" rx="9" fill="#c9643b"/>
+      <rect x="240" y="312" width="32" height="124" rx="16" fill="#2b2622"/>` },
+
+  { id: 'G', name: 'Recipe Box', colors: ['#f2d7c9', '#8a5a3b', '#3e8a86', '#e5a83a'],
+    note: 'A wooden recipe box with tabbed cards poking out. Nostalgic, a little playful.',
+    svg: () => `<rect width="512" height="512" fill="#f2d7c9"/>
+      <rect x="150" y="150" width="212" height="140" rx="10" fill="#fffaf2"/>
+      <rect x="196" y="128" width="58" height="34" rx="8" fill="#3e8a86"/>
+      <rect x="132" y="176" width="248" height="120" rx="10" fill="#ffffff"/>
+      <rect x="300" y="156" width="58" height="34" rx="8" fill="#e5a83a"/>
+      <path d="M156 210h110M156 236h150" stroke="#d9c7b8" stroke-width="8" stroke-linecap="round"/>
+      <rect x="112" y="250" width="288" height="160" rx="22" fill="#8a5a3b"/>
+      <path d="M112 280h288" stroke="#6f4630" stroke-width="6"/>
+      <rect x="206" y="312" width="100" height="46" rx="8" fill="#f6e7c8"/>
+      <path d="M228 335h56" stroke="#8a5a3b" stroke-width="6" stroke-linecap="round"/>` },
+
+  { id: 'H', name: 'Lattice Pie', colors: ['#2d4a6b', '#e7b36a', '#b8323b'],
+    note: 'A cherry pie from above with a woven crust. Bold, graphic, very recognizable small.',
+    svg: (u) => `<rect width="512" height="512" fill="#2d4a6b"/>
+      <defs><clipPath id="pie${u}"><circle cx="256" cy="256" r="146"/></clipPath></defs>
+      <circle cx="256" cy="256" r="176" fill="#d39a4c"/>
+      <circle cx="256" cy="256" r="176" fill="none" stroke="#e7b36a" stroke-width="22" stroke-dasharray="1 34" stroke-linecap="round"/>
+      <circle cx="256" cy="256" r="146" fill="#b8323b"/>
+      <g clip-path="url(#pie${u})" fill="#e7b36a">
+        <rect x="100" y="160" width="312" height="30"/><rect x="100" y="241" width="312" height="30"/><rect x="100" y="322" width="312" height="30"/>
+        <g stroke="#b8323b" stroke-width="0"><rect x="160" y="100" width="30" height="312"/><rect x="241" y="100" width="30" height="312"/><rect x="322" y="100" width="30" height="312"/></g>
+        <g fill="#e7b36a"><rect x="160" y="160" width="30" height="30" fill="#d39a4c"/><rect x="322" y="160" width="30" height="30" fill="#d39a4c"/>
+        <rect x="241" y="241" width="30" height="30" fill="#d39a4c"/><rect x="160" y="322" width="30" height="30" fill="#d39a4c"/><rect x="322" y="322" width="30" height="30" fill="#d39a4c"/></g></g>` },
+
+  { id: 'I', name: 'Gold Foil Book', colors: ['#1f4d3a', '#e2b65b'],
+    note: 'The open book redone as gold linework on forest green, like a stamped cloth cover.',
+    svg: () => `<rect width="512" height="512" fill="#1f4d3a"/>
+      <g fill="none" stroke="#e2b65b" stroke-width="12" stroke-linejoin="round" stroke-linecap="round">
+        <path d="M256 196c-40-26-92-34-136-27v200c44-7 96 1 136 27z"/>
+        <path d="M256 196c40-26 92-34 136-27v200c-44-7-96 1-136 27z"/>
+        <path d="M256 196v200"/>
+        <path d="M104 190v196c56-8 112 0 152 26 40-26 96-34 152-26V190" stroke-width="7" opacity=".6"/></g>
+      <g fill="#e2b65b"><path d="M256 168V102" stroke="#e2b65b" stroke-width="6" stroke-linecap="round"/>
+        <ellipse cx="240" cy="148" rx="16" ry="6" transform="rotate(-35 240 148)"/><ellipse cx="272" cy="148" rx="16" ry="6" transform="rotate(35 272 148)"/>
+        <ellipse cx="242" cy="124" rx="14" ry="5" transform="rotate(-35 242 124)"/><ellipse cx="270" cy="124" rx="14" ry="5" transform="rotate(35 270 124)"/>
+        <ellipse cx="256" cy="100" rx="6" ry="13"/></g>` },
+
+  { id: 'J', name: 'Retro Bowl', colors: ['#4a2e22', '#e9a93a', '#e0682d', '#f0b7a0', '#f6ead2'],
+    note: 'A mixing bowl against a 70s sunrise of stripes. Loud, cheerful, very "family kitchen".',
+    svg: () => `<rect width="512" height="512" fill="#4a2e22"/>
+      <g fill="none" stroke-width="30">
+        <path d="M86 296a170 170 0 0 1 340 0" stroke="#e0682d"/>
+        <path d="M128 296a128 128 0 0 1 256 0" stroke="#e9a93a"/>
+        <path d="M170 296a86 86 0 0 1 172 0" stroke="#f0b7a0"/></g>
+      <path d="M318 270l70-118" stroke="#e9c08a" stroke-width="20" stroke-linecap="round"/>
+      <path fill="#f6ead2" d="M96 282h320c0 78-64 136-160 136S96 360 96 282z"/>
+      <rect x="84" y="270" width="344" height="24" rx="12" fill="#f6ead2"/>
+      <path d="M150 336h212" stroke="#e0682d" stroke-width="10" stroke-linecap="round" opacity=".8"/>` },
+
+  { id: 'K', name: 'Gingham Heart', colors: ['#d7263d', '#ffffff'],
+    note: 'A red heart on a picnic-tablecloth check. Sweet and instantly "home cooking".',
+    svg: (u) => `<defs><pattern id="g${u}" width="64" height="64" patternUnits="userSpaceOnUse">
+        <rect width="64" height="64" fill="#fff"/>
+        <rect width="32" height="64" fill="#d7263d" opacity=".45"/><rect width="64" height="32" fill="#d7263d" opacity=".45"/></pattern></defs>
+      <rect width="512" height="512" fill="url(#g${u})"/>
+      <circle cx="256" cy="262" r="150" fill="#fff"/>
+      <circle cx="256" cy="262" r="150" fill="none" stroke="#f0d2d6" stroke-width="10"/>
+      <path fill="#d7263d" transform="translate(256 262) scale(2.3) translate(-256 -126)" d="${HEART}"/>` },
+];
+
+let uid = 0;
+function icon(logo, size) {
+  uid++;
+  return `<span class="ico" style="width:${size}px;height:${size}px"><svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="${logo.name} icon">${logo.svg(uid)}</svg></span>`;
+}
+
+document.getElementById('grid').innerHTML = LOGOS.map(l => `
+  <article class="card${l.current ? ' current' : ''}">
+    <div class="hero">${icon(l, 168).replace('class="ico" style="width:168px;height:168px"', 'class="ico"')}</div>
+    <div class="sizes">${icon(l, 60)}${icon(l, 40)}<span class="tab">${icon(l, 16)}Cookbook</span></div>
+    <div class="head"><span class="letter">${l.id}</span><h2>${l.name}</h2>${l.current ? '<span class="badge">Current</span>' : ''}</div>
+    <p>${l.note}</p>
+    <div class="swatches">${l.colors.map(c => `<span style="background:${c}" title="${c}"></span>`).join('')}</div>
+  </article>`).join('');
+
+document.getElementById('phone').innerHTML = LOGOS.map(l => `<div class="app">${icon(l, 60)}<span>${l.id} · ${l.name}</span></div>`).join('');
+</script>
+
+</html>
