@@ -124,7 +124,8 @@ GitHub Pages. No CSS or JavaScript framework: the look is in `css/site.css`, pag
 | `app.js` | every page | tap a step to keep your place; shared helpers |
 | `timers.js` | every page | times in the steps ("simmer 30-40 minutes") become timer buttons; running timers follow you between pages |
 | `search.js` | Search tab | search and category filters |
-| `recipe-scaling.js` | recipes | the servings stepper |
+| `recipe-scaling.js` | recipes | the servings stepper (and metric amounts in the ingredients) |
+| `units.js` | recipes | the US / Metric switch: mL, g, °C and cm; teaspoons and tablespoons stay as written |
 | `kitchen.js` | recipes | ingredient check-offs, Copy list, Share, Keep screen on, Cook mode |
 | `offline.js` | offline page | lists the recipes saved on this device |
 

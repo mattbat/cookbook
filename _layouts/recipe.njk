@@ -31,6 +31,11 @@ mainClass: recipe-page
         <button type="button" title="Increase number of servings" class="increase" aria-label="More servings">+</button>
       </div>
 
+      <div class="unit-toggle" role="group" aria-label="Units">
+        <button type="button" data-units="us" aria-pressed="true">US</button>
+        <button type="button" data-units="metric" aria-pressed="false">Metric</button>
+      </div>
+
       <div class="kitchen-tools">
         {%- if 'class="steps"' in sections.method %}
         <button type="button" class="tool tool-primary cook-start">{% icon "play" %}<span>Cook mode</span></button>

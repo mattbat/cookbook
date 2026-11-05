@@ -134,28 +134,44 @@ function getIngredients (entries) {
   return ingredients
 }
 
-function renderIngredientsAtScale (scale) {
+// Metric conversion (js/units.js; loaded before this file on the page, required in the tests)
+var units = typeof module !== 'undefined' && typeof require === 'function'
+  ? require('./units.js')
+  : { toMetric: window.toMetric, textToMetric: window.textToMetric, UNIT_WORDS: window.UNIT_WORDS }
+var leading_unit = units.UNIT_WORDS ? new RegExp('^(\\s*)' + units.UNIT_WORDS + '(?![a-z])', 'i') : null
+
+function renderIngredientsAtScale (scale, system) {
   var scaleFactor = scale / initialScale
 
   initialIngredients.forEach((ingredient) => {
-    // Items without an amount are never rewritten
-    if (!ingredient.amount) {
-      return
-    }
-    ingredient.el.innerHTML = ingredientToHTML(ingredient, scaleFactor)
+    var html = ingredientToHTML(ingredient, scaleFactor, system)
+    // Items without an amount are only rewritten when metric changes them
+    if (!ingredient.amount && html === ingredient.el.innerHTML) return
+    ingredient.el.innerHTML = html
   })
 }
 
-function ingredientToHTML (ingredient, scaleFactor) {
+// `system`: 'metric' converts "2 cups" to "470 mL", "1 lb" to "450 g" (teaspoons and
+// tablespoons stay), and amounts later in the text like "(15 oz)".
+function ingredientToHTML (ingredient, scaleFactor, system) {
+  var metric = system === 'metric' && units.toMetric
+  var name = ingredient.name
   if (ingredient.amount) {
     var title = `${render_number(ingredient.amount)} (org) x ${render_number(scaleFactor)} (scaling)`
-    var scaled = render_number(ingredient.amount * scaleFactor, 2)
-    if (ingredient.amountTo) {
-      scaled += ingredient.separator + render_number(ingredient.amountTo * scaleFactor, 2)
+    var low = ingredient.amount * scaleFactor
+    var high = ingredient.amountTo ? ingredient.amountTo * scaleFactor : null
+    var scaled = render_number(low, 2) + (high ? ingredient.separator + render_number(high, 2) : '')
+    var unitMatch = metric && leading_unit && name.match(leading_unit)
+    var converted = unitMatch && units.toMetric(low, unitMatch[2], high)
+    if (converted) {
+      scaled = converted.value + (high ? ingredient.separator + units.toMetric(high, unitMatch[2], high).value : '')
+      name = ' ' + converted.unit + units.textToMetric(name.slice(unitMatch[0].length))
+    } else if (metric) {
+      name = units.textToMetric(name)
     }
-    return `${ingredient.prefix || ''}<span class="scaled" title="${title}">${scaled}</span>${ingredient.name}`
+    return `${ingredient.prefix || ''}<span class="scaled" title="${title}">${scaled}</span>${name}`
   } else {
-    return ingredient.name
+    return metric ? units.textToMetric(name) : name
   }
 }
 
@@ -195,9 +211,14 @@ if (typeof document !== 'undefined') {
   var input = document.querySelector('input[name="recipe_scaling"]')
   if (input) {
     var initialScale = parse_number(input.value)
+    var currentSystem = function () { return window.Cookbook && Cookbook.units ? Cookbook.units.system : 'us' }
     input.addEventListener('change', function () {
-      renderIngredientsAtScale(parse_number(input.value))
+      renderIngredientsAtScale(parse_number(input.value), currentSystem())
     })
+    if (window.Cookbook && Cookbook.units) {
+      Cookbook.units.onChange(function (system) { renderIngredientsAtScale(parse_number(input.value), system) })
+      if (currentSystem() === 'metric') renderIngredientsAtScale(initialScale, 'metric')
+    }
   }
 
   var changeValue = function (direction) {

@@ -12,7 +12,7 @@ function body (data) {
 module.exports = {
   layout: 'recipe.njk',
   ogType: 'article',
-  scripts: ['/js/recipe-scaling.js', '/js/kitchen.js'],
+  scripts: ['/js/units.js', '/js/recipe-scaling.js', '/js/kitchen.js'],
   eleventyComputed: {
     // Keep the addresses the Jekyll site used, so links people already shared still work.
     permalink: (data) => `/recipes/${recipeSlug(data.page.fileSlug)}/`,

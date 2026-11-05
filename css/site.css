@@ -441,6 +441,31 @@ main {
   margin-bottom: 16px;
 }
 .recipe-scaling label { margin-right: 4px; }
+
+/* US / Metric switch, beside the servings (below them on narrow phones) */
+.unit-toggle {
+  display: inline-flex;
+  vertical-align: top;
+  gap: 2px;
+  padding: 5px;
+  margin: 0 0 16px;
+  border-radius: 999px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+}
+.unit-toggle button {
+  min-width: 64px;
+  min-height: 44px;
+  padding: 0 14px;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--muted);
+  font: 600 15px var(--sans);
+  cursor: pointer;
+}
+.unit-toggle button[aria-pressed="true"] { background: var(--accent); color: var(--on-accent); }
+@media (min-width: 420px) { .unit-toggle { margin-left: 8px; } }
 .recipe-scaling input {
   width: 3.2em;
   min-height: 44px;
@@ -797,7 +822,7 @@ body.has-timers { padding-bottom: calc(var(--tabbar) + env(safe-area-inset-botto
 /* --- Print: just the recipe --- */
 
 @media print {
-  .topbar, .tabbar, .footer, .recipe-scaling button, .recipe-tags, .skip-link,
+  .topbar, .tabbar, .footer, .recipe-scaling button, .unit-toggle, .recipe-tags, .skip-link,
   .kitchen-tools, .ingredient-actions, .timers, .toast { display: none !important; }
   .timer-link { background: none; color: inherit; padding: 0; font-weight: inherit; }
   .timer-link::before { content: none; }
