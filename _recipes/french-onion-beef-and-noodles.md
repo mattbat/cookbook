@@ -1,8 +1,6 @@
 ---
 author: Carly Batchelder
 sourceUrl: https://s.samsungfood.com/8r9pv
-spoonacularSourceUrl: 
-imageSource: 
 date: 2024-11-09
 prep_time: 10
 cooking_time: 30
@@ -15,17 +13,17 @@ tags: [main, beef, pasta]
 ![Image of French Onion Beef and Noodles](../img/french-onion-beef-and-noodles.jpeg)
 
 ## Ingredients
-- 2 tablespoons olive oil
-- 1 pound beef stew meat
-- 1 teaspoon onion powder
-- 1 teaspoon garlic powder
+- 2 Tbsp olive oil
+- 1 lb beef stew meat
+- 1 tsp onion powder
+- 1 tsp garlic powder
 - Salt, to taste
 - Pepper, to taste
-- 1 (10.5-ounce) can French Onion Soup
+- 1 (10½ oz) can French Onion Soup
 - 3 cups beef broth
-- 12 ounces egg noodles
-- 1/2 cup sour cream
-- 1/4 cup Parmesan cheese
+- 12 oz egg noodles
+- ½ cup sour cream
+- ¼ cup Parmesan cheese
 - 1 cup French fried onions
 
 ## Steps

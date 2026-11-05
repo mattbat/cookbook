@@ -1,18 +1,17 @@
 ---
 author: Darrel Sullivan
 sourceUrl: 
-spoonacularSourceUrl: 
-imageSource:
 date: 2022-02-27
 prep_time: 60
 cooking_time: 60
-servings: 8
+servings: 22
+servingsUnit: Pints
 category: side
 tags: [side]
 ---
 # Sauerkraut
 
-![Image of sauerkraut](../img/sauerkraut.jpeg)
+![Image of Sauerkraut](../img/sauerkraut.jpeg)
 
 ## Ingredients
 - 20 heads cabbage

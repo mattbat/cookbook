@@ -1,8 +1,6 @@
 ---
 author: Lee Anne Paris
 sourceUrl:
-spoonacularSourceUrl: 
-imageSource:
 date: 2023-05-06
 prep_time: 10
 cooking_time: 0
@@ -19,9 +17,8 @@ tags: [dip, fruit]
 - 1 small jar marshmallow cream
 
 ## Steps
-1. Beat cream cheese util fluffy.
-
+1. Beat cream cheese until fluffy.
 2. Mix in marshmallow cream until the dip is smooth.
 
 ## Notes
-- Great with fruit of all kinds.  Also good on pumpkin bread.
+- Great with fruit of all kinds. Also good on pumpkin bread.
