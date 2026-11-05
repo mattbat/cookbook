@@ -11,8 +11,32 @@ rebuilds, tests itself, and publishes on its own.
    (lowercase, with hyphens: the file name becomes the web address).
 2. Put the photo in `img/` and point to it: `![Image of My New Recipe](../img/my-new-recipe.jpeg)`.
 3. Fill in the details at the top (`author`, `servings`, `tags`, ...) and the recipe itself:
-   one `# Title`, then `## Ingredients` as a `- ` list and `## Steps` as a `1. ` list.
+   one `# Title`, then `## Ingredients` as a `- ` list and `## Steps` as a `1. ` list (see below).
 4. Commit to `master`, either from your computer or with **Add file** on github.com.
+
+### How a recipe file is written
+
+Recipes are plain markdown so they stay usable whatever the website becomes. Keep them consistent:
+
+- **Top block (front matter)**
+  - `date`: the day it was added, `YYYY-MM-DD`
+  - `prep_time`, `cooking_time`: whole minutes (`90`, not `1.5 hr`)
+  - `servings`: a number; add `servingsUnit: Cups` (or Pints, Cookies…) when it isn't people
+  - `author`: who makes it in the family; `source`: where it came from, as a name; `sourceUrl`: a link to the original
+  - `tags`: lowercase, from the list in `tests/content/recipes.test.mjs` (add new ones there)
+  - `featured: true` puts a recipe on the home page's Featured shelf
+- **Sections**: `## Ingredients`, `## Steps`, `## Notes`, and when needed `## Tools` (equipment) and
+  `## Videos` (`- Cook: <https://…>`). Sub-groups go under `### Crust`, `### Filling`…
+- **Ingredients**: `- amount unit item, prep (note)`, e.g. `- 1½ cups red onion, finely chopped`
+  - Units: `tsp`, `Tbsp`, `cup`/`cups`, `oz`, `lb`, with a space after the number
+  - Fractions as `½ ¼ ¾ ⅓ ⅔ ⅛` (`1½`, not `1 1/2`)
+  - Ranges as `2 to 3`, so the serving-size buttons scale both numbers
+  - Equipment goes in `## Tools`, not the ingredient list (it would be scaled)
+- **Steps**: a `1. ` list with one line per step and no blank lines between steps
+- **Notes**: a `- ` list
+- Temperatures as `350°F` (the degree sign °, not º)
+
+`npm run test:unit` checks most of this and says exactly what to fix.
 
 Or let the tools write the file for you:
 

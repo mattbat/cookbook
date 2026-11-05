@@ -1,8 +1,9 @@
 ---
+author:
 sourceUrl: <%= recipe.sourceUrl %>
-spoonacularSourceUrl: <%= recipe.spoonacularSourceUrl %>
 date: <%= new Date().toISOString().split('T')[0] %>
-cooking_time: <%= recipe.preparationMinutes + recipe.cookingMinutes %>
+prep_time: <%= recipe.preparationMinutes > 0 ? recipe.preparationMinutes : '' %>
+cooking_time: <%= recipe.cookingMinutes > 0 ? recipe.cookingMinutes : (recipe.readyInMinutes || '') %>
 servings: <%= recipe.servings %>
 tags: [<%= tags.join(', ') %>]
 ---
@@ -10,8 +11,12 @@ tags: [<%= tags.join(', ') %>]
 
 ![Image of <%=recipe.title%>](<%=recipe.image%>)
 
+## Ingredients
 <% for(var i=0; i < ingredients.length; i++) { %>
 - <%= ingredients[i].original %><% } %>
 
+## Steps
 <% for(var i=0; i < instructions.length; i++) { %>
 <%= i + 1 %>. <%= instructions[i].step %><% } %>
+
+## Notes
