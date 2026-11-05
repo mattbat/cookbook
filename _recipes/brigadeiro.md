@@ -1,8 +1,6 @@
 ---
 author: Carly Batchelder
 sourceUrl: https://www.allrecipes.com/recipe/24052/brigadeiro/
-spoonacularSourceUrl: 
-imageSource: 
 date: 2024-11-02
 prep_time: 15
 cooking_time: 10
@@ -15,9 +13,9 @@ tags: [dessert, brazilian, chocolate]
 ![Image of Brigadeiro](../img/brigadeiro.jpeg)
 
 ## Ingredients
-- 1 (14 ounce) can sweetened condensed milk
-- 3 tablespoons unsweetened cocoa
-- 1 tablespoon butter
+- 1 (14 oz) can sweetened condensed milk
+- 3 Tbsp unsweetened cocoa
+- 1 Tbsp butter
 
 ## Steps
 1. Gather all ingredients.
@@ -28,4 +26,4 @@ tags: [dessert, brazilian, chocolate]
 6. Serve immediately or chill until ready to serve.
 
 ## Notes
-Brigadeiro can also be made in the microwave; just remember to stir every minute.
+- Brigadeiro can also be made in the microwave; just remember to stir every minute.

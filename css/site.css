@@ -174,7 +174,8 @@ p { margin: 0 0 1em; }
 .tabbar .icon { width: 25px; height: 25px; }
 .tabbar a[aria-current="page"] { color: var(--accent); }
 
-body { padding-bottom: calc(var(--tabbar) + env(safe-area-inset-bottom)); }
+/* The tab bar is var(--tabbar) tall plus its 1px top border */
+body { padding-bottom: calc(var(--tabbar) + 1px + env(safe-area-inset-bottom)); }
 
 @media (min-width: 768px) {
   :root { --gutter: 28px; --topbar: 64px; }

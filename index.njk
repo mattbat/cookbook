@@ -14,7 +14,7 @@ useSiteTitle: true
   {% include "category-chips.njk" %}
 </section>
 
-{%- set featured = collections.recipes | withTag("featured") | newestFirst %}
+{%- set featured = collections.recipes | featured | newestFirst %}
 {%- if featured.length %}
 <section class="shelf">
   <h2>Featured</h2>

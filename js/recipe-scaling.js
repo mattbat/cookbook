@@ -85,7 +85,10 @@ function render_number (number, precision = 2) {
 // Whitespace and opening tags (e.g. the <p> of a loose list) before an item's text
 var leading_markup = /^(?:\s|&nbsp;|<[a-zA-Z][^>]*>)*/
 // An amount at the start of an item's text: "1 1/2", "1 ½", "1/2", "2.5", "1½", "½" or "2"
-var leading_amount = /^(?:\d+\s+(?:\d+\/\d+|[¼-¾⅐-⅞])|\d+\/\d+|\d+\.\d+|\d*[¼-¾⅐-⅞↉]|\d+)/
+var amount_pattern = '(?:\\d+\\s+(?:\\d+\\/\\d+|[¼-¾⅐-⅞])|\\d+\\/\\d+|\\d+\\.\\d+|\\d*[¼-¾⅐-⅞↉]|\\d+)'
+var leading_amount = new RegExp('^' + amount_pattern)
+// A range right after the amount: "2 to 3", "2-3" or "2–3" (both ends get scaled)
+var range_end = new RegExp('^(\\s+to\\s+|\\s*[-–]\\s*)(' + amount_pattern + ')(?![\\d/])')
 
 function getIngredients (entries) {
   var ingredients = []
@@ -103,10 +106,16 @@ function getIngredients (entries) {
     var prefix = text.match(leading_markup)[0]
     var rest = text.slice(prefix.length)
     var match = rest.match(leading_amount)
-    var name, amount
+    var name, amount, amountTo, separator
     if (match) {
       name = rest.slice(match[0].length)
       amount = parse_number(match[0])
+      var range = name.match(range_end)
+      if (range) {
+        separator = range[1]
+        amountTo = parse_number(range[2])
+        name = name.slice(range[0].length)
+      }
     } else {
       prefix = ''
       name = text
@@ -115,6 +124,8 @@ function getIngredients (entries) {
     ingredients.push({
       el,
       amount,
+      amountTo,
+      separator,
       prefix,
       name
     })
@@ -137,7 +148,12 @@ function renderIngredientsAtScale (scale) {
 
 function ingredientToHTML (ingredient, scaleFactor) {
   if (ingredient.amount) {
-    return `${ingredient.prefix || ''}<span class="scaled" title="${render_number(ingredient.amount)} (org) x ${render_number(scaleFactor)} (scaling)">${render_number(ingredient.amount * scaleFactor, 2)}</span>${ingredient.name}`
+    var title = `${render_number(ingredient.amount)} (org) x ${render_number(scaleFactor)} (scaling)`
+    var scaled = render_number(ingredient.amount * scaleFactor, 2)
+    if (ingredient.amountTo) {
+      scaled += ingredient.separator + render_number(ingredient.amountTo * scaleFactor, 2)
+    }
+    return `${ingredient.prefix || ''}<span class="scaled" title="${title}">${scaled}</span>${ingredient.name}`
   } else {
     return ingredient.name
   }
