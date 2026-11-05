@@ -58,6 +58,29 @@ window.Cookbook = window.Cookbook || {}
     return list.dataset.section || ''
   }
 
+  // --- Installed app ---
+
+  var base = document.body.dataset.base || '/'
+  var installed = window.matchMedia('(display-mode: standalone)').matches || navigator.standalone === true
+
+  // Save the site on the phone for offline use (needs https; also works on localhost)
+  if ('serviceWorker' in navigator && window.isSecureContext) {
+    window.addEventListener('load', function () {
+      navigator.serviceWorker.register(base + 'sw.js', { scope: base }).catch(function () {})
+    })
+  }
+
+  // The app's own Back button: go back if we came from inside the cookbook, otherwise home
+  var back = document.querySelector('.topbar .back')
+  if (back) {
+    back.addEventListener('click', function (event) {
+      if (history.length > 1 && document.referrer.indexOf(location.origin + base) === 0) {
+        event.preventDefault()
+        history.back()
+      }
+    })
+  }
+
   Cookbook.storage = {
     get: function (key, fallback) {
       try {
@@ -70,6 +93,44 @@ window.Cookbook = window.Cookbook || {}
         if (value === null) localStorage.removeItem(key)
         else localStorage.setItem(key, JSON.stringify(value))
       } catch (e) {}
+    }
+  }
+
+  // "Put the cookbook on your home screen" on the home page, until it's installed or dismissed.
+  // Android/desktop Chrome offer an Install button; on an iPhone it's Share > Add to Home Screen.
+  var banner = document.querySelector('.install')
+  var DISMISSED = 'cookbook-install-dismissed'
+  if (banner && !installed && !Cookbook.storage.get(DISMISSED, false)) {
+    var button = banner.querySelector('.install-button')
+    var prompt = null
+    var hide = function () { banner.hidden = true }
+    var ua = navigator.userAgent
+    var iPhone = /iPhone|iPad|iPod/.test(ua) || (/Macintosh/.test(ua) && navigator.maxTouchPoints > 1)
+    // Only Safari can add to the home screen on older iPhones; other iPhone browsers have no Share > Add
+    var safari = iPhone && !/CriOS|FxiOS|EdgiOS/.test(ua)
+
+    window.addEventListener('beforeinstallprompt', function (event) {
+      event.preventDefault()
+      prompt = event
+      button.hidden = false
+      banner.hidden = false
+    })
+    button.addEventListener('click', function () {
+      if (!prompt) return
+      prompt.prompt()
+      prompt.userChoice.then(function (choice) {
+        if (choice.outcome === 'accepted') hide()
+        prompt = null
+      })
+    })
+    window.addEventListener('appinstalled', hide)
+    banner.querySelector('.install-close').addEventListener('click', function () {
+      Cookbook.storage.set(DISMISSED, true)
+      hide()
+    })
+    if (safari) {
+      banner.querySelector('.install-ios').hidden = false
+      banner.hidden = false
     }
   }
 })()

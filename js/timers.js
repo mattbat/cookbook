@@ -46,6 +46,34 @@ function findDurations (text) {
   return found
 }
 
+// A WAV sound file made of tones: [[frequency in Hz (0 for silence), seconds], ...]
+function makeWav (tones, volume) {
+  var rate = 22050
+  var total = tones.reduce(function (sum, tone) { return sum + Math.round(tone[1] * rate) }, 0)
+  var buffer = new ArrayBuffer(44 + total * 2)
+  var view = new DataView(buffer)
+  var text = function (offset, value) {
+    for (var i = 0; i < value.length; i++) view.setUint8(offset + i, value.charCodeAt(i))
+  }
+  text(0, 'RIFF'); view.setUint32(4, 36 + total * 2, true); text(8, 'WAVE')
+  text(12, 'fmt '); view.setUint32(16, 16, true); view.setUint16(20, 1, true); view.setUint16(22, 1, true)
+  view.setUint32(24, rate, true); view.setUint32(28, rate * 2, true); view.setUint16(32, 2, true); view.setUint16(34, 16, true)
+  text(36, 'data'); view.setUint32(40, total * 2, true)
+  var at = 44
+  tones.forEach(function (tone) {
+    var count = Math.round(tone[1] * rate)
+    var fade = Math.min(count / 2, rate * 0.01)
+    for (var i = 0; i < count; i++) {
+      // Short fades at each end, so the tones don't click
+      var envelope = Math.min(1, i / fade, (count - i) / fade)
+      var sample = tone[0] ? Math.sin(2 * Math.PI * tone[0] * i / rate) * volume * envelope : 0
+      view.setInt16(at, Math.round(sample * 32767), true)
+      at += 2
+    }
+  })
+  return buffer
+}
+
 // 75 -> "1:15", 3725 -> "1:02:05"
 function formatTimer (seconds) {
   seconds = Math.max(0, Math.ceil(seconds))
@@ -79,7 +107,6 @@ if (typeof document !== 'undefined') (function () {
   document.body.appendChild(tray)
   var rows = {}
 
-  var audio = null
   var alarmUntil = 0
   var lastBeep = 0
 
@@ -90,24 +117,55 @@ if (typeof document !== 'undefined') (function () {
     return (timer.end - Date.now()) / 1000
   }
 
+  // Sound. Phones only play sound that a tap started, so the first tap (starting a timer, or any
+  // tap once a timer is running) "unlocks" the alarm clip for later. It's an ordinary audio clip
+  // rather than generated tones, because iPhones mute generated tones when the silent switch is on.
+  var alarm = null
+  var blip = null
+  var unlocked = false
+
+  function clip (tones, volume) {
+    try {
+      var url = URL.createObjectURL(new Blob([makeWav(tones, volume)], { type: 'audio/wav' }))
+      var el = new Audio(url)
+      el.preload = 'auto'
+      el.setAttribute('playsinline', '')
+      return el
+    } catch (e) { return null }
+  }
+
+  function unlockSound () {
+    // Let a timer sound even when an iPhone's silent switch is on (Safari 17+)
+    try { if (navigator.audioSession) navigator.audioSession.type = 'playback' } catch (e) {}
+    if (!alarm) alarm = clip([[880, 0.22], [0, 0.1], [880, 0.22], [0, 0.1], [1175, 0.4]], 0.9)
+    if (!blip) blip = clip([[1320, 0.07]], 0.35)
+    if (unlocked || !alarm) return
+    alarm.muted = true
+    var played = alarm.play()
+    var done = function () {
+      alarm.pause()
+      alarm.currentTime = 0
+      alarm.muted = false
+    }
+    if (played && played.then) played.then(function () { unlocked = true; done() }, done)
+    else { unlocked = true; done() }
+  }
+
   function beep () {
     if (navigator.vibrate) navigator.vibrate([300, 150, 300, 150, 300])
-    if (!audio) return
+    if (!alarm) return
     try {
-      if (audio.state === 'suspended') audio.resume()
-      ;[0, 0.25, 0.5].forEach(function (offset) {
-        var osc = audio.createOscillator()
-        var gain = audio.createGain()
-        osc.frequency.value = 880
-        gain.gain.setValueAtTime(0.0001, audio.currentTime + offset)
-        gain.gain.exponentialRampToValueAtTime(0.4, audio.currentTime + offset + 0.02)
-        gain.gain.exponentialRampToValueAtTime(0.0001, audio.currentTime + offset + 0.18)
-        osc.connect(gain).connect(audio.destination)
-        osc.start(audio.currentTime + offset)
-        osc.stop(audio.currentTime + offset + 0.2)
-      })
+      alarm.muted = false
+      alarm.currentTime = 0
+      var played = alarm.play()
+      if (played && played.catch) played.catch(function () {})
     } catch (e) {}
   }
+
+  // A running or finished timer from another page: unlock the sound on the next tap anywhere
+  document.addEventListener('pointerdown', function () {
+    if (timers.length) unlockSound()
+  }, { capture: true, passive: true })
 
   function row (timer) {
     var el = document.createElement('div')
@@ -168,12 +226,15 @@ if (typeof document !== 'undefined') (function () {
   }
 
   function start (seconds, label) {
-    // Sound has to be unlocked by a tap, so set it up now
-    try {
-      var Context = window.AudioContext || window.webkitAudioContext
-      if (!audio && Context) audio = new Context()
-      if (audio && audio.state === 'suspended') audio.resume()
-    } catch (e) {}
+    // This runs from a tap, so the sound can be unlocked now; a short blip says sound is on
+    unlockSound()
+    if (blip) {
+      try {
+        blip.currentTime = 0
+        var played = blip.play()
+        if (played && played.catch) played.catch(function () {})
+      } catch (e) {}
+    }
 
     var already = timers.some(function (t) { return t.label === label && t.seconds === seconds && !t.done })
     if (already) {
@@ -266,5 +327,5 @@ if (typeof document !== 'undefined') (function () {
 
 // Lets the unit tests load this file in Node
 if (typeof module !== 'undefined') {
-  module.exports = { findDurations, formatTimer, speakTimer, timerNumber }
+  module.exports = { findDurations, formatTimer, speakTimer, timerNumber, makeWav }
 }

@@ -320,3 +320,78 @@ test('printing leaves out the buttons', async ({ page }) => {
   await expect(page.locator('.kitchen-tools')).toBeHidden()
   await expect(page.locator('.ingredient-actions')).toBeHidden()
 })
+
+test('Keep screen on goes back to its normal color when turned off', async ({ page, isMobile }) => {
+  await stubWakeLock(page)
+  await page.goto('recipes/gumbo/')
+  const button = page.getByRole('button', { name: 'Keep screen on' })
+  const background = () => button.evaluate((el) => getComputedStyle(el).backgroundColor)
+  // Move the mouse away first on desktop; a pointer resting on a button rightly highlights it
+  const away = async () => { if (!isMobile) await page.mouse.move(0, 0) }
+  await away()
+  const off = await background()
+  await button.click()
+  await away()
+  await expect(button).toHaveAttribute('aria-pressed', 'true')
+  expect(await background()).not.toBe(off)
+  await button.click()
+  await away()
+  await expect(button).toHaveAttribute('aria-pressed', 'false')
+  // On phones a tapped button used to stay highlighted until you tapped somewhere else
+  await expect.poll(background).toBe(off)
+})
+
+test.describe('timer sound', () => {
+  test.beforeEach(async ({ page }) => {
+    // Record what the page plays instead of making noise
+    await page.addInitScript(() => {
+      window.__plays = []
+      HTMLMediaElement.prototype.play = function () {
+        window.__plays.push({ src: this.src, muted: this.muted })
+        return Promise.resolve()
+      }
+    })
+    await page.clock.install()
+    await page.goto('recipes/gumbo/')
+  })
+
+  const plays = (page) => page.evaluate(() => window.__plays)
+
+  test('starting a timer unlocks the alarm and plays a short blip', async ({ page }) => {
+    await page.locator('ol.steps .timer-link', { hasText: '6 minutes' }).click()
+    const [unlock, ...rest] = await plays(page)
+    // Phones only allow sound that a tap started: the alarm is played silently once, now
+    expect(unlock.muted).toBe(true)
+    expect(unlock.src).toMatch(/^blob:/)
+    expect(rest.some((play) => !play.muted && play.src !== unlock.src)).toBe(true)
+  })
+
+  test('the alarm sounds when the timer is done, and repeats until dismissed', async ({ page }) => {
+    await page.locator('ol.steps .timer-link', { hasText: '6 minutes' }).click()
+    const alarm = (await plays(page))[0].src
+    const alarmPlays = async () => (await plays(page)).filter((play) => play.src === alarm && !play.muted).length
+    expect(await alarmPlays()).toBe(0)
+
+    await page.clock.fastForward('06:01')
+    await expect(page.locator('.timer.done')).toBeVisible()
+    // (Exact counts depend on how busy the computer is, so check it starts, repeats, then stops)
+    await expect.poll(alarmPlays).toBeGreaterThanOrEqual(1)
+    const first = await alarmPlays()
+    await page.clock.fastForward('00:05')
+    await expect.poll(alarmPlays).toBeGreaterThan(first)
+
+    await page.locator('.timer').getByRole('button', { name: /Dismiss/ }).click()
+    const beforeDismiss = await alarmPlays()
+    await page.clock.fastForward('00:10')
+    expect(await alarmPlays()).toBe(beforeDismiss)
+  })
+
+  test('after a reload, the first tap anywhere unlocks the sound again', async ({ page }) => {
+    await page.locator('ol.steps .timer-link', { hasText: '6 minutes' }).click()
+    await page.reload()
+    expect(await plays(page)).toEqual([])
+    await page.locator('h1').click()
+    const [unlock] = await plays(page)
+    expect(unlock.muted).toBe(true)
+  })
+})

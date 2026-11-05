@@ -14,6 +14,18 @@ useSiteTitle: true
   {% include "category-chips.njk" %}
 </section>
 
+{#- Shown by app.js on phones that can add the cookbook to the home screen #}
+<aside class="install" aria-label="Add to home screen" hidden>
+  <img src="{{ '/icons/icon-192.png' | url }}" width="48" height="48" alt="">
+  <div class="install-text">
+    <p class="install-title">Put the cookbook on your home screen</p>
+    <p class="install-how">It opens like an app and works without signal.</p>
+    <p class="install-ios" hidden>Tap {% icon "share" %} <b>Share</b>, then <b>Add to Home Screen</b>.</p>
+  </div>
+  <button type="button" class="tool tool-primary install-button" hidden>Install</button>
+  <button type="button" class="install-close" aria-label="Not now">&times;</button>
+</aside>
+
 {%- set featured = collections.recipes | featured | newestFirst %}
 {%- if featured.length %}
 <section class="shelf">

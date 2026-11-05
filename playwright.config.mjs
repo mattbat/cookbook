@@ -13,6 +13,9 @@ export default defineConfig({
   use: {
     baseURL: `http://localhost:${PORT}/cookbook/`,
     trace: 'retain-on-failure',
+    // The offline copy (service worker) is tested on its own in pwa.spec.mjs; elsewhere it would
+    // hide requests from the tests
+    serviceWorkers: 'block',
     screenshot: 'only-on-failure'
   },
   // Every test runs on an iPhone (Safari engine), an Android phone (Chrome engine) and a desktop.

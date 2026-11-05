@@ -1,10 +1,16 @@
 import path from 'node:path'
 import recipes from './lib/recipes.js'
 import images from './lib/images.js'
+import photoTools from './lib/photos.js'
+import iconTools from './lib/icons.js'
 
 const { PATH_PREFIX, createMarkdown, stripTitle, absolutizeImages, tagId } = recipes
 
 const { imageSize } = images
+const { buildPhotos, copyPhotos, defaultVariant } = photoTools
+
+// Smaller copies of each photo, made before each build (see lib/photos.js)
+let photos = new Map()
 
 // Outline icons (24x24, stroked via CSS)
 const ICONS = {
@@ -17,6 +23,7 @@ const ICONS = {
   users: '<circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0"/><path d="M16 4.5a3.5 3.5 0 0 1 0 7M18 14a6.5 6.5 0 0 1 3.5 6"/>',
   link: '<path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1"/><path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/>',
   play: '<path d="M7 4.5v15l12-7.5z"/>',
+  back: '<path d="M15 5l-7 7 7 7"/>',
   sun: '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>',
   share: '<path d="M12 3v12M7.5 7.5 12 3l4.5 4.5"/><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7"/>',
   copy: '<rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/>'
@@ -71,17 +78,36 @@ export default function (eleventyConfig) {
 
   // Give every local photo its real width/height so the page doesn't jump as photos load
   // (that jump is what sent category links to the wrong place), and lazy-load all but the first.
+  eleventyConfig.on('eleventy.before', async () => {
+    photos = await buildPhotos({ srcDir: 'img', cacheDir: '.cache/photos' })
+  })
+  eleventyConfig.on('eleventy.after', async ({ dir }) => {
+    copyPhotos(photos, path.join(dir.output, 'img', 'w'))
+    await iconTools.buildIcons(path.join(dir.output, 'icons'))
+  })
+
+  // Give every local photo its real width/height so the page doesn't jump as photos load
+  // (that jump is what sent category links to the wrong place), lazy-load all but the first,
+  // and let the browser pick a copy the size of the screen (srcset) instead of the original.
   eleventyConfig.addTransform('photo-sizes', function (html) {
     if (!(this.page.outputPath || '').endsWith('.html')) return html
     let first = true
     return html.replace(/<img\b[^>]*>/g, (tag) => {
       const src = tag.match(/\ssrc="([^"]+)"/)
       if (!src || !src[1].startsWith(PATH_PREFIX + 'img/')) return tag
+      const name = decodeURIComponent(src[1].slice(PATH_PREFIX.length + 4)).replace(/&#39;/g, "'")
+      const photo = photos.get('/img/' + name)
       let attrs = ''
-      const size = imageSize(path.join('img', decodeURIComponent(src[1].slice(PATH_PREFIX.length + 4)).replace(/&#39;/g, "'")))
+      const size = photo || imageSize(path.join('img', name))
       if (size && !/\swidth=/.test(tag)) attrs += ` width="${size.width}" height="${size.height}"`
       if (!first && !/\sloading=/.test(tag)) attrs += ' loading="lazy" decoding="async"'
       first = false
+      if (photo) {
+        const url = (variant) => `${PATH_PREFIX}img/w/${variant.name}`
+        tag = tag.replace(src[0], ` src="${url(defaultVariant(photo))}"`)
+        attrs += ` srcset="${photo.variants.map((v) => `${url(v)} ${v.width}w`).join(', ')}"`
+        if (!/\ssizes=/.test(tag)) attrs += ' sizes="(min-width: 760px) 720px, 100vw"'
+      }
       return tag.replace(/^<img\b/, '<img' + attrs)
     })
   })
@@ -110,7 +136,7 @@ export default function (eleventyConfig) {
   eleventyConfig.addFilter('isCurrent', (pageUrl, tabUrl) =>
     tabUrl === '/' ? pageUrl === '/' : pageUrl.startsWith(tabUrl))
 
-  for (const path of ['README.md', 'CLI/**', 'lib/**', 'tests/**', '_recipes/_template/**', 'test-results/**', 'playwright-report/**']) {
+  for (const path of ['README.md', '.cache/**', 'CLI/**', 'lib/**', 'tests/**', '_recipes/_template/**', 'test-results/**', 'playwright-report/**']) {
     eleventyConfig.ignores.add(path)
   }
 

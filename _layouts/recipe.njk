@@ -8,7 +8,7 @@ mainClass: recipe-page
   <header class="recipe-header">
     {%- if photo %}
     <figure class="recipe-photo">
-      <img src="{{ photo.src | url }}" alt="{{ photo.alt }}">
+      <img src="{{ photo.src | url }}" alt="{{ photo.alt }}" sizes="(min-width: 900px) 520px, 100vw">
     </figure>
     {%- endif %}
 

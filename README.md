@@ -126,6 +126,7 @@ GitHub Pages. No CSS or JavaScript framework: the look is in `css/site.css`, pag
 | `search.js` | Search tab | search and category filters |
 | `recipe-scaling.js` | recipes | the servings stepper |
 | `kitchen.js` | recipes | ingredient check-offs, Copy list, Share, Keep screen on, Cook mode |
+| `offline.js` | offline page | lists the recipes saved on this device |
 
 Every recipe page also carries [schema.org Recipe](https://schema.org/Recipe) data (built by
 `recipeJsonLd` in `lib/recipes.js`), so Google and recipe apps can read the ingredients, steps
@@ -135,6 +136,23 @@ are fine); Notes lists aren't steps.
 Keep screen on, the share sheet and the clipboard need a secure (https) page, so when you test on
 your phone at `http://<your IP>:8080` the Keep screen on button is hidden and Share copies the link
 instead. On the live site they all work.
+
+### App and offline
+
+- **Add to Home Screen** makes the cookbook open full screen with its own icon (`manifest.webmanifest.njk`;
+  the icon is drawn in `lib/icons.js` and saved as PNGs during the build). The home page shows a
+  card explaining how, until it's installed or dismissed.
+- **Offline**: `sw.js.njk` is a service worker that saves the site on the phone. Pages are always
+  fetched fresh when there's signal (after 4 seconds on a weak signal, the saved copy is used);
+  recipes you've opened before work with no signal at all, and other pages show `/offline/`, which
+  lists the saved recipes. It needs https, so it doesn't run when testing on a phone over `http://`.
+- **Photos**: `lib/photos.js` makes smaller copies of every photo in `img/` (240 to 1600 pixels
+  wide, in `img/w/`), and pages use `srcset` so phones download one about the size of their
+  screen. Copies are kept in `.cache/photos` so only new or changed photos are resized; the first
+  build after cloning takes about 30 seconds longer. Keep adding full-size photos to `img/` as before.
+
+If `npm start` is running, stop it before `npm test`: both write to `_site/`. Restart `npm start`
+after changing `eleventy.config.mjs`, `lib/` or `_data/`, which it doesn't reload on its own.
 
 The site's sections (the bottom tabs on phones, the top links on desktop) and the category list
 are set in `_data/site.json`. A category only appears once at least one recipe has its tag.

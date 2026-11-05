@@ -14,6 +14,14 @@
 
   <meta name="author" content="{{ site.author }}">
   <link rel="icon" type="image/x-icon" href="{{ '/favicon.ico' | url }}">
+  <link rel="icon" type="image/svg+xml" href="{{ '/icons/icon.svg' | url }}">
+  {#- Add to Home Screen: opens full screen, like an app #}
+  <link rel="manifest" href="{{ '/manifest.webmanifest' | url }}">
+  <link rel="apple-touch-icon" href="{{ '/icons/apple-touch-icon.png' | url }}">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Recipes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <meta name="description" content="{{ metaDescription }}">
   <link rel="alternate" type="application/rss+xml" title="{{ site.title }} - {{ site.description }}" href="{{ '/feed.xml' | fullUrl }}">
 
