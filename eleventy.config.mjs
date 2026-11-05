@@ -158,6 +158,8 @@ export default function (eleventyConfig) {
   eleventyConfig.addFilter('byTitle', (items) => [...items].sort((a, b) => a.data.title.localeCompare(b.data.title)))
   eleventyConfig.addFilter('newestFirst', (items) => [...items].sort((a, b) => b.date - a.date))
   eleventyConfig.addFilter('tagId', tagId)
+  // Recipes marked `featured: true` in their front matter, shown first on the home page.
+  eleventyConfig.addFilter('featured', (items) => items.filter((item) => item.data.featured === true))
   eleventyConfig.addFilter('withTag', (items, tag) =>
     items.filter((item) => (item.data.tags || []).some((t) => tagId(t) === tagId(tag))))
   // One entry per tag, however it was written ("Greek" and "greek" are merged).

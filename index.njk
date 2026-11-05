@@ -26,7 +26,7 @@ useSiteTitle: true
   <button type="button" class="install-close" aria-label="Not now">&times;</button>
 </aside>
 
-{%- set featured = collections.recipes | withTag("featured") | newestFirst %}
+{%- set featured = collections.recipes | featured | newestFirst %}
 {%- if featured.length %}
 <section class="shelf">
   <h2>Featured</h2>

@@ -1,14 +1,13 @@
 ---
 author: Madonna Sullivan
 sourceUrl: 
-spoonacularSourceUrl: 
-imageSource:
 date: 2022-02-27
 prep_time: 15
 cooking_time: 210
 servings: 8
 category: main
-tags: [featured, main, beef]
+featured: true
+tags: [main, beef]
 ---
 # Memaw's Roast
 
@@ -24,10 +23,10 @@ tags: [featured, main, beef]
 - Beef Bouillon
 
 ## Steps
-1. Pre-heat the oven to 300ºF.  Spray dutch oven with cooking spray.
+1. Pre-heat the oven to 300°F. Spray dutch oven with cooking spray.
 2. Sear roast on the stove.
 3. Add Lipton packet and carrots.
-4. Cook roast and carrots in oven for 3.5 hours.
+4. Cook roast and carrots in oven for 3½ hours.
 5. Make gravy with cornstarch slurry, kitchen bouquet, and beef bouillon.
 
 ## Notes

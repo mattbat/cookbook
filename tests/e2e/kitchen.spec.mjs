@@ -75,7 +75,7 @@ test.describe('checking off ingredients', () => {
     await page.reload()
     await expect(ingredient(page, 'cooked chicken')).toHaveAttribute('aria-checked', 'true')
     await expect(ingredient(page, 'cup oil')).toHaveAttribute('aria-checked', 'true')
-    await expect(ingredient(page, 'teaspoons salt')).toHaveAttribute('aria-checked', 'false')
+    await expect(ingredient(page, 'tsp salt').first()).toHaveAttribute('aria-checked', 'false')
 
     const clear = page.getByRole('button', { name: 'Uncheck all' })
     await clear.click()

@@ -1,5 +1,6 @@
 ---
-author: Sur La Table
+author:
+source: Sur La Table
 sourceUrl:
 date: 2024-11-09
 prep_time: 15
@@ -13,16 +14,16 @@ tags: [side, potatoes]
 ![Image of Thyme Scented Potato Gratin](../img/thyme-scented-potato-gratin.jpeg)
 
 ## Ingredients
-- 1/2 cup whole milk
-- 1 1/2 cups heavy whipping cream
+- ½ cup whole milk
+- 1½ cups heavy whipping cream
 - 1 bay leaf
-- 1/4 teaspoon freshly ground nutmeg
+- ¼ tsp freshly ground nutmeg
 - Kosher salt and freshly ground black pepper
-- 2 tablespoons unsalted butter, plus more for buttering the baking dish
-- 1 medium leek, white part only, halved lengthwise and cut crosswise into 1/4-inch slices
+- 2 Tbsp unsalted butter, plus more for buttering the baking dish
+- 1 medium leek, white part only, halved lengthwise and cut crosswise into ¼-inch slices
 - 1 medium garlic clove, minced
-- 1 teaspoon minced thyme leaves
-- 2 1/2 pounds Yukon Gold potatoes, peeled and sliced about 1/8 inch thick
+- 1 tsp minced thyme leaves
+- 2½ lb Yukon Gold potatoes, peeled and sliced about ⅛ inch thick
 - 1 cup grated Gruyere cheese
 
 ## Steps

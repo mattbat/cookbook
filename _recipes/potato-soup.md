@@ -1,8 +1,7 @@
 ---
-author: Carly Batchelder (The Machine Shed)
+author: Carly Batchelder
+source: The Machine Shed
 sourceUrl: https://machineshed.com/the-sheds-world-famous-baked-potato-soup/
-spoonacularSourceUrl: 
-imageSource: 
 date: 2024-11-02
 prep_time: 15
 cooking_time: 30
@@ -15,22 +14,22 @@ tags: [main, soup]
 ![Image of Potato Soup](../img/potato-soup.jpeg)
 
 ## Ingredients
-- 2 1/2 pounds diced red potatoes
-- 1/2 pound bacon
+- 2½ lb diced red potatoes
+- ½ lb bacon
 - 1 yellow onion, diced
 - 1 small stalk celery, diced
 - 4 cups milk
 - 4 cups water
-- 1/3 cup chicken base
-- 1/2 cup butter
-- 1/2 cup flour
-- 1 teaspoon salt
-- 1 teaspoon pepper
-- 1/4 cup chopped parsley
+- ⅓ cup chicken base
+- ½ cup butter
+- ½ cup flour
+- 1 tsp salt
+- 1 tsp pepper
+- ¼ cup chopped parsley
 - 1 cup heavy cream
-- 1/2 cup chopped bacon (for topping)
-- 1/4 cup chopped scallions (for topping)
-- 3/4 cups shredded cheddar cheese (for topping)
+- ½ cup chopped bacon (for topping)
+- ¼ cup chopped scallions (for topping)
+- ¾ cup shredded cheddar cheese (for topping)
 
 ## Steps
 1. Steam or boil the diced potatoes until they are tender (about 10 minutes). Set aside.
@@ -43,4 +42,4 @@ tags: [main, soup]
 8. Ladle the soup into bowls and top with bacon, scallions, and shredded cheddar cheese.
 
 ## Notes
-This creamy chowder is perfect for a cold day, serving up hearty flavors that will warm you from the inside out. Enjoy it straight from the pot!
+- This creamy chowder is perfect for a cold day, serving up hearty flavors that will warm you from the inside out. Enjoy it straight from the pot!

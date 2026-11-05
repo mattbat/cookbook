@@ -14,7 +14,7 @@ test('shows the photo, title, author, times, tags, ingredients and steps', async
   await expect(page.locator('.facts')).toContainText('Prep 1 hr 30 min')
   await expect(page.locator('.facts')).toContainText('Cook 30 min')
   await expect(page.locator('.facts')).toContainText('Total 2 hr')
-  await expect(page.locator('.recipe-tags a')).toHaveText(['soup', 'main', 'chicken', 'sausage'])
+  await expect(page.locator('.recipe-tags a')).toHaveText(['soup', 'main', 'chicken', 'poultry', 'sausage'])
 
   const photo = page.locator('.recipe-photo img')
   await expect(photo).toBeVisible()
@@ -41,7 +41,7 @@ test('+ and - change servings and scale ingredients', async ({ page }) => {
   await page.getByRole('button', { name: 'Fewer servings' }).click()
   await page.getByRole('button', { name: 'Fewer servings' }).click()
   await expect(servings(page)).toHaveValue('7')
-  await expect(ingredient(page, 'teaspoons salt')).toHaveText(/^1¾ teaspoons salt/)
+  await expect(ingredient(page, 'tsp salt').first()).toHaveText(/^1¾ tsp salt/)
 })
 
 test('typing a serving size scales fractions', async ({ page }) => {
@@ -49,7 +49,7 @@ test('typing a serving size scales fractions', async ({ page }) => {
   await servings(page).press('Enter')
   await servings(page).blur()
   await expect(ingredient(page, 'cooked chicken')).toHaveText(/^4 cups cooked chicken/)
-  await expect(ingredient(page, 'teaspoon pepper').first()).toHaveText(/^1 teaspoon pepper/)
+  await expect(ingredient(page, 'tsp pepper').first()).toHaveText(/^1 tsp pepper/)
   await expect(ingredient(page, 'cup oil')).toHaveText(/^1⅓ cup oil/)
 })
 

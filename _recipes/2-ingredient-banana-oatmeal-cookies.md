@@ -1,8 +1,6 @@
 ---
 author: Matt Batchelder
 sourceUrl: https://kirbiecravings.com/2-ingredient-banana-oatmeal-cookies/#recipe
-spoonacularSourceUrl: 
-imageSource: 
 date: 2024-11-09
 prep_time: 10
 cooking_time: 15
@@ -17,7 +15,7 @@ tags: [dessert, cookies, banana]
 ## Ingredients
 - 1 cup quick oats (see note)
 - 1 large overripe banana, mashed to a liquid-like consistency
-- 1/2 cup chocolate chips or other add-ins of your choice (optional)
+- ½ cup chocolate chips or other add-ins of your choice (optional)
 
 ## Steps
 1. **Preheat Oven**: Preheat oven to 350°F. Line a baking sheet with a silicone baking mat.
