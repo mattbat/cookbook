@@ -128,3 +128,20 @@ test('an item without an amount is left alone', () => {
 test('items holding a nested list are skipped', () => {
   assert.deepEqual(getIngredients([{ innerHTML: 'Sauce<ul><li>1 cup</li></ul>', childNodes: [{ nodeName: 'UL' }] }]), [])
 })
+
+test('ranges like "2 to 3" and "8-10" scale both ends', () => {
+  const [a] = getIngredients([item('8 to 10 lb pork shoulder')])
+  assert.equal(a.amount, 8)
+  assert.equal(a.amountTo, 10)
+  assert.match(ingredientToHTML(a, 2), /<span class="scaled"[^>]*>16 to 20<\/span> lb pork shoulder/)
+  const [b] = getIngredients([item('2 to 2½ tsp salt')])
+  assert.match(ingredientToHTML(b, 2), />4 to 5<\/span> tsp salt/)
+  const [c] = getIngredients([item('4-5 green onions')])
+  assert.match(ingredientToHTML(c, 2), />8-10<\/span> green onions/)
+})
+
+test('a hyphen that is not a range is left alone', () => {
+  const [a] = getIngredients([item('½-inch slices of leek')])
+  assert.equal(a.amountTo, undefined)
+  assert.match(ingredientToHTML(a, 2), />1<\/span>-inch slices of leek/)
+})
