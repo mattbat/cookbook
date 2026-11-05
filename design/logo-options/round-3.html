@@ -1,0 +1,286 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cookbook Logo Round 3</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,500;0,600;1,600&family=Open+Sans:wght@400;600&family=Playfair+Display:ital,wght@1,700&display=swap">
+<style>
+/* Layout: a contact sheet. Each option gets one card: big icon, real-size previews, a name to point at. */
+:root {
+  --bg: #f4f2ef;
+  --surface: #ffffff;
+  --text: #26221f;
+  --muted: #6d655e;
+  --line: #e2ddd6;
+  --accent: #b4532c;
+  --wall: #2e3a46;
+  --serif: 'Lora', Georgia, serif;
+  --sans: 'Open Sans', 'Helvetica Neue', Arial, sans-serif;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #171513; --surface: #221f1c; --text: #f1ebe4; --muted: #ab9f94; --line: #36302b; --accent: #e48a62; --wall: #0e1419; color-scheme: dark;
+} }
+:root[data-theme="dark"] {
+  --bg: #171513; --surface: #221f1c; --text: #f1ebe4; --muted: #ab9f94; --line: #36302b; --accent: #e48a62; --wall: #0e1419; color-scheme: dark;
+}
+body { background: var(--bg); color: var(--text); font-family: var(--sans); font-size: 15px; line-height: 1.5; }
+.wrap { max-width: 1120px; margin: 0 auto; padding-block: 40px 64px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+h1 { font-family: var(--serif); font-weight: 600; font-size: 32px; margin: 0 0 6px; text-wrap: balance; }
+h2 { font-family: var(--serif); font-weight: 600; font-size: 21px; margin: 0; text-wrap: balance; }
+.lede { color: var(--muted); max-width: 62ch; margin: 0 0 32px; }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 20px; }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 20px; display: flex; flex-direction: column; gap: 14px; min-width: 0; }
+.card.current { border-color: var(--accent); }
+.hero { display: flex; justify-content: center; padding-block: 8px; }
+.ico { display: block; border-radius: 22.5%; overflow: hidden; flex: none; box-shadow: 0 1px 2px rgba(0,0,0,.08), 0 6px 18px rgba(0,0,0,.10); }
+.ico svg { display: block; width: 100%; height: 100%; }
+.hero .ico { width: 168px; height: 168px; }
+.sizes { display: flex; align-items: flex-end; gap: 14px; justify-content: center; }
+.sizes .ico { box-shadow: none; }
+.tab { display: flex; align-items: center; gap: 6px; background: var(--bg); border: 1px solid var(--line); border-radius: 8px 8px 0 0; padding: 5px 10px; font-size: 12px; color: var(--muted); }
+.tab .ico { border-radius: 3px; }
+.head { display: flex; align-items: baseline; gap: 10px; }
+.letter { font-family: var(--sans); font-weight: 600; font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); }
+.badge { margin-left: auto; font-size: 11px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--accent); border: 1px solid var(--accent); border-radius: 99px; padding: 1px 8px; }
+.card p { margin: 0; color: var(--muted); font-size: 14px; }
+.swatches { display: flex; gap: 6px; }
+.swatches span { width: 18px; height: 18px; border-radius: 50%; border: 1px solid var(--line); }
+.home { margin-top: 48px; }
+.home p { color: var(--muted); margin: 4px 0 16px; }
+.phone { background: var(--wall); background-image: radial-gradient(circle at 20% 10%, rgba(255,255,255,.12), transparent 50%), radial-gradient(circle at 80% 90%, rgba(255,255,255,.08), transparent 55%); border-radius: 24px; padding: 28px 20px; display: grid; grid-template-columns: repeat(auto-fill, minmax(76px, 1fr)); gap: 22px 10px; }
+.app { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 6px; color: #fff; font-size: 11.5px; text-shadow: 0 1px 2px rgba(0,0,0,.5); }
+.app .ico { width: 60px; height: 60px; }
+
+.from { margin-left: auto; display: flex; gap: 4px; }
+.from span { font-size: 11px; font-weight: 600; color: var(--muted); border: 1px solid var(--line); border-radius: 99px; padding: 0 7px; }
+.picks { display: flex; flex-wrap: wrap; align-items: center; gap: 14px; margin: -12px 0 32px; color: var(--muted); font-size: 13px; }
+.picks .pick { display: flex; align-items: center; gap: 6px; }
+</style>
+
+<div class="wrap">
+  <h1>Cookbook logo, round 3</h1>
+  <p class="lede">Three new takes on each of the five you picked from round 2 (4, 5, 6, 7 and 8): new colors, bigger or simpler shapes for small sizes, and the "B" swapped in where there was a heart. Each card is tagged with the round 2 number it comes from.</p>
+  <div class="picks" id="picks"><span>Your round 2 picks:</span></div>
+  <div class="grid" id="grid"></div>
+
+  <section class="home">
+    <h2>Side by side on a home screen</h2>
+    <p>Same size an iPhone shows them.</p>
+    <div class="phone" id="phone"></div>
+  </section>
+</div>
+
+<script>
+const BOOK_L = 'M252 168c-44-30-100-38-148-30v228c48-8 104 0 148 30z';
+const BOOK_R = 'M260 168c44-30 100-38 148-30v228c-48-8-104 0-148 30z';
+const HEART = 'M256 104c-10-16-34-14-34 6 0 16 22 28 34 38 12-10 34-22 34-38 0-20-24-22-34-6z';
+const B_FONT = `font-family="'Playfair Display', Georgia, serif" font-style="italic" font-weight="700" text-anchor="middle"`;
+
+const NAVY = '#1f3a5f', CREAM = '#f3e9d2', GOLD = '#c9a45c', TERRA = '#b4532c', PAGE = '#fbf8f3',
+      SAGE = '#6b8f71', WOOD = '#e9c08a', MUSTARD = '#e0a526', RED = '#c8402f', BLUE = '#7fa3c7';
+
+const book = (page, line, lineOpacity = .45) => `
+  <path fill="${page}" d="${BOOK_L}"/><path fill="${page}" d="${BOOK_R}"/>
+  <g stroke="${line}" stroke-width="9" stroke-linecap="round" opacity="${lineOpacity}" fill="none">
+    <path d="M140 196c30-3 60 2 84 14M140 236c30-3 60 2 84 14M140 276c30-3 60 2 84 14"/>
+    <path d="M372 196c-30-3-60 2-84 14M372 236c-30-3-60 2-84 14M372 276c-30-3-60 2-84 14"/></g>`;
+const fork = (c) => `<g transform="rotate(24 256 270)" fill="${c}">
+    <rect x="214" y="96" width="14" height="78" rx="7"/><rect x="238" y="96" width="14" height="78" rx="7"/>
+    <rect x="260" y="96" width="14" height="78" rx="7"/><rect x="284" y="96" width="14" height="78" rx="7"/>
+    <path d="M214 160h84v14c0 30-20 46-30 52v196a12 12 0 0 1-24 0V226c-10-6-30-22-30-52z"/></g>`;
+const spoon = (c) => `<g transform="rotate(-24 256 270)" fill="${c}">
+    <ellipse cx="256" cy="160" rx="48" ry="66"/><path d="M244 214h24v208a12 12 0 0 1-24 0z"/></g>`;
+const card = (inner, shadow = '#9a6a10') => `<g transform="rotate(-7 256 256)">
+    <rect x="104" y="146" width="304" height="224" rx="16" fill="${shadow}" opacity=".25" transform="translate(6 10)"/>
+    <rect x="104" y="146" width="304" height="224" rx="16" fill="#fffaf0"/>
+    <path d="M120 216h272" stroke="${RED}" stroke-width="5"/>
+    <g stroke="${BLUE}" stroke-width="5"><path d="M120 256h272M120 292h272M120 328h272"/></g>${inner}</g>`;
+const cardHeart = `<path d="M352 184c-6-10-22-9-22 4 0 10 14 18 22 24 8-6 22-14 22-24 0-13-16-14-22-4z" fill="${RED}"/>`;
+const cardTitle = `<path d="M134 184h120" stroke="#3a2f25" stroke-width="16" stroke-linecap="round"/>`;
+const rings = (c) => `<circle cx="256" cy="256" r="164" fill="none" stroke="${c}" stroke-width="8"/>
+  <circle cx="256" cy="256" r="146" fill="none" stroke="${c}" stroke-width="2.5" opacity=".6"/>`;
+const sprig = (c) => `<g fill="${c}"><path d="M256 386v-28" stroke="${c}" stroke-width="5" stroke-linecap="round"/>
+  <ellipse cx="243" cy="372" rx="12" ry="5" transform="rotate(-30 243 372)"/><ellipse cx="269" cy="372" rx="12" ry="5" transform="rotate(30 269 372)"/>
+  <ellipse cx="256" cy="352" rx="5" ry="10"/></g>`;
+const smallHeart = (c, x, y, s) => `<path fill="${c}" transform="translate(${x} ${y}) scale(${s}) translate(-256 -126)" d="${HEART}"/>`;
+
+const ROUND1 = {
+  A: () => `<rect width="512" height="512" fill="${TERRA}"/>${book(PAGE, TERRA)}<path fill="${PAGE}" d="${HEART}"/>`,
+  B: () => `<rect width="512" height="512" fill="${SAGE}"/>${fork('#f4efe1')}${spoon(WOOD)}`,
+  C: () => `<rect width="512" height="512" fill="${MUSTARD}"/>${card(cardTitle + cardHeart)}`,
+  D: () => `<rect width="512" height="512" fill="${NAVY}"/>${rings(CREAM)}<text x="256" y="322" ${B_FONT} font-size="210" fill="${CREAM}">B</text>${sprig(GOLD)}`,
+};
+
+const PREV = [
+  { id: '1', name: 'Navy Book', from: ['A', 'D'], colors: [NAVY, CREAM, GOLD],
+    note: 'The current open book and heart, moved into the monogram\'s navy, cream and gold.',
+    svg: () => `<rect width="512" height="512" fill="${NAVY}"/>${book(CREAM, NAVY)}<path fill="${GOLD}" d="${HEART}"/>` },
+
+  { id: '2', name: 'Book & B', from: ['A', 'D'], colors: [TERRA, PAGE],
+    note: 'Today\'s icon with the heart swapped for an italic "B" above the pages.',
+    svg: () => `<rect width="512" height="512" fill="${TERRA}"/>
+      <g transform="translate(0 30)">${book(PAGE, TERRA)}</g>
+      <text x="256" y="158" ${B_FONT} font-size="104" fill="${PAGE}">B</text>` },
+
+  { id: '3', name: 'Cookbook Cover', from: ['A', 'D'], colors: [NAVY, TERRA, CREAM],
+    note: 'The book shown closed, with the "B" monogram stamped on a terracotta cover.',
+    svg: () => `<rect width="512" height="512" fill="${NAVY}"/>
+      <rect x="150" y="106" width="250" height="314" rx="14" fill="#fffaf0"/>
+      <path d="M392 120v290" stroke="#e2d6bf" stroke-width="3"/><path d="M384 118v292" stroke="#e2d6bf" stroke-width="3"/>
+      <rect x="128" y="92" width="256" height="318" rx="16" fill="${TERRA}"/>
+      <rect x="128" y="92" width="38" height="318" rx="16" fill="#8f3f1f"/><rect x="150" y="92" width="16" height="318" fill="#8f3f1f"/>
+      <circle cx="275" cy="236" r="76" fill="none" stroke="${CREAM}" stroke-width="6"/>
+      <circle cx="275" cy="236" r="64" fill="none" stroke="${CREAM}" stroke-width="2" opacity=".6"/>
+      <text x="275" y="274" ${B_FONT} font-size="108" fill="${CREAM}">B</text>
+      <path d="M215 352h120" stroke="${CREAM}" stroke-width="5" stroke-linecap="round" opacity=".7"/>` },
+
+  { id: '4', name: 'Utensil Crest', from: ['B', 'D'], colors: [NAVY, CREAM, WOOD, GOLD],
+    note: 'Crossed spoon and fork behind a round "B" medallion, like a family crest.',
+    svg: () => `<rect width="512" height="512" fill="${NAVY}"/>${fork(CREAM)}${spoon(WOOD)}
+      <circle cx="256" cy="268" r="96" fill="${GOLD}"/><circle cx="256" cy="268" r="84" fill="${NAVY}"/>
+      <text x="256" y="308" ${B_FONT} font-size="118" fill="${CREAM}">B</text>` },
+
+  { id: '5', name: 'Sage Monogram', from: ['B', 'D'], colors: [SAGE, '#f4efe1', WOOD],
+    note: 'The monogram on sage, with a tiny crossed spoon and fork in place of the sprig.',
+    svg: () => `<rect width="512" height="512" fill="${SAGE}"/>${rings('#f4efe1')}
+      <text x="256" y="314" ${B_FONT} font-size="200" fill="#f4efe1">B</text>
+      <g transform="translate(256 372) scale(.17) translate(-256 -270)">${fork('#f4efe1')}${spoon(WOOD)}</g>` },
+
+  { id: '6', name: 'Terracotta Utensils', from: ['A', 'B'], colors: [TERRA, PAGE, WOOD],
+    note: 'Spoon and fork in today\'s terracotta, with the heart from the current icon above.',
+    svg: () => `<rect width="512" height="512" fill="${TERRA}"/>
+      <g transform="translate(0 20)">${fork(PAGE)}${spoon(WOOD)}</g>${smallHeart(PAGE, 256, 82, .75)}` },
+
+  { id: '7', name: 'Signed Card', from: ['C', 'D'], colors: [NAVY, '#fffaf0', RED, BLUE],
+    note: 'The recipe card with an italic "B" written as its title, on navy.',
+    svg: () => `<rect width="512" height="512" fill="${NAVY}"/>${card(
+      `<text x="160" y="206" ${B_FONT} font-size="86" fill="${NAVY}">B</text>
+       <path d="M196 196h70" stroke="#3a2f25" stroke-width="8" stroke-linecap="round" opacity=".35"/>` + cardHeart, '#000')}` },
+
+  { id: '8', name: 'Wax Seal Card', from: ['C', 'D'], colors: [MUSTARD, '#fffaf0', RED, CREAM],
+    note: 'The mustard recipe card, sealed with a red wax stamp carrying the "B".',
+    svg: () => `<rect width="512" height="512" fill="${MUSTARD}"/>${card(cardTitle +
+      `<path d="M362 284c22-4 40 6 46 22 14 4 18 22 10 34 6 14-4 30-18 32-6 14-24 18-36 10-14 6-30-2-34-16-14-6-16-24-8-36-4-14 6-30 20-32 4-8 12-12 20-14z" fill="${RED}"/>
+       <circle cx="370" cy="330" r="34" fill="none" stroke="#9e2d20" stroke-width="3"/>
+       <text x="370" y="352" ${B_FONT} font-size="60" fill="${CREAM}">B</text>`)}` },
+
+  { id: '9', name: 'Sage Card', from: ['B', 'C'], colors: [SAGE, '#fffaf0', RED, BLUE],
+    note: 'The recipe card exactly as before, moved onto the sage green.',
+    svg: () => `<rect width="512" height="512" fill="${SAGE}"/>${card(cardTitle + cardHeart, '#203a24')}` },
+
+  { id: '10', name: 'Heart Monogram', from: ['A', 'D'], colors: [TERRA, PAGE],
+    note: 'The monogram in today\'s terracotta and cream, with a small heart under the "B".',
+    svg: () => `<rect width="512" height="512" fill="${TERRA}"/>${rings(PAGE)}
+      <text x="256" y="316" ${B_FONT} font-size="204" fill="${PAGE}">B</text>${smallHeart(PAGE, 256, 370, .5)}` },
+
+  { id: '11', name: 'B & M', from: ['D'], colors: [NAVY, CREAM, GOLD],
+    note: 'For the Batchelders and Marshalls: both initials in the ring, with a gold ampersand.',
+    svg: () => `<rect width="512" height="512" fill="${NAVY}"/>${rings(CREAM)}
+      <text x="256" y="300" ${B_FONT} font-size="124" fill="${CREAM}">B<tspan fill="${GOLD}" font-size="96" dx="-4" dy="-6">&amp;</tspan><tspan dy="6">M</tspan></text>${sprig(GOLD)}` },
+
+  { id: '12', name: 'Mustard Monogram', from: ['C', 'D'], colors: [MUSTARD, NAVY, '#fffaf0'],
+    note: 'The monogram flipped to navy on mustard, borrowing the recipe card\'s warm yellow.',
+    svg: () => `<rect width="512" height="512" fill="${MUSTARD}"/>${rings(NAVY)}
+      <text x="256" y="322" ${B_FONT} font-size="210" fill="${NAVY}">B</text>${smallHeart(RED, 256, 370, .5)}` },
+];
+
+
+const medal = (cx, cy, r, ring, fill, ink, size) => `<circle cx="${cx}" cy="${cy}" r="${r}" fill="${ring}"/><circle cx="${cx}" cy="${cy}" r="${r - 12}" fill="${fill}"/>
+  <text x="${cx}" y="${cy + size * .34}" ${B_FONT} font-size="${size}" fill="${ink}">B</text>`;
+const SEAL = 'M362 284c22-4 40 6 46 22 14 4 18 22 10 34 6 14-4 30-18 32-6 14-24 18-36 10-14 6-30-2-34-16-14-6-16-24-8-36-4-14 6-30 20-32 4-8 12-12 20-14z';
+const seal = (x, y, k, wax, edge, ink) => `<g transform="translate(${x} ${y}) scale(${k}) translate(-370 -330)">
+  <path d="${SEAL}" fill="${wax}"/><circle cx="370" cy="330" r="34" fill="none" stroke="${edge}" stroke-width="3"/>
+  <text x="370" y="352" ${B_FONT} font-size="60" fill="${ink}">B</text></g>`;
+const signed = (ink, heart = true, lines = 3) => `<g transform="rotate(-7 256 256)">
+  <rect x="104" y="146" width="304" height="224" rx="16" fill="#000" opacity=".22" transform="translate(6 10)"/>
+  <rect x="104" y="146" width="304" height="224" rx="16" fill="#fffaf0"/>
+  <path d="M120 216h272" stroke="${RED}" stroke-width="5"/>
+  <g stroke="${BLUE}" stroke-width="5">${[256, 292, 328].slice(0, lines).map(y => `<path d="M120 ${y}h272"/>`).join('')}</g>
+  <text x="160" y="206" ${B_FONT} font-size="86" fill="${ink}">B</text>
+  <path d="M196 196h70" stroke="#3a2f25" stroke-width="8" stroke-linecap="round" opacity=".35"/>${heart ? cardHeart : ''}</g>`;
+const sealCard = (title = true) => card(title ? cardTitle : '', '#000');
+const OCHRE = '#d9a441', DEEP_SAGE = '#4f6f55', LIGHT = '#f4efe1';
+
+const LOGOS = [
+  { id: '4a', name: 'Sage Crest', from: ['4'], colors: [SAGE, LIGHT, WOOD],
+    note: 'The crest moved onto sage, with a cream medallion and a sage "B".',
+    svg: () => `<rect width="512" height="512" fill="${SAGE}"/>${fork(LIGHT)}${spoon(WOOD)}${medal(256, 268, 96, WOOD, LIGHT, DEEP_SAGE, 118)}` },
+  { id: '4b', name: 'Terracotta Crest', from: ['4'], colors: [TERRA, PAGE, WOOD],
+    note: 'The crest in today\'s terracotta: cream utensils, cream medallion, terracotta "B".',
+    svg: () => `<rect width="512" height="512" fill="${TERRA}"/>${fork(PAGE)}${spoon(WOOD)}${medal(256, 268, 96, WOOD, PAGE, TERRA, 118)}` },
+  { id: '4c', name: 'Big Medallion', from: ['4'], colors: [NAVY, GOLD, CREAM],
+    note: 'A larger medallion so the "B" holds up as a tab icon, with gold utensils behind.',
+    svg: () => `<rect width="512" height="512" fill="${NAVY}"/>${fork(GOLD)}${spoon(GOLD)}${medal(256, 266, 108, GOLD, CREAM, NAVY, 136)}` },
+
+  { id: '5a', name: 'Bold Sage Monogram', from: ['5'], colors: [SAGE, LIGHT, WOOD],
+    note: 'One heavier ring and larger utensils below the "B", so it stays crisp when small.',
+    svg: () => `<rect width="512" height="512" fill="${SAGE}"/><circle cx="256" cy="256" r="166" fill="none" stroke="${LIGHT}" stroke-width="14"/>
+      <text x="256" y="306" ${B_FONT} font-size="196" fill="${LIGHT}">B</text>
+      <g transform="translate(256 370) scale(.24) translate(-256 -270)">${fork(LIGHT)}${spoon(WOOD)}</g>` },
+  { id: '5b', name: 'Shadow Utensils', from: ['5'], colors: [SAGE, DEEP_SAGE, LIGHT],
+    note: 'The spoon and fork drawn large and faint behind the "B", inside the ring.',
+    svg: () => `<rect width="512" height="512" fill="${SAGE}"/><g opacity=".9">${fork(DEEP_SAGE)}${spoon(DEEP_SAGE)}</g>${rings(LIGHT)}
+      <text x="256" y="322" ${B_FONT} font-size="210" fill="${LIGHT}">B</text>` },
+  { id: '5c', name: 'Cream Monogram', from: ['5'], colors: [LIGHT, SAGE, '#b07c4f'],
+    note: 'The colors flipped: a sage "B" and ring on cream, with wooden utensils.',
+    svg: () => `<rect width="512" height="512" fill="${LIGHT}"/>${rings(SAGE)}
+      <text x="256" y="314" ${B_FONT} font-size="200" fill="${DEEP_SAGE}">B</text>
+      <g transform="translate(256 372) scale(.17) translate(-256 -270)">${fork(SAGE)}${spoon('#b07c4f')}</g>` },
+
+  { id: '6a', name: 'Utensils & B', from: ['6'], colors: [TERRA, PAGE, WOOD],
+    note: 'Terracotta spoon and fork with an italic "B" above them in place of the heart.',
+    svg: () => `<rect width="512" height="512" fill="${TERRA}"/><g transform="translate(0 34)">${fork(PAGE)}${spoon(WOOD)}</g>
+      <text x="256" y="128" ${B_FONT} font-size="96" fill="${PAGE}">B</text>` },
+  { id: '6b', name: 'Navy Utensils', from: ['6'], colors: [NAVY, CREAM, WOOD, GOLD],
+    note: 'The same spoon, fork and heart on navy, with the heart in gold.',
+    svg: () => `<rect width="512" height="512" fill="${NAVY}"/><g transform="translate(0 20)">${fork(CREAM)}${spoon(WOOD)}</g>${smallHeart(GOLD, 256, 82, .75)}` },
+  { id: '6c', name: 'Heart at the Cross', from: ['6'], colors: [TERRA, PAGE, WOOD],
+    note: 'A bigger heart where the spoon and fork cross, so the heart is the center of the icon.',
+    svg: () => `<rect width="512" height="512" fill="${TERRA}"/>${fork(PAGE)}${spoon(WOOD)}
+      <path fill="${TERRA}" transform="translate(256 278) scale(1.5) translate(-256 -126)" d="${HEART}" stroke="${TERRA}" stroke-width="10"/>
+      ${smallHeart(PAGE, 256, 278, 1.5)}` },
+
+  { id: '7a', name: 'Terracotta Signed Card', from: ['7'], colors: [TERRA, '#fffaf0', RED, BLUE],
+    note: 'The signed recipe card on today\'s terracotta, with a terracotta "B".',
+    svg: () => `<rect width="512" height="512" fill="${TERRA}"/>${signed(TERRA)}` },
+  { id: '7b', name: 'Sage Signed Card', from: ['7'], colors: [SAGE, '#fffaf0', RED, BLUE],
+    note: 'The signed recipe card on sage, with a deep green "B".',
+    svg: () => `<rect width="512" height="512" fill="${SAGE}"/>${signed(DEEP_SAGE)}` },
+  { id: '7c', name: 'Simple Signed Card', from: ['7'], colors: [NAVY, '#fffaf0', RED, BLUE],
+    note: 'Fewer lines and no heart, so the "B" is the only detail you notice.',
+    svg: () => `<rect width="512" height="512" fill="${NAVY}"/>${signed(NAVY, false, 2)}` },
+
+  { id: '8a', name: 'Navy Wax Seal', from: ['8'], colors: [NAVY, '#fffaf0', RED, CREAM],
+    note: 'The sealed recipe card on navy, which makes the red seal stand out more.',
+    svg: () => `<rect width="512" height="512" fill="${NAVY}"/><g transform="rotate(-7 256 256)">${sealCard().replace('<g transform="rotate(-7 256 256)">', '<g>')}${seal(370, 330, 1, RED, '#9e2d20', CREAM)}</g>` },
+  { id: '8b', name: 'Sage & Terracotta Seal', from: ['8'], colors: [SAGE, '#fffaf0', TERRA, CREAM],
+    note: 'The card on sage, sealed in terracotta wax.',
+    svg: () => `<rect width="512" height="512" fill="${SAGE}"/><g transform="rotate(-7 256 256)">${sealCard().replace('<g transform="rotate(-7 256 256)">', '<g>')}${seal(370, 330, 1, TERRA, '#8f3f1f', CREAM)}</g>` },
+  { id: '8c', name: 'Big Seal', from: ['8'], colors: [MUSTARD, '#fffaf0', RED, CREAM],
+    note: 'A much larger seal over the corner of the card, so the "B" reads at any size.',
+    svg: () => `<rect width="512" height="512" fill="${MUSTARD}"/>${card(cardTitle, '#9a6a10')}${seal(340, 330, 1.9, RED, '#9e2d20', CREAM)}` },
+];
+
+let uid = 0;
+function icon(svg, size, label) {
+  uid++;
+  const dim = size ? ` style="width:${size}px;height:${size}px"` : '';
+  return `<span class="ico"${dim}><svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="${label} icon">${svg(uid)}</svg></span>`;
+}
+
+document.getElementById('picks').insertAdjacentHTML('beforeend', PREV.filter(p => ['4','5','6','7','8'].includes(p.id)).map(p => `<span class="pick">${icon(p.svg, 32, p.name)}${p.id}</span>`).join(''));
+
+document.getElementById('grid').innerHTML = LOGOS.map(l => `
+  <article class="card">
+    <div class="hero">${icon(l.svg, 0, l.name)}</div>
+    <div class="sizes">${icon(l.svg, 60, l.name)}${icon(l.svg, 40, l.name)}<span class="tab">${icon(l.svg, 16, l.name)}Cookbook</span></div>
+    <div class="head"><span class="letter">${l.id}</span><h2>${l.name}</h2><span class="from">${l.from.map(f => `<span>${f}</span>`).join('')}</span></div>
+    <p>${l.note}</p>
+    <div class="swatches">${l.colors.map(c => `<span style="background:${c}" title="${c}"></span>`).join('')}</div>
+  </article>`).join('');
+
+document.getElementById('phone').innerHTML = LOGOS.map(l => `<div class="app">${icon(l.svg, 60, l.name)}<span>${l.id} · ${l.name}</span></div>`).join('');
+</script>
+
+</html>
