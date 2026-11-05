@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test'
 
-const PAGES = ['./', 'list/', 'tags/', 'recipes/gumbo/', 'recipes/brisket/', 'recipes/new-york-cheesecake/']
+const PAGES = ['./', 'search/', 'list/', 'tags/', 'recipes/gumbo/', 'recipes/brisket/', 'recipes/new-york-cheesecake/']
 
 for (const path of PAGES) {
   test(`${path} doesn't scroll sideways`, async ({ page }) => {
@@ -47,7 +47,31 @@ test('a category link lands on its heading even on a slow connection', async ({ 
   await page.waitForLoadState('load')
   const top = await page.locator('h2#soup').evaluate((el) => el.getBoundingClientRect().top)
   // Not hidden behind the fixed navbar
-  const navBottom = await page.locator('.navbar').evaluate((el) => el.getBoundingClientRect().bottom)
+  const navBottom = await page.locator('.topbar').evaluate((el) => el.getBoundingClientRect().bottom)
   expect(top).toBeGreaterThanOrEqual(navBottom)
   expect(top).toBeLessThan(200)
+})
+
+test('recipe cards all have the same photo shape', async ({ page }) => {
+  await page.goto('tags/')
+  const ratios = await page.locator('.card-photo').evaluateAll((photos) =>
+    photos.slice(0, 12).map((el) => el.getBoundingClientRect().width / el.getBoundingClientRect().height))
+  for (const ratio of ratios) expect(ratio).toBeCloseTo(4 / 3, 1)
+})
+
+test('the bottom tabs never cover the end of the page', async ({ page, isMobile }) => {
+  test.skip(!isMobile, 'phones only')
+  await page.goto('recipes/gumbo/')
+  await page.evaluate(() => scrollTo(0, document.body.scrollHeight))
+  const footer = await page.locator('.footer').boundingBox()
+  const tabs = await page.locator('.tabbar').boundingBox()
+  expect(footer.y + footer.height).toBeLessThanOrEqual(tabs.y + 1)
+})
+
+test('follows the phone or computer dark mode setting', async ({ page }) => {
+  await page.emulateMedia({ colorScheme: 'dark' })
+  await page.goto('recipes/gumbo/')
+  const background = await page.evaluate(() => getComputedStyle(document.body).backgroundColor)
+  const [r, g, b] = background.match(/\d+/g).map(Number)
+  expect(r + g + b).toBeLessThan(150)
 })

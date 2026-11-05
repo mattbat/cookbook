@@ -6,6 +6,38 @@ const { PATH_PREFIX, createMarkdown, stripTitle, absolutizeImages, tagId } = rec
 
 const { imageSize } = images
 
+// Outline icons (24x24, stroked via CSS)
+const ICONS = {
+  home: '<path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"/>',
+  search: '<circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/>',
+  grid: '<rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/>',
+  list: '<path d="M8 6h13M8 12h13M8 18h13"/><circle cx="3.5" cy="6" r="1"/><circle cx="3.5" cy="12" r="1"/><circle cx="3.5" cy="18" r="1"/>',
+  clock: '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
+  flame: '<path d="M12 3c1 4 5 5.5 5 10a5 5 0 0 1-10 0c0-2.5 1.5-4 2.5-5 .5 2 1.5 3 2.5 3 0-3-1-5 0-8z"/>',
+  users: '<circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0"/><path d="M16 4.5a3.5 3.5 0 0 1 0 7M18 14a6.5 6.5 0 0 1 3.5 6"/>',
+  link: '<path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1"/><path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/>'
+}
+
+// Splits a recipe's HTML at its "## " headings into ingredients (lists of things to gather) and
+// method (steps, notes, videos, ...), so wide screens can show them side by side.
+function recipeSections (html) {
+  const parts = String(html).split(/(?=<h2[\s>])/)
+  const intro = parts[0].startsWith('<h2') ? '' : parts.shift()
+  const ingredients = []
+  const method = []
+  for (const part of parts) {
+    const heading = (part.match(/<h2[^>]*>([\s\S]*?)<\/h2>/) || [])[1] || ''
+    const isIngredients = /ingredient/i.test(heading) ||
+      (!/step|direction|instruction|method|note|video|tool/i.test(heading) && /<ul/.test(part) && !/<ol/.test(part))
+    ;(isIngredients ? ingredients : method).push(part)
+  }
+  return {
+    intro: intro.replace(/<p>\s*<img[^>]*>\s*<\/p>/, '').trim(),
+    ingredients: ingredients.join(''),
+    method: method.join('')
+  }
+}
+
 const isRecipe = (inputPath) => inputPath.replace(/\\/g, '/').startsWith('./_recipes/')
 
 export default function (eleventyConfig) {
@@ -46,6 +78,25 @@ export default function (eleventyConfig) {
   eleventyConfig.addPassthroughCopy('js')
   eleventyConfig.addPassthroughCopy('img')
   eleventyConfig.addPassthroughCopy('favicon.ico')
+  eleventyConfig.addPassthroughCopy({ 'node_modules/minisearch/dist/umd/index.js': 'js/vendor/minisearch.js' })
+
+  eleventyConfig.addShortcode('icon', (name) =>
+    `<svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">${ICONS[name]}</svg>`)
+
+  // 90 -> "1 hr 30 min", 45 -> "45 min"; nothing for 0 or blank.
+  eleventyConfig.addFilter('duration', (minutes) => {
+    minutes = Number(minutes) || 0
+    if (minutes <= 0) return ''
+    const hours = Math.floor(minutes / 60)
+    const rest = minutes % 60
+    return [hours && `${hours} hr`, rest && `${rest} min`].filter(Boolean).join(' ')
+  })
+  eleventyConfig.addFilter('totalMinutes', (data) => (Number(data.prep_time) || 0) + (Number(data.cooking_time) || 0))
+
+  eleventyConfig.addFilter('recipeSections', recipeSections)
+  eleventyConfig.addFilter('limit', (items, count) => items.slice(0, count))
+  eleventyConfig.addFilter('isCurrent', (pageUrl, tabUrl) =>
+    tabUrl === '/' ? pageUrl === '/' : pageUrl.startsWith(tabUrl))
 
   for (const path of ['README.md', 'CLI/**', 'lib/**', 'tests/**', '_recipes/_template/**', 'test-results/**', 'playwright-report/**']) {
     eleventyConfig.ignores.add(path)

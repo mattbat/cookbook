@@ -54,12 +54,18 @@ describe('search index (list.json)', () => {
 
   test('has one entry per recipe', () => assert.equal(list.length, recipeCount))
 
-  test('every entry has a title, a working url and a card', () => {
+  test('every entry has a title, a working url, ingredients and steps to search', () => {
     for (const entry of list) {
       assert.ok(entry.title, JSON.stringify(entry))
       assert.ok(fs.existsSync(fileFor(entry.url)), `${entry.url} does not exist`)
-      assert.match(entry.list_entry_html, /class="recipe-preview"/)
+      assert.ok(entry.ingredients.length > 20, `${entry.title} has no ingredients to search`)
+      assert.ok(entry.text.length > 20, `${entry.title} has no steps to search`)
     }
+  })
+
+  test('the search page lists every recipe (so it works without JavaScript)', () => {
+    const page = read(PREFIX + 'search/')
+    for (const entry of list) assert.ok(page.includes(`data-url="${entry.url.replace(/'/g, '&#39;')}"`), entry.url)
   })
 })
 

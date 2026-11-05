@@ -1,67 +1,28 @@
 {
   "title": "Cookbook",
+  "name": "Batchelder Recipes",
   "description": "A collection of favorite recipes from the Batchelders and Marshalls",
   "url": "https://mattbat.com",
   "urlPretty": "mattbat.com/cookbook",
   "author": "Matt Batchelder",
   "github": "mattbat",
-  "nav": [
-    {
-      "title": "List",
-      "url": "/list/"
-    },
-    {
-      "title": "#Tags",
-      "url": "/tags/"
-    },
-    {
-      "title": "Categories",
-      "children": [
-        {
-          "title": "Appetizers",
-          "tag": "appetizer"
-        },
-        {
-          "title": "Soups",
-          "tag": "soup"
-        },
-        {
-          "title": "Salads",
-          "tag": "salad"
-        },
-        {
-          "title": "Bread",
-          "tag": "bread"
-        },
-        {
-          "title": "Sides",
-          "tag": "side"
-        },
-        {
-          "title": "Seafood",
-          "tag": "seafood"
-        },
-        {
-          "title": "Meat",
-          "tag": "meat"
-        },
-        {
-          "title": "Poultry",
-          "tag": "poultry"
-        },
-        {
-          "title": "Main Courses",
-          "tag": "main"
-        },
-        {
-          "title": "Breakfast",
-          "tag": "breakfast"
-        },
-        {
-          "title": "Desserts",
-          "tag": "dessert"
-        }
-      ]
-    }
+  "tabs": [
+    { "title": "Home", "url": "/", "icon": "home" },
+    { "title": "Search", "url": "/search/", "icon": "search" },
+    { "title": "Browse", "url": "/tags/", "icon": "grid" },
+    { "title": "A–Z", "url": "/list/", "icon": "list" }
+  ],
+  "categories": [
+    { "title": "Appetizers", "tag": "appetizer" },
+    { "title": "Soups", "tag": "soup" },
+    { "title": "Salads", "tag": "salad" },
+    { "title": "Bread", "tag": "bread" },
+    { "title": "Sides", "tag": "side" },
+    { "title": "Seafood", "tag": "seafood" },
+    { "title": "Meat", "tag": "meat" },
+    { "title": "Poultry", "tag": "poultry" },
+    { "title": "Main Courses", "tag": "main" },
+    { "title": "Breakfast", "tag": "breakfast" },
+    { "title": "Desserts", "tag": "dessert" }
   ]
 }

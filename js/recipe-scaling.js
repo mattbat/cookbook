@@ -174,7 +174,7 @@ function nextServings (value, direction) {
 }
 
 if (typeof document !== 'undefined') {
-  var initialIngredients = getIngredients(document.querySelectorAll('.recipe ul > li'))
+  var initialIngredients = getIngredients(document.querySelectorAll('.recipe-ingredients ul > li'))
 
   var input = document.querySelector('input[name="recipe_scaling"]')
   if (input) {

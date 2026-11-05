@@ -2,9 +2,9 @@
 permalink: /list.json
 eleventyExcludeFromCollections: true
 ---
+{#- Search index: one entry per recipe, read by js/search.js #}
 [
   {%- for recipe in collections.recipes %}
-  {%- set entry %}{% include "recipe-card.njk" %}{% endset %}
   {
     "title": {{ recipe.data.title | dump | safe }},
     "author": {{ (recipe.data.author or "") | dump | safe }},
@@ -12,7 +12,8 @@ eleventyExcludeFromCollections: true
     "tags": {{ (recipe.data.tags or []) | join(", ") | dump | safe }},
     "date": {{ recipe.date | isoDate | dump | safe }},
     "sourceUrl": {{ (recipe.data.sourceUrl or "") | dump | safe }},
-    "list_entry_html": {{ entry | squash | dump | safe }}
+    "ingredients": {{ (recipe.content | recipeSections).ingredients | plainText | dump | safe }},
+    "text": {{ (recipe.content | recipeSections).method | plainText | dump | safe }}
   }{% if not loop.last %},{% endif %}
   {%- endfor %}
 ]

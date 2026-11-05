@@ -1,27 +1,21 @@
 ---
-layout: page.njk
-title: Tags
+layout: base.njk
+title: Browse
 permalink: /tags/
 ---
 {%- set allTags = collections.recipes | allTags %}
-Go to:
-<span class="blog-tags">
+<h1>Browse</h1>
+<nav class="chips" aria-label="Jump to a tag">
   {%- for tag in allTags %}
-  <a class="tag-{{ tag | tagId }} tag-btn" href="#{{ tag | tagId }}">{{ tag }}</a>
+  <a class="chip tag-{{ tag | tagId }}" href="#{{ tag | tagId }}">{{ tag }}</a>
   {%- endfor %}
-</span>
+</nav>
 
-<div id="full-tags-list">
-  {%- set hideTags = true %}
-  {%- for tag in allTags %}
-  <h2 id="{{ tag | tagId }}" class="linked-section tag-{{ tag | tagId }}">
-    <i class="fa fa-hashtag" aria-hidden="true"></i>
-    &nbsp;{{ tag }}
-  </h2>
-  <div class="recipes-list">
-    {%- for recipe in collections.recipes | withTag(tag) %}
-    {% include "recipe-card.njk" %}
-    {%- endfor %}
+{%- for tag in allTags %}
+<section class="shelf">
+  <h2 id="{{ tag | tagId }}">{{ tag }}</h2>
+  <div class="cards">
+    {%- for recipe in collections.recipes | withTag(tag) | byTitle %}{% include "recipe-card.njk" %}{% endfor %}
   </div>
-  {%- endfor %}
-</div>
+</section>
+{%- endfor %}

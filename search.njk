@@ -1,0 +1,22 @@
+---
+layout: base.njk
+title: Search
+permalink: /search/
+scripts:
+  - /js/vendor/minisearch.js
+  - /js/search.js
+---
+<section class="search" data-search>
+  <h1 class="visually-hidden">Search</h1>
+  <form class="searchbox" action="{{ '/search/' | url }}" role="search">
+    {% icon "search" %}
+    <input type="search" name="q" placeholder="Search recipes or ingredients" aria-label="Search recipes" autocomplete="off" enterkeyhint="search">
+  </form>
+  {% set chipAll = true %}{% include "category-chips.njk" %}
+  <p class="search-status" role="status" aria-live="polite">{{ collections.recipes.length }} recipes</p>
+  {#- Every recipe is listed here; search.js hides and reorders them, and without JavaScript you can still browse #}
+  <div class="cards" data-results>
+    {%- for recipe in collections.recipes | byTitle %}{% include "recipe-card.njk" %}{% endfor %}
+  </div>
+  <p class="search-empty" hidden>No recipes match. Try fewer or different words.</p>
+</section>

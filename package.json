@@ -10,7 +10,7 @@
   },
   "scripts": {
     "start": "eleventy --serve --port=8080",
-    "build": "eleventy",
+    "build": "node -e \"require('fs').rmSync('_site',{recursive:true,force:true})\" && eleventy",
     "test": "npm run test:unit && npm run build && npm run test:build && npm run test:e2e",
     "test:unit": "node --test \"tests/unit/*.test.mjs\" \"tests/content/*.test.mjs\"",
     "test:build": "node --test \"tests/build/*.test.mjs\"",
@@ -29,6 +29,7 @@
     "gray-matter": "^4.0.3",
     "markdown-it": "^15.0.3",
     "markdown-it-anchor": "^10.0.0",
+    "minisearch": "^7.2.0",
     "sanitize-filename": "^1.6.3"
   }
 }

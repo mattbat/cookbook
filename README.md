@@ -54,6 +54,11 @@ Then:
 If `npm start` is already running, the browser tests use it instead of starting their own server.
 After a failed browser test, `npx playwright show-report` shows screenshots and a step-by-step trace.
 
+On Windows PowerShell, type `npm.cmd` instead of `npm` if PowerShell says running scripts is disabled.
+
+To try the site on your phone, run `npm start`, connect the phone to the same Wi-Fi, and open
+`http://<your computer's IP address>:8080/cookbook/` (`ipconfig` shows the address).
+
 ### Known issues are tests too
 
 Bugs we know about have tests marked `test.fail` (browser tests) or `todo` (unit tests). They
@@ -85,7 +90,14 @@ Until this is done, GitHub's old built-in Jekyll build is still what publishes t
 
 ## Tech
 
-Built with [Eleventy](https://www.11ty.dev), tested with [Playwright](https://playwright.dev) and
-Node's built-in test runner, and hosted on GitHub Pages. Originally based on
+Built with [Eleventy](https://www.11ty.dev), searched with [MiniSearch](https://lucaong.github.io/minisearch/),
+tested with [Playwright](https://playwright.dev) and Node's built-in test runner, and hosted on
+GitHub Pages. No CSS or JavaScript framework: the look is in `css/site.css`, page behaviour in
+`js/` (`app.js` everywhere, `search.js` on the Search tab, `recipe-scaling.js` on recipes).
+
+The site's sections (the bottom tabs on phones, the top links on desktop) and the category list
+are set in `_data/site.json`. A category only appears once at least one recipe has its tag.
+
+Originally based on
 [jansim/cookbook](https://github.com/jansim/cookbook) and the
 [beautiful-jekyll](https://github.com/daattali/beautiful-jekyll) theme by Dean Attali.

@@ -3,17 +3,43 @@
   {% include "head.njk" %}
 
   <body data-base="{{ '/' | url }}">
-    {% include "nav.njk" %}
+    <a class="skip-link" href="#main">Skip to content</a>
 
-    {{ content | safe }}
+    <header class="topbar">
+      <div class="topbar-inner">
+        <a class="brand" href="{{ '/' | url }}">{{ site.name }}</a>
+        <nav class="topnav" aria-label="Main">
+          {%- for tab in site.tabs %}
+          <a href="{{ tab.url | url }}"{% if page.url | isCurrent(tab.url) %} aria-current="page"{% endif %}>{{ tab.title }}</a>
+          {%- endfor %}
+        </nav>
+      </div>
+    </header>
 
-    {% include "footer.njk" %}
+    <main id="main" class="{{ mainClass or 'page' }}">
+      {{ content | safe }}
+    </main>
 
-    <script src="{{ '/js/jquery-1.11.2.min.js' | url }}"></script>
-    <script src="{{ '/js/bootstrap.min.js' | url }}"></script>
-    <script src="{{ '/js/main.js' | url }}"></script>
-    <script src="{{ '/js/recipe-scaling.js' | url }}"></script>
-    <script src="{{ '/js/simple-jekyll-search.min.js' | url }}"></script>
-    <script src="{{ '/js/search.js' | url }}"></script>
+    <footer class="footer">
+      <p>
+        {{ site.author }} &middot; {{ build.year }} &middot;
+        <a href="{{ '/feed.xml' | url }}">RSS</a> &middot;
+        <a href="https://github.com/{{ site.github }}/cookbook">GitHub</a>
+      </p>
+    </footer>
+
+    {#- App-style tabs along the bottom on phones (hidden on wide screens, which use the top bar) #}
+    <nav class="tabbar" aria-label="Main">
+      {%- for tab in site.tabs %}
+      <a href="{{ tab.url | url }}"{% if page.url | isCurrent(tab.url) %} aria-current="page"{% endif %}>
+        {% icon tab.icon %}<span>{{ tab.title }}</span>
+      </a>
+      {%- endfor %}
+    </nav>
+
+    <script src="{{ '/js/app.js' | url }}"></script>
+    {%- for script in scripts %}
+    <script src="{{ script | url }}"></script>
+    {%- endfor %}
   </body>
 </html>

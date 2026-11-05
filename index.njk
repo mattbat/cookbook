@@ -1,16 +1,33 @@
 ---
-layout: page.njk
+layout: base.njk
 title: Batchelder Recipes
 subtitle: A cookbook of our favorite family recipes
 useSiteTitle: true
 ---
-<input id="home-search-input" class="form-control form-control-lg" type="text" placeholder="Type to search all recipes...">
-<div id="home-search-results-container" class="recipes-list"></div>
+<section class="hero">
+  <h1>{{ title }}</h1>
+  <p class="lede">{{ subtitle }}</p>
+  <form class="searchbox" action="{{ '/search/' | url }}" role="search">
+    {% icon "search" %}
+    <input type="search" name="q" placeholder="Search recipes or ingredients" aria-label="Search recipes" autocomplete="off" enterkeyhint="search">
+  </form>
+  {% include "category-chips.njk" %}
+</section>
 
-<h2 class="text-center"> Featured Recipes </h2>
+{%- set featured = collections.recipes | withTag("featured") | newestFirst %}
+{%- if featured.length %}
+<section class="shelf">
+  <h2>Featured</h2>
+  <div class="cards">
+    {%- for recipe in featured %}{% include "recipe-card.njk" %}{% endfor %}
+  </div>
+</section>
+{%- endif %}
 
-<div class="recipes-list">
-  {%- for recipe in collections.recipes | withTag("featured") | newestFirst %}
-  {% include "recipe-card.njk" %}
-  {%- endfor %}
-</div>
+<section class="shelf">
+  <h2>Recently added</h2>
+  <div class="cards">
+    {%- for recipe in collections.recipes | newestFirst | limit(8) %}{% include "recipe-card.njk" %}{% endfor %}
+  </div>
+  <p class="more"><a href="{{ '/list/' | url }}">All {{ collections.recipes.length }} recipes A–Z &rarr;</a></p>
+</section>
