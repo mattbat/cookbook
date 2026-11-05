@@ -12,7 +12,7 @@ tags: []
 ---
 # Template Recipe
 
-![Image of Template(../img/Template.jpeg)
+![Image of Template](../img/template.jpeg)
 
 ## Ingredients
 - 2 tablespoon Ingredient

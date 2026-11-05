@@ -1,0 +1,42 @@
+<nav class="navbar navbar-default navbar-fixed-top navbar-custom">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="{{ '/' | url }}">{{ site.title }}</a>
+    </div>
+
+    <div class="collapse navbar-collapse" id="main-navbar">
+      <form id="nav-search" class="navbar-form navbar-right" role="search">
+        <div class="form-group">
+          <input id="search-input" type="text" class="form-control" placeholder="Search...">
+          <ul id="search-results-container"></ul>
+        </div>
+      </form>
+
+      <ul class="nav navbar-nav navbar-right">
+        {%- for link in site.nav %}
+          {%- if link.children %}
+          <li class="navlinks-container">
+            <a class="navlinks-parent" href="javascript:void(0)">{{ link.title }}</a>
+            <div class="navlinks-children">
+              {#- Categories only show once at least one recipe has that tag #}
+              {%- for child in link.children %}
+              {%- if collections.recipes | withTag(child.tag) | length %}
+              <a href="{{ '/tags/' | url }}#{{ child.tag | tagId }}">{{ child.title }}</a>
+              {%- endif %}
+              {%- endfor %}
+            </div>
+          </li>
+          {%- else %}
+          <li><a href="{{ link.url | url }}">{{ link.title }}</a></li>
+          {%- endif %}
+        {%- endfor %}
+      </ul>
+    </div>
+  </div>
+</nav>

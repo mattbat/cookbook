@@ -1,0 +1,18 @@
+---
+permalink: /list.json
+eleventyExcludeFromCollections: true
+---
+[
+  {%- for recipe in collections.recipes %}
+  {%- set entry %}{% include "recipe-card.njk" %}{% endset %}
+  {
+    "title": {{ recipe.data.title | dump | safe }},
+    "author": {{ (recipe.data.author or "") | dump | safe }},
+    "url": {{ recipe.url | url | dump | safe }},
+    "tags": {{ (recipe.data.tags or []) | join(", ") | dump | safe }},
+    "date": {{ recipe.date | isoDate | dump | safe }},
+    "sourceUrl": {{ (recipe.data.sourceUrl or "") | dump | safe }},
+    "list_entry_html": {{ entry | squash | dump | safe }}
+  }{% if not loop.last %},{% endif %}
+  {%- endfor %}
+]

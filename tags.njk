@@ -1,0 +1,27 @@
+---
+layout: page.njk
+title: Tags
+permalink: /tags/
+---
+{%- set allTags = collections.recipes | allTags %}
+Go to:
+<span class="blog-tags">
+  {%- for tag in allTags %}
+  <a class="tag-{{ tag | tagId }} tag-btn" href="#{{ tag | tagId }}">{{ tag }}</a>
+  {%- endfor %}
+</span>
+
+<div id="full-tags-list">
+  {%- set hideTags = true %}
+  {%- for tag in allTags %}
+  <h2 id="{{ tag | tagId }}" class="linked-section tag-{{ tag | tagId }}">
+    <i class="fa fa-hashtag" aria-hidden="true"></i>
+    &nbsp;{{ tag }}
+  </h2>
+  <div class="recipes-list">
+    {%- for recipe in collections.recipes | withTag(tag) %}
+    {% include "recipe-card.njk" %}
+    {%- endfor %}
+  </div>
+  {%- endfor %}
+</div>

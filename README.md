@@ -1,22 +1,91 @@
 # 📖 Cookbook
 
-This repository hosts my personal cookbook, a collection of my favorite recipes from various on- and offline sources.
+The Batchelder family cookbook: [mattbat.com/cookbook](https://mattbat.com/cookbook/).
 
-## Features
+Every recipe is a markdown file in `_recipes/`. Add or change one on `master` and the site
+rebuilds, tests itself, and publishes on its own.
 
-- 🗒️ Simple, easy-to-edit markdown based recipes
-- 🔍️ Search
-- ⚖️ Recipe scaling
-- 🌐 Importing recipes from the internet
+## Adding a recipe
 
-## Adding new recipes
-New recipes can be added either by running `npm run import <URL_TO_RECIPE>` when you want to import an existing recipe from the internet or `npm run new <YOUR_RECIPE_NAME>` if you want to create an empty recipe file and add it yourself.
+1. Copy `_recipes/_template/template.md` to `_recipes/my-new-recipe.md`
+   (lowercase, with hyphens: the file name becomes the web address).
+2. Put the photo in `img/` and point to it: `![Image of My New Recipe](../img/my-new-recipe.jpeg)`.
+3. Fill in the details at the top (`author`, `servings`, `tags`, ...) and the recipe itself:
+   one `# Title`, then `## Ingredients` as a `- ` list and `## Steps` as a `1. ` list.
+4. Commit to `master`, either from your computer or with **Add file** on github.com.
 
-Alternatively you can also just create ah empty markdown file in `_recipes/` and start adding recipes there.
+Or let the tools write the file for you:
 
-### Setup for import
+```bash
+npm run new "Grandma's Pot Roast"
+```
 
-For the `import` command to work, you need an API key from [Spoonacular](https://spoonacular.com). Just sign up on their website, copy the `CLI/CREDENTIALS.example.json` file, rename it to `CLI/CREDENTIALS.json` and add your API key in there.
+```bash
+npm run import https://example.com/some-recipe
+```
+
+(`import` needs a [Spoonacular](https://spoonacular.com) API key: copy
+`CLI/CREDENTIALS.example.json` to `CLI/CREDENTIALS.json` and add your key.)
+
+## Working on the site locally
+
+You need [Node.js](https://nodejs.org) 22 or newer. Once, after cloning:
+
+```bash
+npm install
+```
+
+```bash
+npx playwright install chromium webkit
+```
+
+Then:
+
+| Command | What it does |
+|---|---|
+| `npm start` | Builds the site and serves it at http://localhost:8080/cookbook/, rebuilding as you save |
+| `npm test` | Everything below, in order (what GitHub runs before publishing) |
+| `npm run test:unit` | Checks every recipe file, and the serving-size math (a couple of seconds) |
+| `npm run build` | Builds the site into `_site/` |
+| `npm run test:build` | Checks the built site: every old address still works, no broken links or photos |
+| `npm run test:e2e` | Clicks through the site on an iPhone, an Android phone and a desktop browser |
+| `npm run test:e2e:ui` | Same, in a window where you can watch each test and step through it |
+
+If `npm start` is already running, the browser tests use it instead of starting their own server.
+After a failed browser test, `npx playwright show-report` shows screenshots and a step-by-step trace.
+
+### Known issues are tests too
+
+Bugs we know about have tests marked `test.fail` (browser tests) or `todo` (unit tests). They
+pass today *because* the bug is still there. When a fix lands, that test starts complaining
+("expected to fail, but passed"); remove the marker so it guards the fix from then on.
+
+## How publishing works
+
+`.github/workflows/site.yml` runs on every push to `master`, on pull requests, and on demand
+from the **Actions** tab:
+
+1. Checks every recipe file and the scaling math
+2. Builds the site with [Eleventy](https://www.11ty.dev)
+3. Checks the built site (addresses, links, photos)
+4. Runs the browser tests
+5. Publishes to GitHub Pages, but only from `master` and only if everything above passed
+
+If anything fails, the live site stays as it was, GitHub emails you, and the run's page shows
+the exact problem (for example `gumbo.md: img/gumbo.jpg not found`).
+
+### Turning on publishing (one-time cutover)
+
+Until this is done, GitHub's old built-in Jekyll build is still what publishes the site.
+
+1. **Settings → Pages → Build and deployment → Source:** choose **GitHub Actions**.
+   The current site stays up until the next publish.
+2. **Settings → Secrets and variables → Actions → Variables:** add `PAGES_DEPLOY` = `actions`.
+3. Merge to `master` (or run the workflow from the **Actions** tab).
 
 ## Tech
-This cookbook is powered by jekyll and hosted on github pages. It's originally built upon the [beautiful-jekyll](https://github.com/daattali/beautiful-jekyll) template by Dean Attali.
+
+Built with [Eleventy](https://www.11ty.dev), tested with [Playwright](https://playwright.dev) and
+Node's built-in test runner, and hosted on GitHub Pages. Originally based on
+[jansim/cookbook](https://github.com/jansim/cookbook) and the
+[beautiful-jekyll](https://github.com/daattali/beautiful-jekyll) theme by Dean Attali.

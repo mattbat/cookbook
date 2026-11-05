@@ -1,0 +1,24 @@
+---
+permalink: /feed.xml
+eleventyExcludeFromCollections: true
+---
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>{{ site.title }}</title>
+    <description>{{ site.description }}</description>
+    <link>{{ '/' | fullUrl }}</link>
+    <atom:link href="{{ '/feed.xml' | fullUrl }}" rel="self" type="application/rss+xml" />
+    {%- for recipe in collections.recipes | newestFirst %}
+    {%- if loop.index <= 20 %}
+    <item>
+      <title>{{ recipe.data.title }}</title>
+      <description>{{ recipe.content | plainText | words(50) }}</description>
+      <pubDate>{{ recipe.date | rfc822Date }}</pubDate>
+      <link>{{ recipe.url | fullUrl }}</link>
+      <guid isPermaLink="true">{{ recipe.url | fullUrl }}</guid>
+    </item>
+    {%- endif %}
+    {%- endfor %}
+  </channel>
+</rss>
