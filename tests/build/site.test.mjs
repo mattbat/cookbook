@@ -297,3 +297,7 @@ describe('offline copy (service worker)', () => {
     assert.ok(!read(PREFIX + 'sitemap.xml').includes('offline'))
   })
 })
+
+test('Claude Code files (.claude/, like the add-recipe skill) are not published', () => {
+  assert.ok(!fs.existsSync(path.join(site, '.claude')), '_site/.claude exists; add .claude/** to the ignores in eleventy.config.mjs')
+})

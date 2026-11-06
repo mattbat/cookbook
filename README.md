@@ -38,6 +38,28 @@ Recipes are plain markdown so they stay usable whatever the website becomes. Kee
 
 `npm run test:unit` checks most of this and says exactly what to fix.
 
+### With Claude, from your phone or computer
+
+The repo includes a Claude Code skill (`.claude/skills/add-recipe/`) that does all of the above.
+Give it a photo of a recipe card or cookbook page, a website link, or pasted text, for example:
+
+> add this recipe to the cookbook: https://www.kingarthurbaking.com/recipes/classic-sandwich-bread-recipe
+
+> add grandma's card to the cookbook, by Tracy Batchelder [photo]
+
+It reads the recipe, writes `_recipes/<name>.md` in the house style (rewording the steps rather
+than copying a website), saves the photo, runs the recipe checks, and opens a pull request.
+Merging the pull request publishes it. It tells you what it guessed (times, tags) so you can
+correct it in the same chat.
+
+- **On your phone:** in the Claude app, start a Code session on the `mattbat/cookbook` repository
+  (Claude Code on the web) and ask as above. To import from websites there, the environment needs
+  internet access to those sites; if a page won't load, paste the recipe text or a screenshot.
+- **On your computer:** run `claude` in this folder, or use the Claude desktop app, and ask the same way.
+- **Photos:** a website's photo isn't used unless you ask ("use the website's photo"), since the
+  cookbook is public. Without a photo of the dish, it adds a plain placeholder; replace
+  `img/<name>.jpeg` with your own photo any time.
+
 Or let the tools write the file for you:
 
 ```bash
