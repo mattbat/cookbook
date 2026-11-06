@@ -33,7 +33,7 @@ jobs:
 
       # Smaller copies of the photos take a while to make; reuse the ones from earlier runs
       - name: Reuse resized photos
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: .cache/photos
           key: photos-${{ hashFiles('img/**', 'lib/photos.js') }}
