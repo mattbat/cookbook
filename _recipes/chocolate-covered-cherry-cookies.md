@@ -1,5 +1,5 @@
 ---
-author: Matt Batchelder
+author: Elizabeth Sparkman
 source: Wyse Guide
 sourceUrl: https://www.wyseguide.com/chocolate-covered-cherry-cookies/
 date: 2026-11-06
