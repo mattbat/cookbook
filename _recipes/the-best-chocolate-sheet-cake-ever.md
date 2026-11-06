@@ -1,5 +1,5 @@
 ---
-author: Matt Batchelder
+author: Carly Batchelder
 source: The Pioneer Woman
 sourceUrl: https://www.thepioneerwoman.com/food-cooking/recipes/a11901/best-chocolate-sheet-cake-recipe/
 date: 2026-11-06
@@ -32,7 +32,7 @@ tags: [dessert, cake, chocolate]
 - 6 Tbsp milk
 - 1 tsp vanilla extract
 - 1 lb powdered sugar, minus ½ cup
-- 1 cup chopped pecans
+- ½ cup chopped pecans
 
 ## Tools
 - 18 by 13 inch sheet cake pan
