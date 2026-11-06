@@ -45,16 +45,99 @@ function formatMetric (value, unit, scaleBy) {
   if (big) {
     value = value / 1000
     unit = unit === 'mL' ? 'L' : 'kg'
-    return { value: roundTo(value, value < 10 ? 0.05 : 0.1), unit: unit }
+    return { value: roundTo(value, value < 10 ? 0.05 : 1), unit: unit }
   }
   var step = value < 20 ? 1 : value < 100 ? 5 : 10
   return { value: Math.max(roundTo(value, step), 1), unit: unit }
 }
 
 // toMetric(2, "cups") -> { value: 470, unit: "mL" }; toMetric(1, "tsp") -> null (left alone)
-function toMetric (amount, word, scaleBy) {
+// Metric recipes weigh dry and solid ingredients, so a cup of these becomes grams (weight of one
+// US cup, mostly from King Arthur's and the USDA's tables). The first match wins, so specific
+// names come before general ones. Liquids, and anything not listed, stay in mL.
+var GRAMS_PER_CUP = [
+  [/whole[- ]wheat flour/, 113],
+  [/flour|bisquick|baking mix/, 120],
+  [/powdered sugar|confectioner/, 115],
+  [/brown sugar/, 215],
+  [/sugar/, 200],
+  [/peanut butter/, 260],
+  [/\bbutter\b|margarine/, 227],
+  [/shortening/, 184],
+  [/cocoa/, 85],
+  [/quick oats|instant oats/, 80],
+  [/oats/, 90],
+  [/rice/, 190],
+  [/cornmeal|polenta/, 140],
+  [/chocolate chips|\bchips\b|toffee/, 170],
+  [/pecans|walnuts|almonds|peanuts|\bnuts\b/, 115],
+  [/graham/, 100],
+  [/parmesan/, 100],
+  [/feta/, 150],
+  [/cottage cheese|ricotta/, 225],
+  [/cream cheese/, 230],
+  [/sour cream/, 230],
+  [/greek yogurt/, 280],
+  [/yogurt/, 245],
+  [/cheese|cheddar|mozzarella|gruy[eè]re|monterey/, 113],
+  [/\bsalt\b/, 290],
+  [/\bjam\b|preserves|jelly/, 320],
+  [/honey/, 340],
+  [/french fried onions/, null],
+  [/green onion|scallion/, 100],
+  [/onion|shallot/, 160],
+  [/celery/, 100],
+  [/bell pepper|peppers?\b/, 150],
+  [/broccoli|cauliflower/, 90],
+  [/tomato(es)?\b(?! sauce| paste| juice)/, 150],
+  [/lettuce|romaine|spinach|kale/, 50],
+  [/cilantro/, 16],
+  [/parsley|basil|herbs/, 60],
+  [/olives/, 135],
+  [/carrots?/, 130],
+  [/(cooked|shredded|chopped|diced).{0,12}(chicken|turkey|pork|beef)|(chicken|turkey)(?! broth| stock| base)/, 140]
+]
+// Never weighed, even when the name also mentions something above ("chicken broth", "heavy cream")
+var LIQUIDS = /broth|stock|\bbase\b|milk|water|juice|wine|vinegar|\boil\b|syrup|sauce|salsa|heavy cream|whipping cream|half[- ]and[- ]half|coffee|beer|soda|ketchup/
+
+function isLiquid (name) {
+  name = String(name || '').toLowerCase().replace(/\([^)]*\)/g, ' ')
+  return !/sour cream|cream cheese/.test(name) && LIQUIDS.test(name)
+}
+
+// Weight of one US cup of an ingredient, from its name; null when it's a liquid or not known.
+function gramsPerCup (name) {
+  name = String(name || '').toLowerCase().replace(/<[^>]+>/g, ' ')
+  // Only the ingredient itself, not notes in brackets ("(See "Chicken")")
+  name = name.replace(/\([^)]*\)/g, ' ')
+  // "sour cream" and "cream cheese" are weighed even though "cream" is a liquid
+  var solidCream = /sour cream|cream cheese/.test(name)
+  if (!solidCream && LIQUIDS.test(name)) return null
+  for (var i = 0; i < GRAMS_PER_CUP.length; i++) {
+    if (GRAMS_PER_CUP[i][0].test(name)) return GRAMS_PER_CUP[i][1]
+  }
+  return null
+}
+
+// US cups in one of each volume unit
+var CUPS_PER = { cup: 1, quart: 4, pint: 2, gallon: 16, floz: 1 / 8 }
+
+// toMetric(2, "cups") -> { value: 470, unit: "mL" }; toMetric(2, "cups", null, "flour") ->
+// { value: 240, unit: "g" }; toMetric(1, "tsp") -> null (left alone)
+function toMetric (amount, word, scaleBy, ingredient) {
   var key = unitKey(word)
   if (!key || !(amount > 0)) return null
+  // Only cups are weighed: a gallon or quart of vegetables is a jar size, not an amount to weigh
+  var grams = key === 'cup' && ingredient ? gramsPerCup(ingredient) : null
+  // Ounces of a liquid are fluid ounces ("6 oz of the beef broth"), but cans and jars are
+  // labeled by weight ("1 (15 oz) can tomato sauce")
+  if (key === 'oz' && ingredient && isLiquid(ingredient) && !/\b(cans?|jars?|packages?|pkgs?|bags?|box|boxes|bottles?|cartons?)\b/i.test(ingredient)) {
+    key = 'floz'
+  }
+  if (grams) {
+    var perUnit = grams * CUPS_PER[key]
+    return formatMetric(amount * perUnit, 'g', scaleBy ? scaleBy * perUnit : null)
+  }
   var unit = UNIT_FACTORS[key]
   return formatMetric(amount * unit.factor, unit.to, scaleBy ? scaleBy * unit.factor : null)
 }
@@ -95,11 +178,15 @@ function inchesToMetric (inches) {
 var RANGE = '(\\s*(?:-|–|to)\\s*)'
 var TEMPERATURE = new RegExp('(\\d+)(?:' + RANGE + '(\\d+))?\\s*(?:°\\s*F\\b|degrees\\s*F\\b|° ?F|degrees(?! C))', 'g')
 var INCHES = new RegExp('(' + UNIT_NUMBER + ')(?:' + RANGE + '(' + UNIT_NUMBER + '))?([- ])(?:inch(?:es)?|in\\.)(?![a-z])', 'gi')
-var AMOUNT = new RegExp('(^|[^\\w/.])(' + UNIT_NUMBER + ')(?:' + RANGE + '(' + UNIT_NUMBER + '))?\\s?' + UNIT_WORDS + '(?![a-z])', 'gi')
+// "pint sized jars" and "13-gallon bag" are sizes, not amounts
+var NOT_A_SIZE = '(?![a-z])(?!\\s*-?\\s*sized)'
+var AMOUNT = new RegExp('(^|[^\\w/.])(' + UNIT_NUMBER + ')(?:' + RANGE + '(' + UNIT_NUMBER + '))?\\s?' + UNIT_WORDS + NOT_A_SIZE, 'gi')
 
 // Converts temperatures, sizes and amounts written in running text:
 // "Bake at 350°F in a 9-inch pan" -> "Bake at 175°C in a 23 cm pan"
-function textToMetric (text) {
+// `context`: what the text is about when it doesn't say, like an ingredient line whose bracket
+// reads "(4 cups)"
+function textToMetric (text, context) {
   text = text.replace(TEMPERATURE, function (all, from, range, to) {
     return fahrenheitToCelsius(Number(from)) + (to ? range + fahrenheitToCelsius(Number(to)) : '') + '°C'
   })
@@ -109,12 +196,16 @@ function textToMetric (text) {
     var high = inchesToMetric(unitNumber(to))
     return low.replace(/ (cm|mm)$/, '') + range + high
   })
-  text = text.replace(AMOUNT, function (all, before, from, range, to, word) {
+  text = text.replace(AMOUNT, function (all, before, from, range, to, word, offset, whole) {
+    // What's being measured: the words after the amount, up to the end of the phrase
+    // ("¾ cup of the sugar and the salt" -> "of the sugar and the salt")
+    var what = whole.slice(offset + all.length).split(/[,.;:()]/)[0].slice(0, 40)
+    if (context && !gramsPerCup(what) && !isLiquid(what)) what = context
     var high = to ? unitNumber(to) : null
-    var low = toMetric(unitNumber(from), word, high)
+    var low = toMetric(unitNumber(from), word, high, what)
     if (!low) return all
     if (!to) return before + showNumber(low.value) + ' ' + low.unit
-    var top = toMetric(high, word, high)
+    var top = toMetric(high, word, high, what)
     return before + showNumber(low.value) + range + showNumber(top.value) + ' ' + top.unit
   })
   return text
@@ -166,5 +257,5 @@ if (typeof document !== 'undefined') (function () {
 
 // Lets the unit tests load this file in Node
 if (typeof module !== 'undefined') {
-  module.exports = { UNIT_WORDS, toMetric, textToMetric, formatMetric, unitKey, unitNumber, fahrenheitToCelsius, inchesToMetric }
+  module.exports = { UNIT_WORDS, toMetric, textToMetric, formatMetric, gramsPerCup, unitKey, unitNumber, fahrenheitToCelsius, inchesToMetric }
 }
