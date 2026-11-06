@@ -134,28 +134,58 @@ function getIngredients (entries) {
   return ingredients
 }
 
-function renderIngredientsAtScale (scale) {
+// Metric conversion (js/units.js; loaded before this file on the page, required in the tests)
+var units = typeof module !== 'undefined' && typeof require === 'function'
+  ? require('./units.js')
+  : { toMetric: window.toMetric, textToMetric: window.textToMetric, unitNumber: window.unitNumber, UNIT_WORDS: window.UNIT_WORDS }
+// A weight the recipe gives right after a cup measure: "1 cup (5¼ oz) sugar"
+var given_weight = /^\s*\((\d[\d\s\/.½¼¾⅓⅔⅛⅜⅝⅞-]*)\s*(oz\.?|ounces?|lbs?\.?|pounds?|sticks?)\)/i
+var leading_unit = units.UNIT_WORDS ? new RegExp('^(\\s*)' + units.UNIT_WORDS + '(?![a-z])(?!\\s*-?\\s*sized)', 'i') : null
+
+function renderIngredientsAtScale (scale, system) {
   var scaleFactor = scale / initialScale
 
   initialIngredients.forEach((ingredient) => {
-    // Items without an amount are never rewritten
-    if (!ingredient.amount) {
-      return
-    }
-    ingredient.el.innerHTML = ingredientToHTML(ingredient, scaleFactor)
+    var html = ingredientToHTML(ingredient, scaleFactor, system)
+    // Items without an amount are only rewritten when metric changes them
+    if (!ingredient.amount && html === ingredient.el.innerHTML) return
+    ingredient.el.innerHTML = html
   })
 }
 
-function ingredientToHTML (ingredient, scaleFactor) {
+// `system`: 'metric' converts "2 cups" to "470 mL", "1 lb" to "450 g" (teaspoons and
+// tablespoons stay), and amounts later in the text like "(15 oz)".
+function ingredientToHTML (ingredient, scaleFactor, system) {
+  var metric = system === 'metric' && units.toMetric
+  var name = ingredient.name
   if (ingredient.amount) {
     var title = `${render_number(ingredient.amount)} (org) x ${render_number(scaleFactor)} (scaling)`
-    var scaled = render_number(ingredient.amount * scaleFactor, 2)
-    if (ingredient.amountTo) {
-      scaled += ingredient.separator + render_number(ingredient.amountTo * scaleFactor, 2)
+    var low = ingredient.amount * scaleFactor
+    var high = ingredient.amountTo ? ingredient.amountTo * scaleFactor : null
+    var scaled = render_number(low, 2) + (high ? ingredient.separator + render_number(high, 2) : '')
+    var unitMatch = metric && leading_unit && name.match(leading_unit)
+    var rest = unitMatch ? name.slice(unitMatch[0].length) : ''
+    // Dry ingredients are weighed: "2 cups flour" -> "240 g flour", "2 cups milk" -> "470 mL milk"
+    var what = rest.replace(/<[^>]+>/g, ' ')
+    var given = unitMatch && !high && /^(cups?|c\.|quarts?|qts?|pints?|pts?)/i.test(unitMatch[2]) && rest.match(given_weight)
+    var converted = given
+      ? units.toMetric(units.unitNumber(given[1]) * scaleFactor, given[2])
+      : unitMatch && units.toMetric(low, unitMatch[2], high, what)
+    if (given && converted) {
+      // The recipe already says what it weighs; use that and drop the bracket
+      scaled = converted.value
+      name = ' ' + converted.unit + units.textToMetric(rest.slice(given[0].length), what)
+    } else if (converted) {
+      scaled = converted.value + (high ? ingredient.separator + units.toMetric(high, unitMatch[2], high, what).value : '')
+      // A bracket after a weight ("1½ lb tomatoes (about 3 cups)") stays a volume, so it doesn't
+      // contradict the weight; after a cup measure it's weighed like the ingredient
+      name = ' ' + converted.unit + units.textToMetric(rest, converted.unit === 'g' || converted.unit === 'kg' ? (/^(cups?|c\.)/i.test(unitMatch[2]) ? what : undefined) : undefined)
+    } else if (metric) {
+      name = units.textToMetric(name, name.replace(/<[^>]+>/g, ' '))
     }
-    return `${ingredient.prefix || ''}<span class="scaled" title="${title}">${scaled}</span>${ingredient.name}`
+    return `${ingredient.prefix || ''}<span class="scaled" title="${title}">${scaled}</span>${name}`
   } else {
-    return ingredient.name
+    return metric ? units.textToMetric(name, name.replace(/<[^>]+>/g, ' ')) : name
   }
 }
 
@@ -195,9 +225,14 @@ if (typeof document !== 'undefined') {
   var input = document.querySelector('input[name="recipe_scaling"]')
   if (input) {
     var initialScale = parse_number(input.value)
+    var currentSystem = function () { return window.Cookbook && Cookbook.units ? Cookbook.units.system : 'us' }
     input.addEventListener('change', function () {
-      renderIngredientsAtScale(parse_number(input.value))
+      renderIngredientsAtScale(parse_number(input.value), currentSystem())
     })
+    if (window.Cookbook && Cookbook.units) {
+      Cookbook.units.onChange(function (system) { renderIngredientsAtScale(parse_number(input.value), system) })
+      if (currentSystem() === 'metric') renderIngredientsAtScale(initialScale, 'metric')
+    }
   }
 
   var changeValue = function (direction) {
