@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test'
 import fs from 'node:fs'
 
-const live = JSON.parse(fs.readFileSync(new URL('../fixtures/live-site.json', import.meta.url), 'utf8'))
+const recipeCount = fs.readdirSync(new URL('../../_recipes/', import.meta.url)).filter((f) => f.endsWith('.md')).length
 
 test('home page shows featured and recent recipes that open', async ({ page }) => {
   await page.goto('./')
@@ -37,7 +37,7 @@ test('a category chip on the home page shows that category', async ({ page }) =>
 
 test('A–Z page lists every recipe', async ({ page }) => {
   await page.goto('list/')
-  await expect(page.locator('.index li')).toHaveCount(live.recipes.length)
+  await expect(page.locator('.index li')).toHaveCount(recipeCount)
   await page.getByRole('link', { name: /^Gumbo/ }).click()
   await expect(page).toHaveURL(/recipes\/gumbo\/$/)
 })

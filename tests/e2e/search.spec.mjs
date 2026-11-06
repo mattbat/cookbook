@@ -1,4 +1,7 @@
+import fs from 'node:fs'
 import { test, expect } from '@playwright/test'
+
+const recipeCount = fs.readdirSync(new URL('../../_recipes/', import.meta.url)).filter((f) => f.endsWith('.md')).length
 
 const box = (page) => page.getByRole('searchbox', { name: 'Search recipes' })
 const titles = (page) => page.locator('[data-results] .card:visible .card-title')
@@ -15,7 +18,7 @@ test.beforeEach(async ({ page }) => {
 })
 
 test('lists every recipe before you type', async ({ page }) => {
-  await expect(page.locator('.search-status')).toHaveText('53 recipes')
+  await expect(page.locator('.search-status')).toHaveText(`${recipeCount} recipes`)
 })
 
 test('finds a recipe by name and opens it', async ({ page }) => {
