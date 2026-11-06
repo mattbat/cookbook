@@ -136,7 +136,7 @@ export default function (eleventyConfig) {
   eleventyConfig.addFilter('isCurrent', (pageUrl, tabUrl) =>
     tabUrl === '/' ? pageUrl === '/' : pageUrl.startsWith(tabUrl))
 
-  for (const path of ['README.md', '.cache/**', 'CLI/**', 'lib/**', 'tests/**', '_recipes/_template/**', 'test-results/**', 'playwright-report/**', 'design/**']) {
+  for (const path of ['README.md', '.cache/**', '.claude/**', 'CLI/**', 'lib/**', 'tests/**', '_recipes/_template/**', 'test-results/**', 'playwright-report/**', 'design/**']) {
     eleventyConfig.ignores.add(path)
   }
 
