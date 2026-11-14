@@ -27,7 +27,7 @@ tags: [main, meat, sausage, smoker, bbq]
 ## Master Spice Ratio
 All measurements are given as a percentage of overall meat and fat weight. For spices, primary flavors are 0.50%, secondary flavors are 0.25%, and background flavors are 0.125%. The flavoring of the sausage can be modified by substituting different spices using these ratios. If mixing in salty ingredients such as cheese, consider reducing the salt percentage to 1.50%.
 
-Use this [Recipe Calculator](https://docs.google.com/spreadsheets/d/1vD5hAmGH3YizIl4AM9kqCLZv0eMIJKG2SCakTLYtG7I/edit#gid=0) to calculate the amount of spices for the given meat weight.
+Use the [Sausage Calculator](https://mattbat.com/sausage-calculator/) app to calculate the amount of each ingredient for your meat weight, in grams or pounds. The original [spreadsheet](https://docs.google.com/spreadsheets/d/1vD5hAmGH3YizIl4AM9kqCLZv0eMIJKG2SCakTLYtG7I/edit#gid=0) is still available.
 
 | Percentage  | Ingredient     |
 | ----------- | -------------- |
@@ -39,7 +39,7 @@ Use this [Recipe Calculator](https://docs.google.com/spreadsheets/d/1vD5hAmGH3Yi
 |  0.50%      | Mustard Powder |
 |  0.25%      | Pepper         |
 |  0.25%      | Paprika        |
-|  0.125%     | Cayenne        |
+|  0.15%      | Cayenne        |
 
 ## Steps (Day 1)
 1. Cut meat and fat into ½" to 1" cubes.
