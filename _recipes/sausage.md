@@ -18,6 +18,7 @@ tags: [main, meat, sausage, smoker, bbq]
 - Salt
 - Pink Salt (Prague Powder #1)
 - High Temp Milk Powder
+- Water
 - Granulated Garlic
 - Mustard Powder
 - Coarse Black Pepper
@@ -25,21 +26,21 @@ tags: [main, meat, sausage, smoker, bbq]
 - Cayenne Pepper
 
 ## Master Spice Ratio
-All measurements are given as a percentage of overall meat and fat weight. For spices, primary flavors are 0.50%, secondary flavors are 0.25%, and background flavors are 0.125%. The flavoring of the sausage can be modified by substituting different spices using these ratios. If mixing in salty ingredients such as cheese, consider reducing the salt percentage to 1.50%.
+All measurements are given as a percentage of overall meat and fat weight. For spices, primary flavors are 0.50%, secondary flavors are 0.25%, and background flavors are 0.125%. Cayenne is bumped a little above the background rate, to 0.15%, for a bit more heat. The flavoring of the sausage can be modified by substituting different spices using these ratios. If mixing in salty ingredients such as cheese, consider reducing the salt percentage to 1.50%.
 
 Use the [Sausage Calculator](https://mattbat.com/sausage-calculator/) app to calculate the amount of each ingredient for your meat weight, in grams or pounds. The original [spreadsheet](https://docs.google.com/spreadsheets/d/1vD5hAmGH3YizIl4AM9kqCLZv0eMIJKG2SCakTLYtG7I/edit#gid=0) is still available.
 
-| Percentage  | Ingredient     |
-| ----------- | -------------- |
-|  2.00%      | Salt           |
-|  0.25%      | Pink Salt      |
-|  4.00%      | Milk Powder    |
-| 10.00%      | Water          |
-|  0.50%      | Garlic Powder  |
-|  0.50%      | Mustard Powder |
-|  0.25%      | Pepper         |
-|  0.25%      | Paprika        |
-|  0.15%      | Cayenne        |
+| Percentage  | Ingredient        |
+| ----------- | ----------------- |
+|  2.00%      | Salt              |
+|  0.25%      | Pink Salt         |
+|  4.00%      | Milk Powder       |
+| 10.00%      | Water             |
+|  0.50%      | Granulated Garlic |
+|  0.50%      | Mustard Powder    |
+|  0.25%      | Pepper            |
+|  0.25%      | Paprika           |
+|  0.15%      | Cayenne           |
 
 ## Steps (Day 1)
 1. Cut meat and fat into ½" to 1" cubes.
