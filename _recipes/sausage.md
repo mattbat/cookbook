@@ -39,7 +39,7 @@ Use the [Sausage Calculator](https://mattbat.com/sausage-calculator/) app to cal
 |  0.50%      | Mustard Powder |
 |  0.25%      | Pepper         |
 |  0.25%      | Paprika        |
-|  0.125%     | Cayenne        |
+|  0.15%      | Cayenne        |
 
 ## Steps (Day 1)
 1. Cut meat and fat into ½" to 1" cubes.
