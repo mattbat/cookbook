@@ -1,5 +1,5 @@
 ---
-author: Matt Batchelder
+author: Carly Batchelder
 source: Allrecipes
 sourceUrl: https://www.allrecipes.com/marry-me-chicken-soup-recipe-8421914
 date: 2026-11-20
