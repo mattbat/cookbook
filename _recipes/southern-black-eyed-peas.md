@@ -1,5 +1,5 @@
 ---
-author: Matt Batchelder
+author: Carly Batchelder
 source: Immaculate Bites
 sourceUrl: https://www.africanbites.com/black-eyed-peas-recipe/
 date: 2026-11-20
